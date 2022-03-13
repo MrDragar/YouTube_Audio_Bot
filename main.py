@@ -1,4 +1,4 @@
-from downloader import download
+from downloader import get_resolutions, download
 import database
 
 import os
@@ -18,6 +18,7 @@ cb = CallbackData("user", "url", "action")
 
 class InputUserData(StatesGroup):
     step_1 = State()
+    step_2 = State()
     url = ''
 
 
@@ -77,15 +78,34 @@ async def send_audio (message: types.Message, state: FSMContext):
 
 # noinspection PyBroadException
 @dp.message_handler(Text(equals="Видео"), state=InputUserData.step_1, content_types=types.ContentTypes.TEXT)
-async def send_video (message: types.Message, state: FSMContext):
-    await message.answer("Подождите", reply_markup=types.ReplyKeyboardRemove())
+async def send_video_resolutions (message: types.Message, state: FSMContext):
+    # await message.answer("Подождите", reply_markup=types.ReplyKeyboardRemove())
     url = InputUserData.url
+    resolutions = await get_resolutions(url)
+    if resolutions is None:
+        await bot.send_message(message.from_user.id, "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку")
+        database.add_bad_result()
+        await state.finish()
+    else:
+ 
+        
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        for i in resolutions:
+            keyboard.insert(types.InlineKeyboardButton(text=i))
+        await bot.send_message(message.from_user.id, "Выберите разрешение видео", reply_markup=keyboard)
+        await InputUserData.step_2.set()
+
+
+
+@dp.message_handler(Text(equals=["144p", "360p", "720p", "1080p"]), state=InputUserData.step_2, content_types=types.ContentTypes.TEXT)
+async def send_video (message: types.Message, state: FSMContext):
+    resolution = message.text
+    url = InputUserData.url
+    await bot.send_message(message.from_user.id, "Подождите", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
-    media_path = ""
     try:
-        media_path, name = await download(url=url, media_type="Video")
+        media_path, name = await download(url=url, media_type="Video", resolution=resolution)
         with open(media_path, "rb") as f:
-            # await message.answer_video(f, supports_streaming=True, width=180, height=100, caption=name)
             await bot.send_video(message.from_user.id, f, supports_streaming=True, width=180, height=100, caption=name)
         os.remove(media_path)
         database.add_good_result()
@@ -95,7 +115,7 @@ async def send_video (message: types.Message, state: FSMContext):
         database.add_good_result()
     except Exception as ex:
         print(ex, type(ex))
-        await bot.send_message(message.from_user.id, "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку")
+        await bot.send_message(message.from_user.id, "Простите, что-то пошло нетак.")
         database.add_bad_result()
 
 

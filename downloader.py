@@ -3,7 +3,7 @@ from functools import wraps, partial
 from concurrent.futures import ThreadPoolExecutor
 import pytube
 from typing import Optional
-from awaits.awaitable import awaitable
+
 
 
 def wrap(func):
@@ -18,7 +18,7 @@ def wrap(func):
 
 
 @wrap
-def download(url: str, media_type: str):
+def download(url: str, media_type: str, resolution: str = None):
     yt = pytube.YouTube(url)
     video_name = yt.title
     name = yt.video_id
@@ -27,8 +27,20 @@ def download(url: str, media_type: str):
         stream.download("./audio/", filename=name)
         media_path = "./audio/" + name
     elif media_type == "Video":
-        stream = yt.streams.filter().get_highest_resolution()
+        stream = yt.streams.filter(progressive=True, resolution=resolution).first()
         stream.download("./video/", filename=name)
         media_path = "./video/" + name
     return media_path, video_name
 
+
+@wrap
+def get_resolutions(url: str):
+    try:
+        yt = pytube.YouTube(url)
+        streams = yt.streams.filter(progressive=True).all()
+        resolutions = []
+        for stream in streams:
+            resolutions.append(stream.resolution)
+        return resolutions
+    except Exception:
+        return None
