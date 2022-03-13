@@ -1,4 +1,5 @@
 from downloader import download
+import database
 
 import os
 import logging
@@ -10,9 +11,10 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
 from aiogram.bot.api import TelegramAPIServer
 from aiogram.utils.callback_data import CallbackData
-
+from asyncio.exceptions import TimeoutError
 
 cb = CallbackData("user", "url", "action")
+
 
 class InputUserData(StatesGroup):
     step_1 = State()
@@ -53,47 +55,58 @@ async def main (message: types.Message):
     await message.answer("Выберите тип файла", reply_markup=keyboard)
     InputUserData.url = url
     await InputUserData.step_1.set()
+    database.add_user(message.from_user.id, message.from_user.first_name)
 
 
 @dp.message_handler(Text(equals="Аудио"), state=InputUserData.step_1, content_types=types.ContentTypes.TEXT)
-async def send_audio(message: types.Message, state: FSMContext):
+async def send_audio (message: types.Message, state: FSMContext):
     await message.answer("Подождите", reply_markup=types.ReplyKeyboardRemove())
     url = InputUserData.url
     await state.finish()
     try:
-        media_path, name = download(url=url, media_type="Audio")
+        media_path, name = await download(url=url, media_type="Audio")
         with open(media_path, "rb") as f:
             await message.answer_audio(f, title=name)
         os.remove(media_path)
+        database.add_good_result()
     except Exception as ex:
         print(ex)
         await message.answer("Произошла какая-то ошибка. Возможно вы дали некорректную ссылку")
+        database.add_bad_result()
 
 
+# noinspection PyBroadException
 @dp.message_handler(Text(equals="Видео"), state=InputUserData.step_1, content_types=types.ContentTypes.TEXT)
-async def send_video(message: types.Message, state: FSMContext):
+async def send_video (message: types.Message, state: FSMContext):
     await message.answer("Подождите", reply_markup=types.ReplyKeyboardRemove())
     url = InputUserData.url
     await state.finish()
+    media_path = ""
     try:
-        media_path, name = download(url=url, media_type="Video")
+        media_path, name = await download(url=url, media_type="Video")
         with open(media_path, "rb") as f:
-            await message.answer_video(f, supports_streaming=True)
+            # await message.answer_video(f, supports_streaming=True, width=180, height=100, caption=name)
+            await bot.send_video(message.from_user.id, f, supports_streaming=True, width=180, height=100, caption=name)
         os.remove(media_path)
+        database.add_good_result()
+    except TimeoutError as a:
+        print(a)
+        os.remove(media_path)
+        database.add_good_result()
     except Exception as ex:
-        print(ex)
+        print(ex, type(ex))
         await bot.send_message(message.from_user.id, "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку")
-    await state.finish()
+        database.add_bad_result()
 
 
 @dp.message_handler(Text(equals="Отмена"), state=InputUserData.step_1, content_types=types.ContentTypes.TEXT)
-async def cansel(message: types.Message, state: FSMContext):
+async def cansel (message: types.Message, state: FSMContext):
     await message.answer("Отмена", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=False)
+    database.init_db()
+    executor.start_polling(dp, skip_updates=False, timeout=1000000)
     # a = bot.log_out()
     # print(a)
-
