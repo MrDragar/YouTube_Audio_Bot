@@ -1,7 +1,7 @@
-from handlers.common import *
-from handlers.mediaType import *
-from handlers.sendMedia import *
-from handlers.videoResolution import *
+from .handlers.common import *
+from .handlers.mediaType import *
+from .handlers.sendMedia import *
+from .handlers.videoResolution import *
 
 
 from aiogram import Dispatcher

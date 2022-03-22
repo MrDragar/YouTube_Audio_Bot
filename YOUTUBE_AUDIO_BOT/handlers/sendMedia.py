@@ -2,9 +2,9 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 import os
-from downloader import download
-import database
-from handlers.mediaType import InputUserData
+from YOUTUBE_AUDIO_BOT.downloader import download
+from YOUTUBE_AUDIO_BOT import database
+from YOUTUBE_AUDIO_BOT.handlers.mediaType import InputUserData
 
 async def send_audio (message: types.Message, state: FSMContext):
     await message.answer("Подождите", reply_markup=types.ReplyKeyboardRemove())

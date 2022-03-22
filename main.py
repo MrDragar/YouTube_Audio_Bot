@@ -1,6 +1,6 @@
-from downloader import get_resolutions, download
-import database
-from config import register_handlers
+from YOUTUBE_AUDIO_BOT.downloader import get_resolutions, download
+from  YOUTUBE_AUDIO_BOT import database
+from YOUTUBE_AUDIO_BOT.config import register_handlers
 
 import os
 import logging

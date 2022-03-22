@@ -1,5 +1,6 @@
 from curses.ascii import FS
-import database
+from re import I
+from YOUTUBE_AUDIO_BOT import database
 
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters.state import State, StatesGroup

@@ -1,1 +1,11 @@
 .idea/
+.vscode/
+5132169281:AAFqK0QMHEUpCvuWahyEsW38kl2vvx7loZo/
+audio/
+video/
+database.db
+tqueue.binlog
+webhooks_db.binlog
+YOUTUBE_AUDIO_BOT/__pycache__
+YOUTUBE_AUDIO_BOT/handlers/__pycache__
+__pycache__/

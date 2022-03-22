@@ -1,8 +1,9 @@
+from re import I
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from downloader import get_resolutions
-import database
+from YOUTUBE_AUDIO_BOT.downloader import get_resolutions
+from YOUTUBE_AUDIO_BOT import database
 from .mediaType import InputUserData
 
 
