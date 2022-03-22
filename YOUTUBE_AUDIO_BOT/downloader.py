@@ -2,7 +2,6 @@ import asyncio
 from functools import wraps, partial
 from concurrent.futures import ThreadPoolExecutor
 import pytube
-from typing import Optional
 
 
 
@@ -37,7 +36,7 @@ def download(url: str, media_type: str, resolution: str = None):
 def get_resolutions(url: str):
     try:
         yt = pytube.YouTube(url)
-        streams = yt.streams.filter(progressive=True).all()
+        streams = yt.streams.filter(progressive=True)
         resolutions = []
         for stream in streams:
             resolutions.append(stream.resolution)

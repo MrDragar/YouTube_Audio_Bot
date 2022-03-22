@@ -1,5 +1,4 @@
 import sqlite3
-from downloader import wrap
 
 __connection = None
 
