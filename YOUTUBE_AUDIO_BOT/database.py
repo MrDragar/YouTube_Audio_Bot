@@ -16,7 +16,8 @@ def init_db():
     cur.execute("""CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY,
     userid INTEGER,
-    username TEXT);
+    username TEXT,
+    language TEXT);
     """)
     cur.execute("""CREATE TABLE IF NOT EXISTS main_information(
     field TEXT,
@@ -51,7 +52,7 @@ def add_user(user_id, username):
 
     if info.fetchone() is None:
         print(1, username)
-        cur.execute("""INSERT INTO users (userid, username) VALUES (?, ?)""", (user_id, username))
+        cur.execute("""INSERT INTO users (userid, username, language) VALUES (?, ?, ?)""", (user_id, username, "en"))
         count_users = cur.execute("""SELECT * FROM main_information WHERE field='count_users'""")
         cur.execute("""UPDATE main_information SET value=? WHERE field='count_users'""",
                     (count_users.fetchone()[1]+1, ))
@@ -74,3 +75,17 @@ def add_bad_result():
     cur.execute("""UPDATE main_information SET value=? WHERE field='bad_result'""",
                 (bad_result.fetchone()[1] + 1,))
     conn.commit()
+
+
+def change_language(new_language, user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""UPDATE users SET language=? WHERE userid=?""", (new_language, user_id))
+    conn.commit()
+
+
+def get_language(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    language = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id, ))
+    return language.fetchone()[3]
