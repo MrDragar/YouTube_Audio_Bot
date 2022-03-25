@@ -35,7 +35,7 @@ async def send_video(message: types.Message, state: FSMContext):
     await message.answer(msg.sending_video["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
     try:
-        media_path, name = await download(url=url, media_type="Vid    url = InputUserData.urleo", resolution=resolution)
+        media_path, name = await download(url=url, media_type="Video", resolution=resolution)
         with open(media_path, "rb") as f:
             await message.answer_video(f, supports_streaming=True, width=180, height=100, caption=name)
         os.remove(media_path)
