@@ -8,7 +8,8 @@ from .mediaType import InputUserData
 
 
 async def send_video_resolutions(message: types.Message, state: FSMContext):
-    url = InputUserData.url
+    data = await state.get_data()
+    url = data["url"]
     resolutions = await get_resolutions(url)
     language = database.get_language(message.from_user.id)
     if resolutions is None:

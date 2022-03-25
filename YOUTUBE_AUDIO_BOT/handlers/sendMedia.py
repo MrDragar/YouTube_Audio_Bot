@@ -12,7 +12,8 @@ from YOUTUBE_AUDIO_BOT import messages as msg
 async def send_audio(message: types.Message, state: FSMContext):
     language = database.get_language(message.from_user.id)
     await message.answer(msg.sending_audio["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
-    url = InputUserData.url
+    data = await state.get_data()
+    url = data["url"]
     await state.finish()
     try:
         media_path, name = await download(url=url, media_type="Audio")
@@ -28,12 +29,13 @@ async def send_audio(message: types.Message, state: FSMContext):
 
 async def send_video(message: types.Message, state: FSMContext):
     resolution = message.text
-    url = InputUserData.url
+    data = await state.get_data()
+    url = data["url"]
     language = database.get_language(message.from_user.id)
     await message.answer(msg.sending_video["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
     try:
-        media_path, name = await download(url=url, media_type="Video", resolution=resolution)
+        media_path, name = await download(url=url, media_type="Vid    url = InputUserData.urleo", resolution=resolution)
         with open(media_path, "rb") as f:
             await message.answer_video(f, supports_streaming=True, width=180, height=100, caption=name)
         os.remove(media_path)
