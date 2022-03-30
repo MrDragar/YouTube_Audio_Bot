@@ -1,12 +1,9 @@
+from os import link
 import sqlite3
 
-__connection = None
 
-
-def get_connection():
-    global __connection
-    if __connection is None:
-        __connection = sqlite3.connect("database.db")
+def get_connection(flag = False):
+    __connection = sqlite3.connect("database.db")
     return __connection
 
 
@@ -14,34 +11,41 @@ def init_db():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS users(
-    id INTEGER PRIMARY KEY,
-    userid INTEGER,
-    username TEXT,
-    language TEXT);
-    """)
+        id INTEGER PRIMARY KEY,
+        userid INTEGER,
+        username TEXT,
+        language TEXT);
+        """)
+    cur.execute("""CREATE TABLE IF NOT EXISTS media(
+        id INTEGER PRIMARY KEY,
+        linkid TEXT,
+        type TEXT,
+        fileid TEXT,
+        resolution TEXT);
+        """)
     cur.execute("""CREATE TABLE IF NOT EXISTS main_information(
-    field TEXT,
-    value INTEGER);
-    """)
+        field TEXT,
+        value INTEGER);
+        """)    
     conn.commit()
     cur.execute("""INSERT INTO main_information (field, value)
-    SELECT * FROM (SELECT 'count_users', 0) AS tmp
-    WHERE NOT EXISTS (
-        SELECT field FROM main_information WHERE field = 'count_users'
-    ) LIMIT 1;
-    """)
+        SELECT * FROM (SELECT 'count_users', 0) AS tmp
+        WHERE NOT EXISTS (
+            SELECT field FROM main_information WHERE field = 'count_users'
+        ) LIMIT 1;
+        """)
     cur.execute("""INSERT INTO main_information (field, value)
-    SELECT * FROM (SELECT 'good_result', 0) AS tmp
-    WHERE NOT EXISTS (
-        SELECT field FROM main_information WHERE field = 'good_result'
-    ) LIMIT 1;
-    """)
+        SELECT * FROM (SELECT 'good_result', 0) AS tmp
+        WHERE NOT EXISTS (
+            SELECT field FROM main_information WHERE field = 'good_result'
+        ) LIMIT 1;
+        """)
     cur.execute("""INSERT INTO main_information (field, value)
-    SELECT * FROM (SELECT 'bad_result', 0) AS tmp
-    WHERE NOT EXISTS (
-        SELECT field FROM main_information WHERE field = 'bad_result'
-    ) LIMIT 1;
-    """)
+        SELECT * FROM (SELECT 'bad_result', 0) AS tmp
+        WHERE NOT EXISTS (
+            SELECT field FROM main_information WHERE field = 'bad_result'
+        ) LIMIT 1;
+        """)
     conn.commit()
 
 
@@ -89,3 +93,21 @@ def get_language(user_id):
     cur = conn.cursor()
     language = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id, ))
     return language.fetchone()[3]
+
+
+def get_file_id(media_tipe, linkid, resolution=None):
+    print(media_tipe, linkid)
+    conn = get_connection()
+    cur = conn.cursor()
+    print(1243)
+    fileid = cur.execute("""SELECT * FROM media WHERE linkid=? AND type=? AND resolution IS ?""", (linkid, media_tipe, resolution)).fetchone()
+    if not fileid is None:
+        fileid = fileid[3]
+    return fileid
+
+
+def add_file_id(media_type, linkid, fileid ,resolution=None):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""INSERT INTO media (linkid, type, fileid, resolution) VALUES (?, ?, ?, ?)""", (linkid, media_type, fileid, resolution))
+    conn.commit()

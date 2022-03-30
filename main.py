@@ -1,18 +1,12 @@
-from YOUTUBE_AUDIO_BOT.downloader import get_resolutions, download
 from  YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT.config import register_handlers
 
 import os
 import logging
 
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.dispatcher.filters import Text
 from aiogram.bot.api import TelegramAPIServer
-from aiogram.utils.callback_data import CallbackData
-from asyncio.exceptions import TimeoutError
 
 
 API_TOKEN = os.environ.get("API_TOKEN")
