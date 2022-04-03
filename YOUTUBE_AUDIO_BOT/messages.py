@@ -1,13 +1,16 @@
 from YOUTUBE_AUDIO_BOT.handlers.sendMedia import send_audio
-
+languages = {
+    "en": "English",
+    "ru": "Русский"
+}
 
 wellcoming = {
     "en": "Hello. With this bot you can download any video or audio from YouTube."\
-    "To do this, you need to give a link to this video. For all questions, write to ysshhenyaev@mail.ru\n"\
-    "To change the language, enter /language .",
+    "To do this, you need to give a link to this video. For all questions, write to yshhenyaev@mail.ru\n"\
+    "To change the language, enter \n/language .",
     "ru": "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба."\
-    "Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите на ysshhenyaev@mail.ru\n"\
-    "Для смены языка пропишите /language ."
+    "Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите на yshhenyaev@mail.ru\n"\
+    "Для смены языка пропишите \n/language ."
 }
 
 cancellation = {
@@ -21,8 +24,8 @@ choosing_language = {
 }
 
 changing_language = {
-    "en":"You have successfully changed your language to ",
-    "ru":"Вы успешна изменили свой язык на "
+    "en":"You have successfully changed your language to",
+    "ru":"Вы успешно изменили свой язык на"
 }
 
 media_buttons = {

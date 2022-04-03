@@ -49,14 +49,14 @@ def init_db():
     conn.commit()
 
 
-def add_user(user_id, username):
+def add_user(user_id, username, language):
     conn = get_connection()
     cur = conn.cursor()
     info = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id,))
 
     if info.fetchone() is None:
         print(1, username)
-        cur.execute("""INSERT INTO users (userid, username, language) VALUES (?, ?, ?)""", (user_id, username, "en"))
+        cur.execute("""INSERT INTO users (userid, username, language) VALUES (?, ?, ?)""", (user_id, username, language))
         count_users = cur.execute("""SELECT * FROM main_information WHERE field='count_users'""")
         cur.execute("""UPDATE main_information SET value=? WHERE field='count_users'""",
                     (count_users.fetchone()[1]+1, ))

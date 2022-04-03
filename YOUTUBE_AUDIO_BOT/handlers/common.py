@@ -16,22 +16,30 @@ async def cancel(message: types.Message, state: FSMContext):
 
 
 async def send_welcome(message: types.Message):
-    database.add_user(message.from_user.id, message.from_user.username)
+    username = message.from_user.username
+    if username is None:
+        username = message.from_user.first_name
+    language = message.from_user.language_code
+    if not language in msg.languages.keys():
+        language = "en"
+    database.add_user(message.from_user.id, username, language)
     language = database.get_language(message.from_user.id)
     await message.reply(msg.wellcoming[language])
 
 
 async def choose_language(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(types.InlineKeyboardButton(text="en"), types.InlineKeyboardButton(text="ru"))
+    keyboard.row(types.InlineKeyboardButton(text=msg.languages["en"]), types.InlineKeyboardButton(text=msg.languages["ru"]))
     keyboard.add(types.InlineKeyboardButton(text="Отмена"))
     language = database.get_language(message.from_user.id)
-    await message.reply(msg.choosing_language[language], reply_markup=keyboard)
+    text = msg.choosing_language[language]
+    await message.reply(text, reply_markup=keyboard)
     await LanguageUserData.step_1.set()
 
 
 async def change_language(message:types.Message, state: FSMContext):
     new_language = message.text
-    database.change_language(new_language, message.from_user.id)
-    await message.reply(f"{msg.changing_language[new_language]} {new_language}.", reply_markup=types.ReplyKeyboardRemove())
+    language = list(msg.languages.keys())[list(msg.languages.values()).index(new_language)]
+    database.change_language(language, message.from_user.id)
+    await message.reply(f"{msg.changing_language[language]} {new_language}.", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
