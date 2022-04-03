@@ -22,5 +22,5 @@ async def chooseMeiaType(message: types.Message):
     await InputUserData.step_1.set()
     state = Dispatcher.get_current().current_state()
     await state.update_data(url=url)
-    database.add_user(message.from_user.id, message.from_user.first_name)
+
 
