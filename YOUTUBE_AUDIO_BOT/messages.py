@@ -1,16 +1,17 @@
 from YOUTUBE_AUDIO_BOT.handlers.sendMedia import send_audio
+
 languages = {
     "en": "English",
     "ru": "Русский"
 }
 
 wellcoming = {
-    "en": "Hello. With this bot you can download any video or audio from YouTube."\
-    "To do this, you need to give a link to this video. For all questions, write to yshhenyaev@mail.ru\n"\
-    "To change the language, enter \n/language .",
-    "ru": "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба."\
-    "Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите на yshhenyaev@mail.ru\n"\
-    "Для смены языка пропишите \n/language ."
+    "en": "Hello. With this bot you can download any video or audio from YouTube." \
+          "To do this, you need to give a link to this video. For all questions, write to yshhenyaev@mail.ru\n" \
+          "To change the language, enter \n/language .",
+    "ru": "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба." \
+          "Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите на yshhenyaev@mail.ru\n" \
+          "Для смены языка пропишите \n/language ."
 }
 
 cancellation = {
@@ -24,8 +25,8 @@ choosing_language = {
 }
 
 changing_language = {
-    "en":"You have successfully changed your language to",
-    "ru":"Вы успешно изменили свой язык на"
+    "en": "You have successfully changed your language to",
+    "ru": "Вы успешно изменили свой язык на"
 }
 
 media_buttons = {
@@ -48,12 +49,12 @@ choosing_media_type = {
     "ru": "Выберите тип файла"
 }
 
-video_resolutoin = {
-    "error":{
+video_resolution = {
+    "error": {
         "en": "Some mistake has occurred. You may have given an incorrect link.",
         "ru": "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."
     },
-    "succes":{
+    "success": {
         "en": "Select the video resolution",
         "ru": "Выберите разрешение видео"
     }
@@ -64,7 +65,7 @@ sending_audio = {
         "en": "Wait",
         "ru": "Подождите"
     },
-    "error":{
+    "error": {
         "en": "Some mistake has occurred. You may have given an incorrect link.",
         "ru": "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."
     }
@@ -75,7 +76,7 @@ sending_video = {
         "en": "Wait",
         "ru": "Подождите"
     },
-    "error":{
+    "error": {
         "en": "Sorry, something went wrong.",
         "ru": "Простите, что-то пошло не так."
     }

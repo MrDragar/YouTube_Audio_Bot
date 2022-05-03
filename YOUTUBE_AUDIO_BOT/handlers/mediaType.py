@@ -10,10 +10,8 @@ class InputUserData(StatesGroup):
     step_2 = State()
 
 
-async def chooseMeiaType(message: types.Message):
+async def chooseMeiaType(message: types.Message, language: str):
     url = message.text
-    language = database.get_language(message.from_user.id)
-    print(url)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     keyboard.row(types.InlineKeyboardButton(text=msg.media_buttons["video"][language]),
                  types.InlineKeyboardButton(text=msg.media_buttons["audio"][language]))

@@ -1,8 +1,8 @@
-from os import link
+import logging
 import sqlite3
 
 
-def get_connection(flag = False):
+def get_connection():
     __connection = sqlite3.connect("database.db")
     return __connection
 
@@ -26,7 +26,7 @@ def init_db():
     cur.execute("""CREATE TABLE IF NOT EXISTS main_information(
         field TEXT,
         value INTEGER);
-        """)    
+        """)
     conn.commit()
     cur.execute("""INSERT INTO main_information (field, value)
         SELECT * FROM (SELECT 'count_users', 0) AS tmp
@@ -55,11 +55,12 @@ def add_user(user_id, username, language):
     info = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id,))
 
     if info.fetchone() is None:
-        print(1, username)
-        cur.execute("""INSERT INTO users (userid, username, language) VALUES (?, ?, ?)""", (user_id, username, language))
+        logging.info(f"Новый пользователь {username}")
+        cur.execute("""INSERT INTO users (userid, username, language) VALUES (?, ?, ?)""",
+                    (user_id, username, language))
         count_users = cur.execute("""SELECT * FROM main_information WHERE field='count_users'""")
         cur.execute("""UPDATE main_information SET value=? WHERE field='count_users'""",
-                    (count_users.fetchone()[1]+1, ))
+                    (count_users.fetchone()[1] + 1,))
         conn.commit()
 
 
@@ -72,7 +73,7 @@ def add_good_result():
     conn.commit()
 
 
-def add_bad_result():
+def add_bad_result ():
     conn = get_connection()
     cur = conn.cursor()
     bad_result = cur.execute("""SELECT * FROM main_information WHERE field='bad_result'""")
@@ -91,23 +92,23 @@ def change_language(new_language, user_id):
 def get_language(user_id):
     conn = get_connection()
     cur = conn.cursor()
-    language = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id, ))
+    language = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id,))
     return language.fetchone()[3]
 
 
 def get_file_id(media_tipe, linkid, resolution=None):
-    print(media_tipe, linkid)
     conn = get_connection()
     cur = conn.cursor()
-    print(1243)
-    fileid = cur.execute("""SELECT * FROM media WHERE linkid=? AND type=? AND resolution IS ?""", (linkid, media_tipe, resolution)).fetchone()
-    if not fileid is None:
+    fileid = cur.execute("""SELECT * FROM media WHERE linkid=? AND type=? AND resolution IS ?""",
+                         (linkid, media_tipe, resolution)).fetchone()
+    if fileid is not None:
         fileid = fileid[3]
     return fileid
 
 
-def add_file_id(media_type, linkid, fileid ,resolution=None):
+def add_file_id(media_type, linkid, fileid, resolution=None):
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("""INSERT INTO media (linkid, type, fileid, resolution) VALUES (?, ?, ?, ?)""", (linkid, media_type, fileid, resolution))
+    cur.execute("""INSERT INTO media (linkid, type, fileid, resolution) VALUES (?, ?, ?, ?)""",
+                (linkid, media_type, fileid, resolution))
     conn.commit()

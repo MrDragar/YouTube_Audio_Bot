@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from functools import wraps, partial
 from concurrent.futures import ThreadPoolExecutor
 import pytube
@@ -23,7 +24,8 @@ def download(url: str, media_type: str, resolution: str = None):
     video_name = yt.title
     filename = yt.video_id
     fileid = database.get_file_id(media_type, filename, resolution)
-    if not fileid is None:
+    media_path = ''
+    if fileid is not None:
         return fileid, video_name, filename, None
     if media_type == "Audio":
         stream = yt.streams.filter(only_audio=True).first()
@@ -45,5 +47,6 @@ def get_resolutions(url: str):
         for stream in streams:
             resolutions.append(stream.resolution)
         return resolutions
-    except Exception:
-        return None
+    except Exception as ex:
+        logging.exception(ex)
+        return

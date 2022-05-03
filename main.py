@@ -1,5 +1,6 @@
-from  YOUTUBE_AUDIO_BOT import database
+from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT.config import register_handlers
+from YOUTUBE_AUDIO_BOT.middleware import register_middleware
 
 import os
 import logging
@@ -21,12 +22,15 @@ local_server = TelegramAPIServer.from_base('http://0.0.0.0:8081')
 
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN, server=local_server)
+# bot = Bot(token=API_TOKEN)
+
 
 dp = Dispatcher(bot, storage=memory_storage)
 
 
 if __name__ == '__main__':
     register_handlers(dp)
+    register_middleware(dp)
     database.init_db()
     executor.start_polling(dp, skip_updates=False, timeout=1000000)
 
