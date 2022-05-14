@@ -1,6 +1,6 @@
 import logging
 import sqlite3
-
+from YOUTUBE_AUDIO_BOT.messages import languages
 
 def get_connection():
     __connection = sqlite3.connect("database.db")
@@ -53,7 +53,8 @@ def add_user(user_id, username, language):
     conn = get_connection()
     cur = conn.cursor()
     info = cur.execute("""SELECT * FROM users WHERE userid=?""", (user_id,))
-
+    if language not in languages:
+        language = "en"
     if info.fetchone() is None:
         logging.info(f"Новый пользователь {username}")
         cur.execute("""INSERT INTO users (userid, username, language) VALUES (?, ?, ?)""",

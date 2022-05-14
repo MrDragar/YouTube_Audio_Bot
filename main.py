@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 memory_storage = MemoryStorage()
 
 local_server = TelegramAPIServer.from_base('http://0.0.0.0:8081')
-
+print(API_TOKEN)
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN, server=local_server)
 # bot = Bot(token=API_TOKEN)
