@@ -113,3 +113,11 @@ def add_file_id(media_type, linkid, fileid, resolution=None):
     cur.execute("""INSERT INTO media (linkid, type, fileid, resolution) VALUES (?, ?, ?, ?)""",
                 (linkid, media_type, fileid, resolution))
     conn.commit()
+
+
+def get_all_id():
+    conn = get_connection()
+    cur = conn.cursor()
+    ids = [user[0] for user in cur.execute("""SELECT userid FROM users""").fetchall()]
+    return ids
+

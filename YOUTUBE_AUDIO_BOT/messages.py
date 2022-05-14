@@ -81,3 +81,8 @@ sending_video = {
         "ru": "Простите, что-то пошло не так."
     }
 }
+
+feedback = {
+    "en": "Write your message to developers. For cancel write 'Cancel'.",
+    "ru": "Напишите ваше сообщение разработчикам. Для отмены пропишите 'Отмена'."
+}

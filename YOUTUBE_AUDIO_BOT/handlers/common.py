@@ -1,12 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT import messages as msg
-
-
-class LanguageUserData(StatesGroup):
-    step_1 = State()
+from YOUTUBE_AUDIO_BOT.states import LanguageUserData
 
 
 async def cancel(message: types.Message, state: FSMContext, language: str):

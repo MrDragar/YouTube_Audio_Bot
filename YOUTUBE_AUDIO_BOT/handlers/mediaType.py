@@ -2,12 +2,7 @@ from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT import messages as msg
 
 from aiogram import types, Dispatcher
-from aiogram.dispatcher.filters.state import State, StatesGroup
-
-
-class InputUserData(StatesGroup):
-    step_1 = State()
-    step_2 = State()
+from YOUTUBE_AUDIO_BOT.states import InputUserData
 
 
 async def chooseMeiaType(message: types.Message, language: str):
