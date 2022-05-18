@@ -1,5 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from pytube.exceptions import RegexMatchError, VideoUnavailable
 
 import os
 import logging
@@ -10,7 +11,7 @@ from YOUTUBE_AUDIO_BOT import messages as msg
 
 
 async def send_audio(message: types.Message, state: FSMContext, language: str):
-    await message.answer(msg.sending_audio["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
+    await message.answer(msg.sending_media["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     data = await state.get_data()
     url = data["url"]
 
@@ -23,9 +24,15 @@ async def send_audio(message: types.Message, state: FSMContext, language: str):
             fileid = message_info["audio"]["file_id"]
             database.add_file_id("Audio", filename, fileid)
         database.add_good_result()
+    except RegexMatchError:
+        await message.answer(msg.sending_media["RegexMatchError"][language])
+    except VideoUnavailable:
+        await message.answer(msg.sending_media["VideoUnavailable"][language])
+    except KeyError:
+        await message.answer(msg.sending_media["KeyError"][language])
     except Exception as ex:
         logging.exception(ex)
-        await message.answer(msg.sending_audio["error"][language])
+        await message.answer(msg.sending_media["error"][language])
         database.add_bad_result()
 
 
@@ -33,7 +40,7 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
     resolution = message.text
     data = await state.get_data()
     url = data["url"]
-    await message.answer(msg.sending_video["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
+    await message.answer(msg.sending_media["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
 
     try:
@@ -49,7 +56,13 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
         logging.exception(a)
         os.remove(media_path)
         database.add_good_result()
+    except RegexMatchError:
+        await message.answer(msg.sending_media["RegexMatchError"][language])
+    except VideoUnavailable:
+        await message.answer(msg.sending_media["VideoUnavailable"][language])
+    except KeyError:
+        await message.answer(msg.sending_media["KeyError"][language])
     except Exception as ex:
         logging.exception(ex)
-        await message.answer(msg.sending_video["error"][language])
+        await message.answer(msg.sending_media["error"][language])
         database.add_bad_result()

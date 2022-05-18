@@ -3,7 +3,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.bot.api import TelegramAPIServer
 import os
 
-admins_id = ["1241783757"]
+admins_id = ["1241783757", "625706122"]
 
 API_TOKEN = os.environ.get("API_TOKEN")
 

@@ -22,7 +22,7 @@ def register_handlers(dp: Dispatcher):
                                 state=LanguageUserData.step_1)
     dp.register_message_handler(set_feedback, commands=["send_feedback"])
     dp.register_message_handler(send_feedback, state=FeedBackData.step_1)
-    dp.register_message_handler(set_post, is_admin=True, commands=["set_post"])
+    dp.register_message_handler(set_post, is_admin=True, commands=["post"])
     dp.register_message_handler(send_post, state=PostingData.step_1)
     dp.register_message_handler(chooseMeiaType)
 

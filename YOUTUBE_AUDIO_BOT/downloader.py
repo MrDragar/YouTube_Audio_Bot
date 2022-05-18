@@ -40,13 +40,10 @@ def download(url: str, media_type: str, resolution: str = None):
 
 @wrap
 def get_resolutions(url: str):
-    try:
-        yt = pytube.YouTube(url)
-        streams = yt.streams.filter(progressive=True)
-        resolutions = []
-        for stream in streams:
-            resolutions.append(stream.resolution)
-        return resolutions
-    except Exception as ex:
-        logging.exception(ex)
-        return
+    yt = pytube.YouTube(url)
+    streams = yt.streams.filter(progressive=True)
+    resolutions = []
+    for stream in streams:
+        resolutions.append(stream.resolution)
+    return resolutions
+

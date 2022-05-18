@@ -57,10 +57,22 @@ video_resolution = {
     "success": {
         "en": "Select the video resolution",
         "ru": "Выберите разрешение видео"
+    },
+    "RegexMatchError": {
+        "en": "You have given an incorrect link",
+        "ru": "Вы дали некорректную ссылку"
+    },
+    "VideoUnavailable": {
+        "en": "Sorry, video is unavailable for me.",
+        "ru": "Извините, видео не доступно для меня"
+    },
+    "KeyError": {
+        "en": "I can't download videos with an age restriction",
+        "ru": "Я не могу скачать видео с возрастным ограничением"
     }
 }
 
-sending_audio = {
+sending_media = {
     "waiting": {
         "en": "Wait",
         "ru": "Подождите"
@@ -68,19 +80,22 @@ sending_audio = {
     "error": {
         "en": "Some mistake has occurred. You may have given an incorrect link.",
         "ru": "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."
+    },
+    "RegexMatchError": {
+        "en": "You have given an incorrect link.",
+        "ru": "Вы дали некорректную ссылку."
+    },
+    "VideoUnavailable": {
+        "en": "Sorry, video is unavailable for me.",
+        "ru": "Извините, видео не доступно для меня"
+    },
+    "KeyError": {
+        "en": "I can't download videos with an age restriction",
+        "ru": "Я не могу скачать видео с возрастным ограничением"
     }
 }
 
-sending_video = {
-    "waiting": {
-        "en": "Wait",
-        "ru": "Подождите"
-    },
-    "error": {
-        "en": "Sorry, something went wrong.",
-        "ru": "Простите, что-то пошло не так."
-    }
-}
+
 
 feedback = {
     "en": "Write your message to developers. For cancel write 'Cancel'.",
