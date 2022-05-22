@@ -5,7 +5,7 @@ from pytube.exceptions import RegexMatchError, VideoUnavailable
 import os
 import logging
 
-from YOUTUBE_AUDIO_BOT.downloader import download
+from YOUTUBE_AUDIO_BOT.downloader import download, Media, Audio, Video
 from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT import messages as msg
 
@@ -17,23 +17,26 @@ async def send_audio(message: types.Message, state: FSMContext, language: str):
 
     await state.finish()
     try:
-        file, videoname, filename, media_path = await download(url=url, media_type="Audio")
-        message_info = await message.answer_audio(file, title=videoname)
-        if not media_path is None:
-            os.remove(media_path)
-            fileid = message_info["audio"]["file_id"]
-            database.add_file_id("Audio", filename, fileid)
-        database.add_good_result()
+        audio = await download(url=url, media_type="Audio")
     except RegexMatchError:
-        await message.answer(msg.sending_media["RegexMatchError"][language])
+        return await message.answer(msg.sending_media["RegexMatchError"][language])
     except VideoUnavailable:
-        await message.answer(msg.sending_media["VideoUnavailable"][language])
+        return await message.answer(msg.sending_media["VideoUnavailable"][language])
     except KeyError:
-        await message.answer(msg.sending_media["KeyError"][language])
+        return await message.answer(msg.sending_media["KeyError"][language])
     except Exception as ex:
         logging.exception(ex)
-        await message.answer(msg.sending_media["error"][language])
         database.add_bad_result()
+        return await message.answer(msg.sending_media["error"][language])
+    if audio.is_on_server:
+        await message.answer_audio(audio.file_id, title=audio.title)
+    else:
+        with open(audio.media_path, "rb") as f:
+            message_info = await message.answer_audio(f, title=audio.title)
+        os.remove(audio.media_path)
+        file_id = message_info["audio"]["file_id"]
+        database.add_file_id("Audio", audio.link_id, file_id)
+    database.add_good_result()
 
 
 async def send_video(message: types.Message, state: FSMContext, language: str):
@@ -44,25 +47,28 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
     await state.finish()
 
     try:
-        file, videoname, filename, media_path = await download(url=url, media_type="Video", resolution=resolution)
-        message_info = await message.answer_video(file, caption=videoname, supports_streaming=True, width=180,
-                                                  height=100)
-        if media_path is not None:
-            os.remove(media_path)
-            fileid = message_info["video"]["file_id"]
-            database.add_file_id("Video", filename, fileid, resolution)
-        database.add_good_result()
-    except TimeoutError as a:
-        logging.exception(a)
-        os.remove(media_path)
-        database.add_good_result()
+        video = await download(url=url, media_type="Video", resolution=resolution)
     except RegexMatchError:
-        await message.answer(msg.sending_media["RegexMatchError"][language])
+        return await message.answer(msg.sending_media["RegexMatchError"][language])
     except VideoUnavailable:
-        await message.answer(msg.sending_media["VideoUnavailable"][language])
+        return await message.answer(msg.sending_media["VideoUnavailable"][language])
     except KeyError:
-        await message.answer(msg.sending_media["KeyError"][language])
+        return await message.answer(msg.sending_media["KeyError"][language])
     except Exception as ex:
         logging.exception(ex)
-        await message.answer(msg.sending_media["error"][language])
         database.add_bad_result()
+        return await message.answer(msg.sending_media["error"][language])
+
+    if video.is_on_server:
+        await message.answer_video(video.file_id, caption=video.title, supports_streaming=True,
+                                                  width=180, height=100)
+    else:
+        with open(video.media_path, "rb") as f:
+
+            message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
+                                                  width=180, height=100)
+
+        os.remove(video.media_path)
+        file_id = message_info["video"]["file_id"]
+        database.add_file_id("Video", video.link_id, file_id, video.resolution)
+    database.add_good_result()
