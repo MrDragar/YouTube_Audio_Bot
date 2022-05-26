@@ -39,7 +39,7 @@ class Video(Media):
 
 @wrap
 def download(url: str, media_type: str, resolution: str or None = None) -> Media:
-    yt = pytube.YouTube(url, use_oauth=True)
+    yt = pytube.YouTube(url)
     title = yt.title
     link_id = yt.video_id
     file_id = database.get_file_id(media_type, link_id, resolution)
@@ -62,10 +62,7 @@ def download(url: str, media_type: str, resolution: str or None = None) -> Media
 
 @wrap
 def get_resolutions(url: str):
-    yt = pytube.YouTube(url, use_oauth=True)
-    streams = yt.streams.filter(progressive=True)
-    resolutions = []
-    for stream in streams:
-        resolutions.append(stream.resolution)
-    return resolutions
+    yt = pytube.YouTube(url)
+    resolution = list(dict.fromkeys([i.resolution for i in yt.streams.filter(progressive=True) if i.resolution]))
+    return resolution
 

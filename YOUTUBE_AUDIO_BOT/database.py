@@ -2,8 +2,9 @@ import logging
 import sqlite3
 from YOUTUBE_AUDIO_BOT.messages import languages
 
+
 def get_connection():
-    __connection = sqlite3.connect("database.db")
+    __connection = sqlite3.connect("database1.db")
     return __connection
 
 
