@@ -1,21 +1,6 @@
 import asyncio
 from dataclasses import dataclass
 from abc import ABC
-from functools import wraps, partial
-from concurrent.futures import ThreadPoolExecutor
-import pytube
-from YOUTUBE_AUDIO_BOT import database
-
-
-def wrap(func):
-    @wraps(func)
-    async def run(*args, loop=None, executor=None, **kwargs):
-        if loop is None:
-            loop = asyncio.get_event_loop()
-        pfunc = partial(func, *args, **kwargs)
-        executor = ThreadPoolExecutor()
-        return await loop.run_in_executor(executor, pfunc)
-    return run
 
 
 @dataclass
@@ -37,32 +22,43 @@ class Video(Media):
     resolution: str
 
 
-@wrap
-def download(url: str, media_type: str, resolution: str or None = None) -> Media:
-    yt = pytube.YouTube(url)
-    title = yt.title
-    link_id = yt.video_id
-    file_id = database.get_file_id(media_type, link_id, resolution)
-    if media_type == "Audio":
-        if file_id is not None:
-            return Audio(title, link_id, True, None, file_id)
-        stream = yt.streams.filter(only_audio=True).first()
-        audio_path = f"./audio/{link_id}"
-        stream.download("./audio/", link_id)
-        return Audio(title, link_id, False, audio_path, None)
-    elif media_type == "Video":
-        if file_id is not None:
-            return Video(title, link_id, True, None, file_id, resolution=resolution)
-        stream = yt.streams.filter(progressive=True, resolution=resolution).first()
-        media_path = f"./video/{link_id}"
-        stream.download("./video/", link_id)
-        return Video(title, link_id, False, media_path, None, resolution)
-    raise TypeError("Incorrect media_type")
+class CantDownloadVideo(Exception):
+    """Impossible to download video"""
 
 
-@wrap
-def get_resolutions(url: str):
-    yt = pytube.YouTube(url)
-    resolution = list(dict.fromkeys([i.resolution for i in yt.streams.filter(progressive=True) if i.resolution]))
-    return resolution
+async def _get_youtube_dl_output(url: str) -> bytes:
+    process = await asyncio.create_subprocess_exec("youtube-dl", "-F", url, stdout=asyncio.subprocess.PIPE,
+                                                   stderr=asyncio.subprocess.PIPE)
+    stdout, stderr = await process.communicate()
+    if stderr:
+        raise CantDownloadVideo(stderr.decode())
+    return stdout
 
+
+async def _parse_video_information(output: bytes) -> list:
+    try:
+        video_information_output = [x.split() for x in output.decode().split("\n")]
+    except UnicodeDecodeError:
+        raise CantDownloadVideo
+    return video_information_output
+
+
+async def _parse_video_resolution(video_information: list) -> list:
+    video_resolution = []
+    for i in video_information:
+        if "mp4" in i and "only," in i:
+            video_resolution.append(i[3])
+    if not video_resolution:
+        raise CantDownloadVideo
+    return video_resolution
+
+
+async def get_video_resolution(url: str) -> list:
+    """Возвращает список из всех возможных разрешений скачиваемого видео"""
+    output = await _get_youtube_dl_output(url)
+    video_information = await _parse_video_information(output)
+    return await _parse_video_resolution(video_information)
+
+
+if __name__ == "__main__":
+    print(asyncio.run(get_video_resolution("https://www.youtube.com/watch?v=W273HN3bTPk")))
