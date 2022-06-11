@@ -1,11 +1,10 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from pytube.exceptions import RegexMatchError, VideoUnavailable
 
 import os
 import logging
 
-from YOUTUBE_AUDIO_BOT.downloader import download, Media, Audio, Video
+from YOUTUBE_AUDIO_BOT.downloader import download_media, CantDownloadVideo
 from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT import messages as msg
 
@@ -14,16 +13,11 @@ async def send_audio(message: types.Message, state: FSMContext, language: str):
     await message.answer(msg.sending_media["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     data = await state.get_data()
     url = data["url"]
-
     await state.finish()
     try:
-        audio = await download(url=url, media_type="Audio")
-    except RegexMatchError:
+        audio = await download_media(url=url, video_format="audio")
+    except CantDownloadVideo:
         return await message.answer(msg.sending_media["RegexMatchError"][language])
-    except VideoUnavailable:
-        return await message.answer(msg.sending_media["VideoUnavailable"][language])
-    except KeyError:
-        return await message.answer(msg.sending_media["KeyError"][language])
     except Exception as ex:
         logging.exception(ex)
         database.add_bad_result()
@@ -43,17 +37,16 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
     resolution = message.text
     data = await state.get_data()
     url = data["url"]
+    resolutions = data["resolutions"]
+    if resolution not in resolutions.keys():
+        await message.answer("Incorrect resolution")
     await message.answer(msg.sending_media["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
 
     try:
-        video = await download(url=url, media_type="Video", resolution=resolution)
-    except RegexMatchError:
+        video = await download_media(url=url, video_format=resolutions[resolution], resolution=resolution)
+    except CantDownloadVideo:
         return await message.answer(msg.sending_media["RegexMatchError"][language])
-    except VideoUnavailable:
-        return await message.answer(msg.sending_media["VideoUnavailable"][language])
-    except KeyError:
-        return await message.answer(msg.sending_media["KeyError"][language])
     except Exception as ex:
         logging.exception(ex)
         database.add_bad_result()
@@ -70,5 +63,5 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
 
         os.remove(video.media_path)
         file_id = message_info["video"]["file_id"]
-        database.add_file_id("Video", video.link_id, file_id, video.resolution)
+        database.add_file_id("Video", video.link_id, file_id, resolution)
     database.add_good_result()

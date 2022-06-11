@@ -4,7 +4,7 @@ from YOUTUBE_AUDIO_BOT.messages import languages
 
 
 def get_connection():
-    __connection = sqlite3.connect("database1.db")
+    __connection = sqlite3.connect("database.db")
     return __connection
 
 

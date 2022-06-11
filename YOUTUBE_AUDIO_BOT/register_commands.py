@@ -16,7 +16,7 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(cancel, commands=["Cancel", "cancel"], state="*")
     dp.register_message_handler(choose_language, commands=["language"])
     dp.register_message_handler(send_video_resolutions, Text(equals=["Видео", "Video"]), state=InputUserData.step_1,)
-    dp.register_message_handler(send_video, Text(equals=["144p", "360p", "720p", "1080p"]), state=InputUserData.step_2)
+    dp.register_message_handler(send_video, state=InputUserData.step_2)
     dp.register_message_handler(send_audio, Text(equals=["Аудио", "Audio"]), state=InputUserData.step_1)
     dp.register_message_handler(change_language, Text(equals=list(msg.languages.values())),
                                 state=LanguageUserData.step_1)
