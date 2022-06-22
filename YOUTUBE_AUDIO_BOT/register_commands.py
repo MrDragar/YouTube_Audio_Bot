@@ -24,7 +24,7 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(send_feedback, state=FeedBackData.step_1)
     dp.register_message_handler(set_post, is_admin=True, commands=["post"])
     dp.register_message_handler(send_post, state=PostingData.step_1)
-    dp.register_message_handler(chooseMeiaType)
+    dp.register_message_handler(choose_media_type)
 
 
 async def register_commands(dp: Dispatcher):

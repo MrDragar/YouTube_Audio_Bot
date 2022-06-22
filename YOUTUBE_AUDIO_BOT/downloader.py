@@ -16,6 +16,10 @@ class CantDownloadVideo(Exception):
     """Impossible to download video"""
 
 
+class BlockedVideoInCountry(CantDownloadVideo):
+    """Video is blocked in this country"""
+
+
 async def _parse_video_information(output: bytes) -> list:
     try:
         video_information_output = output.decode().split("\n")
@@ -90,7 +94,9 @@ async def download_media(video_format: str, url: str, resolution: str or None = 
             info_dict = ydl.extract_info(url=url, download=False)
             video_id = info_dict.get("id", None)
             video_title = info_dict.get('title', None)
-    except:
+    except Exception as exception:
+        if """This video contains content from SME, who has blocked it in your country""" in exception.args[0]:
+            raise BlockedVideoInCountry
         raise CantDownloadVideo
     if video_format == "audio":
         file_id = get_file_id("Audio", video_id)
@@ -110,5 +116,5 @@ async def download_media(video_format: str, url: str, resolution: str or None = 
 if __name__ == "__main__":
     pass
     # print(asyncio.run(get_video_resolution("https://www.youtube.com/watch?v=W273HN3bTPk")))
-    video = (asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=W273HN3bTPk")))
+    # video = (asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=yRbR-Rh2EXU")))
     # print(asyncio.run(download_media("135", "https://www.youtube.com/watch?v=W273HN3bTPk")))
