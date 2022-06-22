@@ -39,7 +39,7 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
     url = data["url"]
     resolutions = data["resolutions"]
     if resolution not in resolutions.keys():
-        await message.answer("Incorrect resolution")
+        return await message.answer("Incorrect resolution")
     await message.answer(msg.sending_media["waiting"][language], reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
 
