@@ -30,4 +30,4 @@ async def send_video_resolutions(message: types.Message, state: FSMContext, lang
             keyboard.insert(types.InlineKeyboardButton(text=i))
         await message.answer(msg.video_resolution["success"][language], reply_markup=keyboard)
         await InputUserData.step_2.set()
-        await state.update_data(resolutions=resolutions)
+        await state.update_data(resolutions=resolutions, url=url)

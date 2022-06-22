@@ -46,12 +46,12 @@ async def _make_command_for_video(resolution_id: str, url: str) -> list:
 
 
 async def _make_command_for_audio(url: str) -> list:
-    command = ["yt-dlp", "-f", "bestaudio[ext=m4a]", "-P", "video/", url]
+    command = ["yt-dlp", "--no-playlist", "-f", "bestaudio[ext=m4a]", "-P", "video/", url]
     return command
 
 
 async def _make_command_for_resolution(url: str) -> list:
-    command = ["yt-dlp", "-F", url]
+    command = ["yt-dlp", "--no-playlist", "-F", url]
     return command
 
 
@@ -90,7 +90,7 @@ async def get_video_resolution(url: str) -> dict:
 
 async def download_media(video_format: str, url: str, resolution: str or None = None) -> Video:
     try:
-        with YoutubeDL() as ydl:
+        with YoutubeDL(params={"noplaylist":True}) as ydl:
             info_dict = ydl.extract_info(url=url, download=False)
             video_id = info_dict.get("id", None)
             video_title = info_dict.get('title', None)
