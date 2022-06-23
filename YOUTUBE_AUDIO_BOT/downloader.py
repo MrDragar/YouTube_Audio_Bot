@@ -40,7 +40,7 @@ async def _parse_video_resolution(video_information: list) -> dict:
 
 
 async def _make_command_for_video(resolution_id: str, url: str) -> list:
-    command = ["yt-dlp", "-f", f"{resolution_id}+bestaudio[ext=m4a]", "--merge-output-format", "mp4",
+    command = ["yt-dlp", "--no-playlist", "-f", f"{resolution_id}+bestaudio[ext=m4a]", "--merge-output-format", "mp4",
                "-P", "video/", url]
     return command
 
