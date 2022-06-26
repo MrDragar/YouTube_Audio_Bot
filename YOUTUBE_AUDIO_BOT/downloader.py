@@ -5,6 +5,11 @@ from YOUTUBE_AUDIO_BOT.database import get_file_id
 import logging
 
 
+class VideoInformation(NamedTuple):
+    title: str
+    id: str
+
+
 class Video(NamedTuple):
     title: str
     link_id: str
@@ -82,6 +87,20 @@ async def _parse_file_path(file_string: str) -> str:
     return path
 
 
+async def _extract_video_information(url: str) -> VideoInformation:
+    try:
+        with YoutubeDL(params={"noplaylist": True, "playliststart": 1, "playlistend": 1}) as ydl:
+            info_dict = ydl.extract_info(url=url, download=False)
+            video_id = info_dict.get("id", None)
+            video_title = info_dict.get('title', None)
+            video_information = VideoInformation(title=video_title, id=video_id)
+            return video_information
+    except Exception as exception:
+        if """This video contains content from SME, who has blocked it in your country""" in exception.args[0]:
+            raise BlockedVideoInCountry
+        raise CantDownloadVideo
+
+
 async def get_video_resolution(url: str) -> dict:
     """Возвращает список из всех возможных разрешений скачиваемого видео"""
     command = await _make_command_for_resolution(url)
@@ -91,32 +110,28 @@ async def get_video_resolution(url: str) -> dict:
 
 
 async def download_media(video_format: str, url: str, resolution: str or None = None) -> Video:
-    try:
-        with YoutubeDL(params={"noplaylist": True, "playliststart": 1, "playlistend": 1}) as ydl:
-            info_dict = ydl.extract_info(url=url, download=False)
-            video_id = info_dict.get("id", None)
-            video_title = info_dict.get('title', None)
-    except Exception as exception:
-        if """This video contains content from SME, who has blocked it in your country""" in exception.args[0]:
-            raise BlockedVideoInCountry
-        raise CantDownloadVideo
+    video_information = await _extract_video_information(url)
     if video_format == "audio":
-        file_id = get_file_id("Audio", video_id)
+        file_id = get_file_id("Audio", video_information.id)
         command = await _make_command_for_audio(url)
     else:
-        file_id = get_file_id("Video", video_id, resolution)
+        file_id = get_file_id("Video", video_information.id, resolution)
         command = await _make_command_for_video(video_format, url)
     if file_id:
-        return Video(title=video_title, link_id=video_id, is_on_server=True, media_path=None, file_id=file_id)
+        return Video(title=video_information.title, link_id=video_information.id, is_on_server=True, media_path=None,
+                     file_id=file_id)
     output = await _use_yt_dlp(command)
-    video_information = await _parse_video_information(output)
-    string_file = await _find_string_about_file(video_information)
+    downloading_video_information = await _parse_video_information(output)
+    string_file = await _find_string_about_file(downloading_video_information)
     file_path = await _parse_file_path(string_file)
-    return Video(title=video_title, link_id=video_id, is_on_server=False, media_path=file_path, file_id=None)
+    return Video(title=video_information.title, link_id=video_information.id, is_on_server=False, media_path=file_path,
+                 file_id=None)
 
 
 if __name__ == "__main__":
     pass
     # print(asyncio.run(get_video_resolution("https://www.youtube.com/watch?v=W273HN3bTPk")))
     # video = (asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=yRbR-Rh2EXU")))
+    # print(video)
     # print(asyncio.run(download_media("135", "https://www.youtube.com/watch?v=W273HN3bTPk")))
+    print(asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=W273HN3bTPk")))
