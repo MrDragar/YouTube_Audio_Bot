@@ -2,6 +2,7 @@ import asyncio
 from typing import NamedTuple
 from yt_dlp import YoutubeDL
 from YOUTUBE_AUDIO_BOT.database import get_file_id
+import logging
 
 
 class Video(NamedTuple):
@@ -40,18 +41,19 @@ async def _parse_video_resolution(video_information: list) -> dict:
 
 
 async def _make_command_for_video(resolution_id: str, url: str) -> list:
-    command = ["yt-dlp", "--no-playlist", "-f", f"{resolution_id}+bestaudio[ext=m4a]", "--merge-output-format", "mp4",
+    command = ["yt-dlp", "--playlist-start", "1", "--playlist-end", "1",
+               "--no-playlist", "-f", f"{resolution_id}+bestaudio[ext=m4a]", "--merge-output-format", "mp4",
                "-P", "video/", url]
     return command
 
 
 async def _make_command_for_audio(url: str) -> list:
-    command = ["yt-dlp", "--no-playlist", "-f", "bestaudio[ext=m4a]", "-P", "video/", url]
+    command = ["yt-dlp", "--playlist-start", "1", "--playlist-end", "1", "--no-playlist", "-f", "bestaudio[ext=m4a]", "-P", "video/", url]
     return command
 
 
 async def _make_command_for_resolution(url: str) -> list:
-    command = ["yt-dlp", "--no-playlist", "-F", url]
+    command = ["yt-dlp", "--playlist-start", "1", "--playlist-end", "1", "--no-playlist", "-F", url]
     return command
 
 
@@ -60,7 +62,7 @@ async def _use_yt_dlp(command: list) -> bytes:
                                                    stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await process.communicate()
     if stderr:
-        print(stderr.decode())
+        logging.exception(stderr.decode())
         raise CantDownloadVideo
     return stdout
 
@@ -90,7 +92,7 @@ async def get_video_resolution(url: str) -> dict:
 
 async def download_media(video_format: str, url: str, resolution: str or None = None) -> Video:
     try:
-        with YoutubeDL(params={"noplaylist":True}) as ydl:
+        with YoutubeDL(params={"noplaylist": True, "playliststart": 1, "playlistend": 1}) as ydl:
             info_dict = ydl.extract_info(url=url, download=False)
             video_id = info_dict.get("id", None)
             video_title = info_dict.get('title', None)
