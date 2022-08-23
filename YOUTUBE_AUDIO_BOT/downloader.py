@@ -66,7 +66,7 @@ async def _use_yt_dlp(command: list) -> bytes:
     process = await asyncio.create_subprocess_exec(*command, stdout=asyncio.subprocess.PIPE,
                                                    stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await process.communicate()
-    if stderr:
+    if "ERROR" in stderr.decode():
         logging.exception(stderr.decode())
         raise CantDownloadVideo
     return stdout
@@ -75,6 +75,7 @@ async def _use_yt_dlp(command: list) -> bytes:
 async def _find_string_about_file(video_information: list) -> str:
     info = ""
     for i in video_information:
+
         if "FixupM4a" in i or "Merger" in i:
             info = i
     if info:
@@ -89,7 +90,7 @@ async def _parse_file_path(file_string: str) -> str:
 
 async def _extract_video_information(url: str) -> VideoInformation:
     try:
-        with YoutubeDL(params={"noplaylist": True, "playliststart": 1, "playlistend": 1}) as ydl:
+        with YoutubeDL(params={"noplaylist": True, "playliststart": 1, "playlistend": 1, "no_warnings": 1}) as ydl:
             info_dict = ydl.extract_info(url=url, download=False)
             video_id = info_dict.get("id", None)
             video_title = info_dict.get('title', None)
@@ -111,6 +112,7 @@ async def get_video_resolution(url: str) -> dict:
 
 async def download_media(video_format: str, url: str, resolution: str or None = None) -> Video:
     video_information = await _extract_video_information(url)
+    logging.info(video_information)
     if video_format == "audio":
         file_id = get_file_id("Audio", video_information.id)
         command = await _make_command_for_audio(url)
@@ -122,6 +124,7 @@ async def download_media(video_format: str, url: str, resolution: str or None = 
                      file_id=file_id)
     output = await _use_yt_dlp(command)
     downloading_video_information = await _parse_video_information(output)
+    logging.info("got output")
     string_file = await _find_string_about_file(downloading_video_information)
     file_path = await _parse_file_path(string_file)
     return Video(title=video_information.title, link_id=video_information.id, is_on_server=False, media_path=file_path,
@@ -131,7 +134,9 @@ async def download_media(video_format: str, url: str, resolution: str or None = 
 if __name__ == "__main__":
     pass
     # print(asyncio.run(get_video_resolution("https://www.youtube.com/watch?v=W273HN3bTPk")))
+    # print(asyncio.run(get_video_resolution("https://www.youtube.com/watch?v=A193s_3VxZk")))
+
     # video = (asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=yRbR-Rh2EXU")))
     # print(video)
     # print(asyncio.run(download_media("135", "https://www.youtube.com/watch?v=W273HN3bTPk")))
-    print(asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=W273HN3bTPk")))
+    # print(asyncio.run(download_media("audio", "https://www.youtube.com/watch?v=W273HN3bTPk")))
