@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 import os
 import logging
+from asyncio import TimeoutError
 
 from YOUTUBE_AUDIO_BOT.downloader import download_media, CantDownloadVideo
 from YOUTUBE_AUDIO_BOT import database
