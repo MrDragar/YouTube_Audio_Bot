@@ -57,9 +57,12 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
                                                   width=180, height=100)
     else:
         with open(video.media_path, "rb") as f:
-
-            message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
-                                                  width=180, height=100)
+            try:
+                message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
+                                                      width=180, height=100)
+            except TimeoutError:
+                os.remove(video.media_path)
+                await message.answer("Video size is too big")
 
         os.remove(video.media_path)
         file_id = message_info["video"]["file_id"]
