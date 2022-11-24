@@ -1,5 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from aiogram.utils.exceptions import NetworkError
 
 import os
 import logging
@@ -61,9 +62,12 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
             try:
                 message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
                                                       width=180, height=100)
-            except TimeoutError:
+            except TimeoutError | NetworkError as ex:
                 os.remove(video.media_path)
-                await message.answer("Video size is too big")
+                if isinstance(ex, TimeoutError):
+                    await message.answer("Video size is too big")
+                else:
+                    await message.answer("I can't send you this video. Try again.")
 
         os.remove(video.media_path)
         file_id = message_info["video"]["file_id"]
