@@ -1,6 +1,5 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.utils.exceptions import NetworkError
 
 import os
 import logging
@@ -27,8 +26,11 @@ async def send_audio(message: types.Message, state: FSMContext, language: str):
     if audio.is_on_server:
         await message.answer_audio(audio.file_id, title=audio.title)
     else:
-        with open(audio.media_path, "rb") as f:
-            message_info = await message.answer_audio(f, title=audio.title)
+        async with open(audio.media_path, "rb") as f:
+            try:
+                message_info = await message.answer_audio(f, title=audio.title)
+            except:
+                return os.remove(audio.media_path)
         os.remove(audio.media_path)
         file_id = message_info["audio"]["file_id"]
         database.add_file_id("Audio", audio.link_id, file_id)
@@ -58,17 +60,20 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
         await message.answer_video(video.file_id, caption=video.title, supports_streaming=True,
                                                   width=180, height=100)
     else:
-        with open(video.media_path, "rb") as f:
+        async with open(video.media_path, "rb") as f:
             try:
                 message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
                                                       width=180, height=100)
             except Exception as ex:
                 os.remove(video.media_path)
-                if isinstance(ex, TimeoutError):
-                    await message.answer("Video size is too big")
-                else:
-                    await message.answer("I can't send you this video. Try again.")
-
+                try:
+                    if isinstance(ex, TimeoutError):
+                        await message.answer("Video size is too big")
+                    else:
+                        await message.answer("I can't send you this video. Try again.")
+                except:
+                    pass
+                return
         os.remove(video.media_path)
         file_id = message_info["video"]["file_id"]
         database.add_file_id("Video", video.link_id, file_id, resolution)
