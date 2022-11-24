@@ -62,7 +62,7 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
             try:
                 message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
                                                       width=180, height=100)
-            except TimeoutError | NetworkError as ex:
+            except Exception as ex:
                 os.remove(video.media_path)
                 if isinstance(ex, TimeoutError):
                     await message.answer("Video size is too big")
