@@ -1,5 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+import aiofiles
 
 import os
 import logging
@@ -26,7 +27,7 @@ async def send_audio(message: types.Message, state: FSMContext, language: str):
     if audio.is_on_server:
         await message.answer_audio(audio.file_id, title=audio.title)
     else:
-        async with open(audio.media_path, "rb") as f:
+        async with aiofiles.open(audio.media_path, "rb") as f:
             try:
                 message_info = await message.answer_audio(f, title=audio.title)
             except:
@@ -60,7 +61,7 @@ async def send_video(message: types.Message, state: FSMContext, language: str):
         await message.answer_video(video.file_id, caption=video.title, supports_streaming=True,
                                                   width=180, height=100)
     else:
-        async with open(video.media_path, "rb") as f:
+        async with aiofiles.open(video.media_path, "rb") as f:
             try:
                 message_info = await message.answer_video(f, caption=video.title, supports_streaming=True,
                                                       width=180, height=100)
