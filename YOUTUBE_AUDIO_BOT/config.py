@@ -12,6 +12,6 @@ memory_storage = MemoryStorage()
 
 local_server = TelegramAPIServer.from_base('http://0.0.0.0:8081')
 # Initialize bot and dispatcher
-bot = Bot(token=API_TOKEN, server=local_server)
+bot = Bot(token=API_TOKEN, server=local_server, timeout=0)
 dp = Dispatcher(bot, storage=memory_storage)
 
