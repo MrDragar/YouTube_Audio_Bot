@@ -14,5 +14,5 @@ async def set_feedback(message: Message, language: str):
 async def send_feedback(message: Message, state: FSMContext):
     text = message.text
     for user_id in admins_id:
-        await bot.send_message(user_id, text)
+        await bot.send_message(user_id, text + "/n От " + message.from_user.url)
     await state.finish()
