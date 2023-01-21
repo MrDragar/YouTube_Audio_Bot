@@ -6,7 +6,7 @@ import os
 import datetime
 
 
-def delete_old_files():
+async def delete_old_files():
     directory = "video/"
     files = os.listdir(directory)
     for file in files:
