@@ -12,7 +12,7 @@ from aiogram import executor, Dispatcher
 
 
 async def on_startup(dispatcher: Dispatcher):
-    register_commands(dispatcher)
+    await register_commands(dispatcher)
     asyncio.create_task(register_services(dispatcher))
 
 
