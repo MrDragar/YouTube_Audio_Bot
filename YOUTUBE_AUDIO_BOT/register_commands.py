@@ -10,7 +10,7 @@ from YOUTUBE_AUDIO_BOT.states import *
 from aiogram.dispatcher.filters import Text
 
 
-def register_handlers(dp: Dispatcher):
+async def register_handlers(dp: Dispatcher):
     dp.register_message_handler(send_welcome, commands=['start', 'help'])
     dp.register_message_handler(cancel, Text(equals=["Отмена", "Cancel"]), state="*")
     dp.register_message_handler(cancel, commands=["Cancel", "cancel"], state="*")
