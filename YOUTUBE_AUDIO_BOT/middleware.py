@@ -13,9 +13,8 @@ LOCALES_DIR = 'locales'
 class UsersLanguage(I18nMiddleware):
     async def get_user_locale(self, action: str, args: Tuple[Any]) -> Optional[str]:
         user = types.User.get_current()
-        database.add_user(user.id, user.full_name, user.language_code)
         language = database.get_language(user.id)
-        return language
+        return language or user.locale
 
 
 def register_middleware(dp: Dispatcher):
