@@ -9,16 +9,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-01-22 03:54+0300\n"
-"PO-Revision-Date: 2023-01-22 04:01+0300\n"
+"PO-Revision-Date: 2023-01-23 00:41+0300\n"
 "Last-Translator: Unknown1 <yshhenyaev>\n"
-"Language-Team: English <yshhenyaev>\n"
 "Language: en\n"
+"Language-Team: English <yshhenyaev>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.9.1\n"
-"X-Generator: Gtranslator 42.0\n"
 
 #: YOUTUBE_AUDIO_BOT/handlers/common.py:10
 #: YOUTUBE_AUDIO_BOT/handlers/common.py:26
@@ -28,19 +27,19 @@ msgstr "Скасування"
 
 #: YOUTUBE_AUDIO_BOT/handlers/common.py:15
 msgid ""
-"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба."
-"Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам "
-"пишите на yshhenyaev@mail.ru\n"
+"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
+"Ютуба.Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
+"вопросам пишите на yshhenyaev@mail.ru\n"
 "Для смены языка пропишите \n"
 "/language ."
 msgstr ""
 "Здоров. За допомогою цього бота ти можеш завантажити будь-яке відео або "
 "аудіо з Ютуба.\n"
-"Для цього вам необхідно скинути посилання на цей ролик. З усіх питань пишіть "
-"на yshhenyaev@mail.ru\n"
+"Для цього вам необхідно скинути посилання на цей ролик. Якщо у вас є "
+"які-небудь питання, пишіть на yshhenyaev@mail.ru\n"
 " \n"
 "Для зміни мови пропишіть\n"
-"/ language ."
+"/language ."
 
 #: YOUTUBE_AUDIO_BOT/handlers/common.py:28
 msgid "Для смены языка выберите из списка нужный язык"
@@ -52,8 +51,7 @@ msgstr "Ви успішно змінили свою мову на"
 
 #: YOUTUBE_AUDIO_BOT/handlers/feedback.py:10
 msgid "Напишите ваше сообщение разработчикам. Для отмены пропишите /cancel"
-msgstr ""
-"Напишіть ваше повідомлення розробникам. Для скасування пропишіть /cancel"
+msgstr "Напишіть ваше повідомлення розробникам. Для скасування пропишіть /cancel"
 
 #: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:12
 msgid "Нет ссылки в сообщении"
@@ -105,7 +103,8 @@ msgstr "Ви дали некоректне посилання"
 
 #: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:30
 msgid "Выберите разрешение видео"
-msgstr "Виберіть роздільна здатність відео"
+msgstr "Виберіть роздільну здатність відео"
 
 #~ msgid "роизошла какая-то ошибка. Возможно вы дали некорректную ссылку."
 #~ msgstr "Сталася якась помилка. Можливо ви дали некоректну посилання."
+

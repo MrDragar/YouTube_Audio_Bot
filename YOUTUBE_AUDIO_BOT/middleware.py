@@ -15,6 +15,7 @@ class AddUserMiddleware(BaseMiddleware):
     async def on_pre_process_message(self, message: types.Message, data: dict):
         database.add_user(message.from_user.id, message.from_user.full_name, message.from_user.language_code)
 
+
 class UsersLanguage(I18nMiddleware):
     async def get_user_locale(self, action: str, args: Tuple[Any]) -> Optional[str]:
         user = types.User.get_current()

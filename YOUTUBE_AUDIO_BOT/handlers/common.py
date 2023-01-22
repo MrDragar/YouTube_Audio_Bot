@@ -33,6 +33,6 @@ async def change_language(message: types.Message, state: FSMContext):
     new_language = message.text
     language = list(languages.keys())[list(languages.values()).index(new_language)]
     database.change_language(language, message.from_user.id)
-    await message.reply(_('Вы успешно изменили свой язык на') +
+    await message.reply(_('Вы успешно изменили свой язык на', locate=language) +
                         f" {new_language}.", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
