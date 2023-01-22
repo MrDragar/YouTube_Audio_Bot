@@ -16,15 +16,9 @@ async def _use_tiktok_downloader(command: list):
     if "ERROR" in stderr.decode():
         logging.exception(stderr.decode())
         raise CantDownloadVideo
-    if not stdout:
-        raise IncorrectLink
 
 
 async def download_video(url: str, filepath: str):
     command = await _make_command(url=url, filepath=filepath)
-    print(*command)
     await _use_tiktok_downloader(command)
 
-
-# if __name__ == "__main__":
-    # asyncio.run(download_video("https://www.tiktok.com/@mcrawfit/video/7184289023244979461?is_from_webapp=1&sender_device=pc&web_id=7191340886918465026", "video/123.mp4"))
