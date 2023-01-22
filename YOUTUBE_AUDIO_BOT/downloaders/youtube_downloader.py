@@ -26,6 +26,10 @@ class BlockedVideoInCountry(CantDownloadVideo):
     """Video is blocked in this country"""
 
 
+class IncorrectLink(CantDownloadVideo):
+    """This link is incorrect"""
+
+
 async def _parse_video_information(output: bytes) -> list:
     try:
         video_information_output = output.decode().split("\n")

@@ -6,13 +6,19 @@ import re
 from aiogram import types, Dispatcher
 from YOUTUBE_AUDIO_BOT.states import InputUserData
 from YOUTUBE_AUDIO_BOT.downloaders.tiktok_downloader import download_video
+from YOUTUBE_AUDIO_BOT.downloaders.youtube_downloader import IncorrectLink, CantDownloadVideo
 
 
 async def send_tiktok_video(message: types.Message, url: str):
     filepath = "video/" + message.from_user.id + message.message_id + ".mp4"
-    await download_video(url, filepath)
+    try:
+        await download_video(url, filepath)
+    except IncorrectLink:
+        await message.answer(_("Вы дали некорректную ссылку"))
+    except CantDownloadVideo():
+        await message.answer(_("Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."))
     with open(filepath, "rb") as f:
-        message_info = await message.answer_video(f, supports_streaming=True)
+        await message.answer_video(f, supports_streaming=True)
     os.remove(filepath)
     database.add_good_result()
 
@@ -35,5 +41,3 @@ async def choose_media_type(message: types.Message):
     await InputUserData.step_1.set()
     state = Dispatcher.get_current().current_state()
     await state.update_data(url=url)
-
-
