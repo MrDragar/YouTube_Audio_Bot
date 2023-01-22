@@ -12,9 +12,8 @@ LOCALES_DIR = 'locales'
 
 
 class AddUserMiddleware(BaseMiddleware):
-    async def on_process_message(self, message: types.Message, data: dict):
+    async def on_pre_process_message(self, message: types.Message, data: dict):
         database.add_user(message.from_user.id, message.from_user.full_name, message.from_user.language_code)
-
 
 class UsersLanguage(I18nMiddleware):
     async def get_user_locale(self, action: str, args: Tuple[Any]) -> Optional[str]:
@@ -24,7 +23,7 @@ class UsersLanguage(I18nMiddleware):
 
 
 def register_middleware(dp: Dispatcher):
-    i18n = UsersLanguage(I18N_DOMAIN, LOCALES_DIR)
     dp.middleware.setup(AddUserMiddleware())
+    i18n = UsersLanguage(I18N_DOMAIN, LOCALES_DIR)
     dp.middleware.setup(i18n)
     return i18n
