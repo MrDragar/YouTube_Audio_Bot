@@ -1,32 +1,38 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from YOUTUBE_AUDIO_BOT import database
-from YOUTUBE_AUDIO_BOT import messages as msg
+from YOUTUBE_AUDIO_BOT.config import languages
 from YOUTUBE_AUDIO_BOT.states import LanguageUserData
+from YOUTUBE_AUDIO_BOT.config import _
 
 
-async def cancel(message: types.Message, state: FSMContext, language: str):
-    await message.answer(msg.cancellation[language], reply_markup=types.ReplyKeyboardRemove())
+async def cancel(message: types.Message, state: FSMContext):
+    await message.answer(_("Отмена"), reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
 
 
-async def send_welcome(message: types.Message, language: str):
-    await message.reply(msg.wellcoming[language])
+async def send_welcome(message: types.Message):
+    await message.reply(_("Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба." \
+                          "Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите на "
+                          "yshhenyaev@mail.ru\n" \ 
+                          "Для смены языка пропишите \n/language ."))
 
 
-async def choose_language(message: types.Message, language: str):
+async def choose_language(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(types.InlineKeyboardButton(text=msg.languages["en"]),
-                 types.InlineKeyboardButton(text=msg.languages["ru"]))
-    keyboard.add(types.InlineKeyboardButton(text="Отмена"))
+    keyboard.row(types.InlineKeyboardButton(text="English"),
+                 types.InlineKeyboardButton(text="Русский"),
+                 types.InlineKeyboardButton(text="Українська"))
+    keyboard.add(types.InlineKeyboardButton(text=_("Отмена")))
 
-    await message.reply(msg.choosing_language[language], reply_markup=keyboard)
+    await message.reply(_("""Для смены языка выберите из списка нужный язык"""), reply_markup=keyboard)
     await LanguageUserData.step_1.set()
 
 
 async def change_language(message: types.Message, state: FSMContext):
     new_language = message.text
-    language = list(msg.languages.keys())[list(msg.languages.values()).index(new_language)]
+    language = list(languages.keys())[list(languages.values()).index(new_language)]
     database.change_language(language, message.from_user.id)
-    await message.reply(f"{msg.changing_language[language]} {new_language}.", reply_markup=types.ReplyKeyboardRemove())
+    await message.reply(f"{_('Вы успешно изменили свой язык на')} "
+                        f"{new_language}.", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()

@@ -1,0 +1,105 @@
+# Ukrainian translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-01-22 03:28+0300\n"
+"PO-Revision-Date: 2023-01-22 03:29+0300\n"
+"Last-Translator: \n"
+"Language-Team: uk <LL@li.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 "
+"&& (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Generated-By: Babel 2.9.1\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: YOUTUBE_AUDIO_BOT/handlers/common.py:10 YOUTUBE_AUDIO_BOT/handlers/common.py:25
+#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:17
+msgid "Отмена"
+msgstr "Скасування"
+
+#: YOUTUBE_AUDIO_BOT/handlers/common.py:15
+msgid ""
+"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба."
+"Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите "
+"на yshhenyaev@mail.ru\n"
+"Для смены языка пропишите \n"
+"/language ."
+msgstr ""
+"Здоров. За допомогою цього бота ти можеш завантажити будь-яке відео або аудіо з "
+"Ютуба.\n"
+" Для цього вам необхідно скинути посилання на цей ролик. З усіх питань пишіть "
+"на yshhenyaev@mail.ru\n"
+" \n"
+"Для зміни мови пропишіть\n"
+"/ language ."
+
+#: YOUTUBE_AUDIO_BOT/handlers/common.py:27
+msgid "Для смены языка выберите из списка нужный язык"
+msgstr "Для зміни мови виберіть зі списку потрібну мову"
+
+#: YOUTUBE_AUDIO_BOT/handlers/feedback.py:10
+msgid "Напишите ваше сообщение разработчикам. Для отмены пропишите /cancel"
+msgstr "Напишіть ваше повідомлення розробникам. Для скасування пропишіть / cancel"
+
+#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:12
+msgid "Нет ссылки в сообщении"
+msgstr "Немає посилання в повідомленні"
+
+#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:15
+msgid "Видео"
+msgstr "Відео"
+
+#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:16
+msgid "Аудио"
+msgstr "Аудіо"
+
+#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:18
+msgid "Выберите тип файла"
+msgstr "Виберіть тип файлу"
+
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:15
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:49
+msgid "Подождите"
+msgstr "Почекайте"
+
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:22
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:55
+msgid "Вы дали некорректную ссылку."
+msgstr "Ви дали некоректне посилання."
+
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:26
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:59
+#: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:22
+msgid "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."
+msgstr "Сталася якась помилка. Можливо ви дали некоректну посилання."
+
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:48
+msgid "Невозможное разрешение"
+msgstr "Неможлива роздільна здатність"
+
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:72
+msgid "Видео слишком большое"
+msgstr "Вiдео занадто велике"
+
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:75
+msgid "Я не могу отправить это видео"
+msgstr "Я не можу надіслати це відео"
+
+#: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:18
+msgid "Вы дали некорректную ссылку"
+msgstr "Ви дали некоректне посилання"
+
+#: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:30
+msgid "Выберите разрешение видео"
+msgstr "Виберіть роздільна здатність відео"
+
+#~ msgid "роизошла какая-то ошибка. Возможно вы дали некорректную ссылку."
+#~ msgstr "Сталася якась помилка. Можливо ви дали некоректну посилання."

@@ -1,6 +1,6 @@
 import logging
 import sqlite3
-from YOUTUBE_AUDIO_BOT.messages import languages
+from YOUTUBE_AUDIO_BOT.config import languages
 
 
 def get_connection():

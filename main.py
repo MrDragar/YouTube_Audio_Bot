@@ -23,7 +23,6 @@ logging.basicConfig(level=logging.INFO)
 if __name__ == '__main__':
     register_filters(dp)
     register_handlers(dp)
-    register_middleware(dp)
     database.init_db()
     executor.start_polling(dp, skip_updates=False, timeout=1000000, on_startup=on_startup)
 
