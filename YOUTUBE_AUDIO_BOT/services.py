@@ -21,7 +21,7 @@ async def register_services(dp: Dispatcher):
     aioschedule.every(30).minutes.do(delete_old_files)
     while True:
         await aioschedule.run_pending()
-        await asyncio.sleep(10)
+        await asyncio.sleep(1)
 
 
 if __name__ == "__main__":

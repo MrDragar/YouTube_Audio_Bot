@@ -12,12 +12,13 @@ from aiogram.dispatcher.filters import Text
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(send_welcome, commands=['start', 'help'])
-    dp.register_message_handler(cancel, Text(equals=["Отмена", "Cancel"]), state="*")
+    dp.register_message_handler(cancel, Text(equals=["Отмена", "Cancel", "Скасування"]), state="*")
     dp.register_message_handler(cancel, commands=["Cancel", "cancel"], state="*")
     dp.register_message_handler(choose_language, commands=["language"])
-    dp.register_message_handler(send_video_resolutions, Text(equals=["Видео", "Video"]), state=InputUserData.step_1,)
+    dp.register_message_handler(send_video_resolutions, Text(equals=["Видео", "Video", "Відео"]),
+                                state=InputUserData.step_1,)
     dp.register_message_handler(send_video, state=InputUserData.step_2)
-    dp.register_message_handler(send_audio, Text(equals=["Аудио", "Audio"]), state=InputUserData.step_1)
+    dp.register_message_handler(send_audio, Text(equals=["Аудио", "Audio", "Аудіо"]), state=InputUserData.step_1)
     dp.register_message_handler(change_language, Text(equals=list(languages.values())),
                                 state=LanguageUserData.step_1)
     dp.register_message_handler(set_feedback, commands=["send_feedback"])

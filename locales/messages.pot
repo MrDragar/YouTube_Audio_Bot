@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-22 03:28+0300\n"
+"POT-Creation-Date: 2023-01-22 03:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Generated-By: Babel 2.9.1\n"
 
 #: YOUTUBE_AUDIO_BOT/handlers/common.py:10
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:25
+#: YOUTUBE_AUDIO_BOT/handlers/common.py:26
 #: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:17
 msgid "Отмена"
 msgstr ""
@@ -32,8 +32,12 @@ msgid ""
 "/language ."
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:27
+#: YOUTUBE_AUDIO_BOT/handlers/common.py:28
 msgid "Для смены языка выберите из списка нужный язык"
+msgstr ""
+
+#: YOUTUBE_AUDIO_BOT/handlers/common.py:36
+msgid "Вы успешно изменили свой язык на"
 msgstr ""
 
 #: YOUTUBE_AUDIO_BOT/handlers/feedback.py:10
@@ -56,31 +60,31 @@ msgstr ""
 msgid "Выберите тип файла"
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:15
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:49
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:14
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:48
 msgid "Подождите"
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:22
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:55
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:21
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:54
 msgid "Вы дали некорректную ссылку."
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:26
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:59
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:25
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:58
 #: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:22
 msgid "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:48
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:47
 msgid "Невозможное разрешение"
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:72
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:71
 msgid "Видео слишком большое"
 msgstr ""
 
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:75
+#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:74
 msgid "Я не могу отправить это видео"
 msgstr ""
 

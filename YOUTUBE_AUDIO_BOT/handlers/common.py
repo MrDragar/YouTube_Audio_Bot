@@ -12,9 +12,9 @@ async def cancel(message: types.Message, state: FSMContext):
 
 
 async def send_welcome(message: types.Message):
-    await message.reply(_("Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба." \
+    await message.reply(_("Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба."
                           "Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите на "
-                          "yshhenyaev@mail.ru\n" \ 
+                          "yshhenyaev@mail.ru\n"
                           "Для смены языка пропишите \n/language ."))
 
 
@@ -33,6 +33,6 @@ async def change_language(message: types.Message, state: FSMContext):
     new_language = message.text
     language = list(languages.keys())[list(languages.values()).index(new_language)]
     database.change_language(language, message.from_user.id)
-    await message.reply(f"{_('Вы успешно изменили свой язык на')} "
-                        f"{new_language}.", reply_markup=types.ReplyKeyboardRemove())
+    await message.reply(_('Вы успешно изменили свой язык на') +
+                        f" {new_language}.", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
