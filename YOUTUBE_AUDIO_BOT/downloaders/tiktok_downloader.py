@@ -5,7 +5,7 @@ from YOUTUBE_AUDIO_BOT.downloaders.youtube_downloader import CantDownloadVideo, 
 
 
 async def _make_command(url: str, filepath) -> list:
-    command = ["python3", "-m", "tiktok_downloader", "--url", url, "--save", filepath]
+    command = ["python3", "-m", "tiktok_downloader", "--snaptik", "--url", url, "--save", filepath]
     return command
 
 
@@ -27,4 +27,4 @@ async def download_video(url: str, filepath: str):
 
 
 # if __name__ == "__main__":
-#     asyncio.run(download_video("https://www.tiktok.com/@kkubi99/video/7173285230969638146", "video/123.mp4"))
+    # asyncio.run(download_video("https://www.tiktok.com/@mcrawfit/video/7184289023244979461?is_from_webapp=1&sender_device=pc&web_id=7191340886918465026", "video/123.mp4"))
