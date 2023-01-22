@@ -23,4 +23,4 @@ local_server = TelegramAPIServer.from_base('http://0.0.0.0:8081')
 bot = Bot(token=API_TOKEN, server=local_server, timeout=0)
 dp = Dispatcher(bot, storage=memory_storage)
 i18n = register_middleware(dp)
-_ = i18n.gettext()
+_ = i18n.gettext
