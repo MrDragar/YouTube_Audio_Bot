@@ -10,7 +10,7 @@ from YOUTUBE_AUDIO_BOT.downloaders.youtube_downloader import IncorrectLink, Cant
 
 
 async def send_tiktok_video(message: types.Message, url: str):
-    filepath = "video/" + message.from_user.id + message.message_id + ".mp4"
+    filepath = "video/" + str(message.from_user.id) + str(message.message_id) + ".mp4"
     try:
         await download_video(url, filepath)
     except IncorrectLink:
