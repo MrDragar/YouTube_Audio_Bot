@@ -27,7 +27,7 @@ async def send_audio(message: types.Message, state: FSMContext):
         await message.answer_audio(audio.file_id, title=audio.title)
     else:
         try:
-            message_info = await message.answer_audio(audio.media_path, title=audio.title)
+            message_info = await message.answer_audio(types.InputFile(audio.media_path), title=audio.title)
         except Exception as ex:
             logging.exception(Exception)
             return os.remove(audio.media_path)
@@ -58,11 +58,12 @@ async def send_video(message: types.Message, state: FSMContext):
 
     if video.is_on_server:
         await message.answer_video(video.file_id, caption=video.title, supports_streaming=True,
-                                                  width=180, height=100)
+                                   width=180, height=100)
     else:
         try:
-            message_info = await message.answer_video(video.media_path, caption=video.title, supports_streaming=True,
-                                                  width=180, height=100)
+            message_info = await message.answer_video(types.InputFile(video.media_path),
+                                                      caption=video.title, supports_streaming=True,
+                                                      width=180, height=100)
         except Exception as ex:
             os.remove(video.media_path)
             if isinstance(ex, TimeoutError):
