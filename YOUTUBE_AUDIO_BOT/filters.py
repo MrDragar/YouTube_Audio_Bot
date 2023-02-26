@@ -21,10 +21,7 @@ class IsSubscriberFilter(BoundFilter):
         self.is_subscriber = is_subscriber
 
     async def check(self, message: types.Message | types.CallbackQuery):
-        if isinstance(message, types.CallbackQuery):
-            user = await bot.get_chat_member(channel_chat_id, message.message.from_user.id)
-        else:
-            user = await bot.get_chat_member(channel_chat_id, message.from_user.id)
+        user = await bot.get_chat_member(channel_chat_id, message.from_user.id)
         return (user.status not in (types.ChatMemberStatus.LEFT, types.ChatMemberStatus.KICKED,
                                     types.ChatMemberStatus.BANNED)) == self.is_subscriber
 
