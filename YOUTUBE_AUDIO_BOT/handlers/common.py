@@ -36,3 +36,12 @@ async def change_language(message: types.Message, state: FSMContext):
     await message.reply(_('Вы успешно изменили свой язык на', locale=language) +
                         f" {new_language}.", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()
+
+
+async def share_channel_link(message: types.Message):
+    button = types.inline_keyboard.InlineKeyboardButton(text="Telegram Channel", url="https://t.me/+5qfagTVTgWgxM2Qy")
+    markup = types.inline_keyboard.InlineKeyboardMarkup(row_width=1, inline_keyboard=[button])
+    await message.answer("Для работы бота сперва необходимо подписаться на наш канал\n"
+                         "For the bot to work, you first need to subscribe to our channel\n"
+                         "Для роботи бота спершу необхідно підписатися на наш канал \n"
+                         , reply_markup=markup)
