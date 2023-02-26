@@ -12,7 +12,10 @@ from aiogram.dispatcher.filters import Text
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(share_channel_link, is_subscriber=False)
-    dp.register_message_handler(send_welcome_for_callback, is_subscriber_callback=True, callback_data="check_subscribe")
+    dp.register_callback_query_handler(send_welcome_for_callback, is_subscriber=True,
+                                       callback_data="check_subscribe")
+    dp.register_callback_query_handler(share_channel_link_for_callback, is_subscriber=False,
+                                       callback_data="check_subscribe")
     dp.register_message_handler(send_welcome, commands=['start', 'help'])
     dp.register_message_handler(cancel, Text(equals=["Отмена", "Cancel", "Скасування"]), state="*")
     dp.register_message_handler(cancel, commands=["Cancel", "cancel"], state="*")
