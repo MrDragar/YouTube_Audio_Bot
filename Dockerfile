@@ -1,11 +1,5 @@
 # Базовый образ
-FROM debian:buster-slim
-
-# Установка зависимостей
-RUN apt-get update && \
-    apt-get install -y python3.11 python3-pip && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+FROM python:3.11
 
 # Создание директории приложения
 WORKDIR /app

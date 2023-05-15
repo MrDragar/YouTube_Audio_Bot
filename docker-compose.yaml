@@ -2,6 +2,7 @@ version: '3'
 services:
   youtube-audio-bot:
     build: .
+    network_mode: "host"
     environment:
       API_TOKEN: "5910397539:AAH3Ql_nr9sJT6z2lkfyQgQywbOF10m4oGw"
     restart: always
