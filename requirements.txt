@@ -1,0 +1,4 @@
+aiogram~=2.25.1
+aioschedule~=0.5.2
+yt-dlp~=2023.3.4
+tiktok_downloader~=0.3.5
