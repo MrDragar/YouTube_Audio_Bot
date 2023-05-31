@@ -5,7 +5,7 @@ from YOUTUBE_AUDIO_BOT.downloaders.youtube_downloader import CantDownloadVideo, 
 
 
 async def _make_command(url: str, filepath) -> list:
-    command = ["python3", "-m", "tiktok_downloader", "--mdown", "--url", url, "--save", filepath]
+    command = ["python3", "-m", "tiktok_downloader", "--snaptik", "--url", url, "--save", filepath]
     return command
 
 
