@@ -46,7 +46,7 @@ async def change_language(message: types.Message, state: FSMContext):
 
 
 async def share_channel_link(message: types.Message):
-    button1 = types.inline_keyboard.InlineKeyboardButton(text="Telegram Channel", url="https://t.me/+5qfagTVTgWgxM2Qy")
+    button1 = types.inline_keyboard.InlineKeyboardButton(text="Telegram Channel", url="https://t.me/AudioDownloader")
     button2 = types.inline_keyboard.InlineKeyboardButton(text="Проверить/Check", callback_data="check_subscribe")
     markup = types.inline_keyboard.InlineKeyboardMarkup(row_width=1, inline_keyboard=[[button1], [button2]])
     await message.answer("Для работы бота сперва необходимо подписаться на наш канал. Напишите\n"
@@ -56,7 +56,7 @@ async def share_channel_link(message: types.Message):
 
 
 async def share_channel_link_for_callback(call: types.CallbackQuery):
-    button1 = types.inline_keyboard.InlineKeyboardButton(text="Telegram Channel", url="https://t.me/+5qfagTVTgWgxM2Qy")
+    button1 = types.inline_keyboard.InlineKeyboardButton(text="Telegram Channel", url="https://t.me/AudioDownloader")
     button2 = types.inline_keyboard.InlineKeyboardButton(text="Проверить/Check", callback_data="check_subscribe")
     markup = types.inline_keyboard.InlineKeyboardMarkup(row_width=1, inline_keyboard=[[button1], [button2]])
     await call.message.answer("Для работы бота сперва необходимо подписаться на наш канал. Напишите\n"
