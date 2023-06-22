@@ -1,7 +1,7 @@
 import os
 
 from YOUTUBE_AUDIO_BOT import database
-from YOUTUBE_AUDIO_BOT.config import _
+from YOUTUBE_AUDIO_BOT.loader import _
 import re
 from aiogram import types, Dispatcher
 from YOUTUBE_AUDIO_BOT.states import InputUserData

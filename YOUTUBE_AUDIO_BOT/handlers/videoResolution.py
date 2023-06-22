@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 from YOUTUBE_AUDIO_BOT.downloaders.youtube_downloader import get_video_resolution, CantDownloadVideo
 from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT.states import InputUserData
-from YOUTUBE_AUDIO_BOT.config import _
+from YOUTUBE_AUDIO_BOT.loader import _
 
 
 async def send_video_resolutions(message: types.Message, state: FSMContext):

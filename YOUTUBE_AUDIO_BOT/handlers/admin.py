@@ -4,7 +4,7 @@ from aiogram.utils.exceptions import BotBlocked, UserDeactivated
 
 from YOUTUBE_AUDIO_BOT.database import get_all_id
 from YOUTUBE_AUDIO_BOT.states import PostingData
-from YOUTUBE_AUDIO_BOT.config import bot
+from YOUTUBE_AUDIO_BOT.loader import bot
 
 
 async def set_post(message: Message):

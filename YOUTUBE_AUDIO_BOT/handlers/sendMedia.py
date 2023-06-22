@@ -7,7 +7,7 @@ from asyncio import TimeoutError
 
 from YOUTUBE_AUDIO_BOT.downloaders.youtube_downloader import download_media, CantDownloadVideo
 from YOUTUBE_AUDIO_BOT import database
-from YOUTUBE_AUDIO_BOT.config import _
+from YOUTUBE_AUDIO_BOT.loader import _
 
 
 async def send_audio(message: types.Message, state: FSMContext):

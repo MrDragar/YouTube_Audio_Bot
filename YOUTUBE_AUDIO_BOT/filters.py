@@ -1,7 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher.filters import BoundFilter
 
-from YOUTUBE_AUDIO_BOT.config import admins_id, channel_chat_id, bot
+from YOUTUBE_AUDIO_BOT.config import admins_id, channel_chat_id
+from YOUTUBE_AUDIO_BOT.loader import bot
 
 
 class MyFilter(BoundFilter):

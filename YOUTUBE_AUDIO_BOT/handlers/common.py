@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from YOUTUBE_AUDIO_BOT import database
 from YOUTUBE_AUDIO_BOT.config import languages
 from YOUTUBE_AUDIO_BOT.states import LanguageUserData
-from YOUTUBE_AUDIO_BOT.config import _
+from YOUTUBE_AUDIO_BOT.loader import _
 
 
 async def cancel(message: types.Message, state: FSMContext):

@@ -1,9 +1,9 @@
 from aiogram.types import Message
 from aiogram.dispatcher import FSMContext
 
-from YOUTUBE_AUDIO_BOT.config import admins_id, bot
+from YOUTUBE_AUDIO_BOT.config import admins_id
 from YOUTUBE_AUDIO_BOT.states import FeedBackData
-from YOUTUBE_AUDIO_BOT.config import _
+from YOUTUBE_AUDIO_BOT.loader import _, bot
 
 
 async def set_feedback(message: Message):
