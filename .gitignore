@@ -10,3 +10,4 @@ YOUTUBE_AUDIO_BOT/__pycache__
 YOUTUBE_AUDIO_BOT/handlers/__pycache__
 __pycache__/
 venv/
+.env
