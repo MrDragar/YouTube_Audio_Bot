@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-03 23:10+0300\n"
+"POT-Creation-Date: 2023-07-04 01:00+0300\n"
 "PO-Revision-Date: 2023-07-03 23:10+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,18 +19,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: bot/handlers/common.py:29
+#: bot/handlers/common.py:22 bot/handlers/language.py:22
+msgid "Отмена"
+msgstr ""
+
+#: bot/handlers/common.py:32
 msgid ""
 "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
-"Ютуба. Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
+"Ютуба.Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
 "вопросам пишите наyshhenyaev@mail.ru\n"
 "Для смены языка пропишите \n"
 "/language ."
 msgstr ""
 
-msgid "Отмена"
+#: bot/handlers/language.py:23
+msgid "Выберите язык"
 msgstr ""
 
+#: bot/handlers/language.py:36
+msgid "Вы успешно сменили язык"
+msgstr ""
+
+#: bot/handlers/language.py:43
 msgid "отмена"
 msgstr ""
 
@@ -43,5 +53,18 @@ msgstr ""
 #~ "\n"
 #~ "Для смены языка пропишите \n"
 #~ "/language ."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Привет. С помощью этого бота ты "
+#~ "можешь скачать любое видео или аудио "
+#~ "с Ютуба. Для этого вам необходимо "
+#~ "скинуть ссылку на этот ролик. По "
+#~ "всем вопросам пишите наyshhenyaev@mail.ru\n"
+#~ "Для смены языка пропишите \n"
+#~ "/language ."
+#~ msgstr ""
+
+#~ msgid "отмена"
 #~ msgstr ""
 

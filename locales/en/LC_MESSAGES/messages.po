@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-03 23:10+0300\n"
-"PO-Revision-Date: 2023-07-03 23:24+0300\n"
+"POT-Creation-Date: 2023-07-04 01:00+0300\n"
+"PO-Revision-Date: 2023-07-04 01:08+0300\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
 "Language: en\n"
@@ -19,21 +19,30 @@ msgstr ""
 "Generated-By: Babel 2.12.1\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: bot/handlers/common.py:29
-msgid ""
-"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
-"Ютуба. Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
-"вопросам пишите наyshhenyaev@mail.ru\n"
-"Для смены языка пропишите \n"
-"/language ."
-msgstr ""
-"Hi. With this bot you can download any video or audio from YouTube. If "
-"you have any questions write to yshhenyaev@mail.ru\n"
-"To change the language, type\n"
-"/language ."
-
+#: bot/handlers/common.py:22 bot/handlers/language.py:22
 msgid "Отмена"
 msgstr "Cancel"
 
+#: bot/handlers/common.py:32
+#, fuzzy
+msgid "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба.Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите наyshhenyaev@mail.ru\n"
+"Для смены языка пропишите \n"
+"/language ."
+msgstr "Hi. With this bot you can download any video or audio from YouTube. If you have any questions write to yshhenyaev@mail.ru\n"
+"To change the language, type\n"
+"/language ."
+
+#: bot/handlers/language.py:23
+msgid "Выберите язык"
+msgstr "Choose the language"
+
+#: bot/handlers/language.py:36
+msgid "Вы успешно сменили язык"
+msgstr "You have successfully changed language"
+
+#: bot/handlers/language.py:43
 msgid "отмена"
 msgstr "cancel"
+
+#~ msgid "отмена"
+#~ msgstr "cancel"
