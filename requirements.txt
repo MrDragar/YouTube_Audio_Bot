@@ -1,2 +1,4 @@
 aiogram==3.0.0b7
 python-dotenv==1.0.0
+tortoise-orm==0.19.3
+Babel==2.12.1
