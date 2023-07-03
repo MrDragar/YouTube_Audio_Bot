@@ -7,28 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-22 03:54+0300\n"
-"PO-Revision-Date: 2023-01-22 03:56+0300\n"
+"POT-Creation-Date: 2023-07-03 23:10+0300\n"
+"PO-Revision-Date: 2023-07-03 23:24+0300\n"
 "Last-Translator: \n"
-"Language: en\n"
 "Language-Team: en <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: Babel 2.12.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:10
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:26
-#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:17
-msgid "Отмена"
-msgstr "Cancel"
-
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:15
+#: bot/handlers/common.py:29
 msgid ""
 "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
-"Ютуба.Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
-"вопросам пишите на yshhenyaev@mail.ru\n"
+"Ютуба. Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
+"вопросам пишите наyshhenyaev@mail.ru\n"
 "Для смены языка пропишите \n"
 "/language ."
 msgstr ""
@@ -37,67 +32,8 @@ msgstr ""
 "To change the language, type\n"
 "/language ."
 
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:28
-msgid "Для смены языка выберите из списка нужный язык"
-msgstr "To change the language, select the desired language from the list"
+msgid "Отмена"
+msgstr "Cancel"
 
-#: YOUTUBE_AUDIO_BOT/handlers/common.py:36
-msgid "Вы успешно изменили свой язык на"
-msgstr "You have successfully changed your language to"
-
-#: YOUTUBE_AUDIO_BOT/handlers/feedback.py:10
-msgid "Напишите ваше сообщение разработчикам. Для отмены пропишите /cancel"
-msgstr "Write your message to the developers. To cancel, type /cancel"
-
-#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:12
-msgid "Нет ссылки в сообщении"
-msgstr "There is no link in the message"
-
-#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:15
-msgid "Видео"
-msgstr "Video"
-
-#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:16
-msgid "Аудио"
-msgstr "Audio"
-
-#: YOUTUBE_AUDIO_BOT/handlers/mediaType.py:18
-msgid "Выберите тип файла"
-msgstr "Select file type"
-
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:14
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:48
-msgid "Подождите"
-msgstr "Wait"
-
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:21
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:54
-msgid "Вы дали некорректную ссылку."
-msgstr "You gave the wrong link."
-
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:25
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:58
-#: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:22
-msgid "Произошла какая-то ошибка. Возможно вы дали некорректную ссылку."
-msgstr "There was some kind of error. Maybe you gave the wrong link."
-
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:47
-msgid "Невозможное разрешение"
-msgstr "Incorrect resolution"
-
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:71
-msgid "Видео слишком большое"
-msgstr "This video is too large"
-
-#: YOUTUBE_AUDIO_BOT/handlers/sendMedia.py:74
-msgid "Я не могу отправить это видео"
-msgstr "I can't send this video"
-
-#: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:18
-msgid "Вы дали некорректную ссылку"
-msgstr "You have given an incorrect link"
-
-#: YOUTUBE_AUDIO_BOT/handlers/videoResolution.py:30
-msgid "Выберите разрешение видео"
-msgstr "Select the video resolution"
-
+msgid "отмена"
+msgstr "cancel"
