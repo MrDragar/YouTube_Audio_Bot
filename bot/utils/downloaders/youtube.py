@@ -35,7 +35,8 @@ class YoutubeResolutionParser(Youtube):
     @staticmethod
     def check_format(format_: dict):
         return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none"\
-            and "filesize" in format_ and "format_note" in format_
+            and "filesize" in format_ and "format_note" in format_\
+            and format_["protocol"] == "https"
 
     def get_resolutions(self) -> Dict[str, str]:
         with YoutubeDL(self.ydl_opts) as ydl:
@@ -87,12 +88,13 @@ class Downloader(Youtube):
 
 
 async def main():
-    # url = "https://www.youtube.com/watch?v=J0s8Mn5gKTQ"
+    ...
+    # url = "https://www.youtube.com/watch?v=2ya7I81xKl8"
     # parser = YoutubeResolutionParser(url=url)
     # print(await parser.run())
-    URL = "https://www.youtube.com/watch?v=2ya7I81xKl8"
-    downloader = Downloader(url=URL, resolution="160")
-    await downloader.run()
+    # URL = "https://www.youtube.com/watch?v=2ya7I81xKl8"
+    # downloader = Downloader(url=URL, resolution="160")
+    # await downloader.run()
 
 if __name__ == "__main__":
     asyncio.run(main())
