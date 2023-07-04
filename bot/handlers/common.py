@@ -9,7 +9,7 @@ from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram import F
 
 from . base_handlers import StateMassageHandler
-from bot.states import Youtube
+from bot.states import YoutubeState
 
 common_router = Router()
 
@@ -27,7 +27,7 @@ class CancelHandler(StateMassageHandler):
 @common_router.message(Command("start", "help"))
 class StartHandler(StateMassageHandler):
     async def handle(self) -> Any:
-        await self.state.set_state(Youtube.type)
+        await self.state.set_state(YoutubeState.type)
         await SendMessage(chat_id=self.chat.id,
                           text=_("Привет. С помощью этого бота ты можешь "
                                  "скачать любое видео или аудио с Ютуба."

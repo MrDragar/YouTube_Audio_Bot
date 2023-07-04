@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-04 01:00+0300\n"
-"PO-Revision-Date: 2023-07-04 01:01+0300\n"
+"POT-Creation-Date: 2023-07-04 14:35+0300\n"
+"PO-Revision-Date: 2023-07-04 14:37+0300\n"
 "Last-Translator: \n"
 "Language-Team: uk <LL@li.org>\n"
 "Language: uk\n"
@@ -19,7 +19,15 @@ msgstr ""
 "Generated-By: Babel 2.12.1\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: bot/handlers/common.py:22 bot/handlers/language.py:22
+#: bot/keyboards.py:8
+msgid "Видео"
+msgstr "Відео"
+
+#: bot/keyboards.py:9
+msgid "Аудио"
+msgstr "Аудіо"
+
+#: bot/handlers/common.py:22 bot/handlers/language.py:23 bot/keyboards.py:11
 msgid "Отмена"
 msgstr "Скасування"
 
@@ -31,17 +39,29 @@ msgstr "Здоров. За допомогою цього бота ти може�
 "Для зміни мови пропишіть\n"
 "/language ."
 
-#: bot/handlers/language.py:23
+#: bot/handlers/language.py:24
 msgid "Выберите язык"
 msgstr "Виберіть мову"
 
-#: bot/handlers/language.py:36
+#: bot/handlers/language.py:37
 msgid "Вы успешно сменили язык"
 msgstr "Ви успiшно змiнили мову"
 
-#: bot/handlers/language.py:43
+#: bot/handlers/language.py:46
 msgid "отмена"
 msgstr "скасування"
+
+#: bot/handlers/downloaders/entry_point.py:25
+msgid "Нет ссылки в сообщении"
+msgstr "Немає посилання в повідомленні"
+
+#: bot/handlers/downloaders/entry_point.py:35
+msgid "Данный сайт не поддерживается"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:39
+msgid "Выберите тип файла"
+msgstr "Виберіть тип файлу"
 
 #~ msgid "отмена"
 #~ msgstr "скасування"

@@ -6,7 +6,7 @@ from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardRemove
 
 from bot.database.models import Language
-from bot.states import ChangingLanguage
+from bot.states import ChangingLanguageState
 from .base_handlers import StateMassageHandler
 from bot.database.user import change_language
 
@@ -23,10 +23,10 @@ class ShowLanguagesHandler(StateMassageHandler):
         builder.button(text=_("Отмена"))
         await SendMessage(chat_id=self.chat.id, text=_("Выберите язык"),
                           reply_markup=builder.as_markup())
-        await self.state.set_state(ChangingLanguage.step)
+        await self.state.set_state(ChangingLanguageState.step)
 
 
-@language_router.message(ChangingLanguage.step)
+@language_router.message(ChangingLanguageState.step)
 class GetLanguageHandler(ShowLanguagesHandler):
     async def handle(self):
         language_code = Language.get_language_code(self.event.text)
