@@ -34,7 +34,10 @@ class SendMediaHandler(StateMassageHandler, ABC):
         downloader = Downloader(data["url"], resolution)
         media_adapter = await downloader.run()
         kwargs = {"chat_id": self.chat.id,
-                  media_adapter.get_media_type().value: media_adapter()
+                  media_adapter.get_media_type().value: media_adapter(),
+                  "supports_streaming": True,
+                  "width": 256,
+                  "height": 144
                   }
 
         media_info = await self.SendMediaMethod(**kwargs)
