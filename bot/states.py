@@ -1,18 +1,18 @@
 from aiogram.fsm.state import StatesGroup, State
 
 
-class Youtube(StatesGroup):
+class YoutubeState(StatesGroup):
     type = State()
     resolution = State()
 
 
-class ChangingLanguage(StatesGroup):
+class ChangingLanguageState(StatesGroup):
     step = State()
 
 
-class FeedBack(StatesGroup):
+class FeedBackState(StatesGroup):
     step = State()
 
 
-class Posting(StatesGroup):
+class PostingState(StatesGroup):
     step = State()

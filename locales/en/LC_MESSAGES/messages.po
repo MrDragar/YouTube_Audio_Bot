@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-04 01:00+0300\n"
-"PO-Revision-Date: 2023-07-04 01:08+0300\n"
+"POT-Creation-Date: 2023-07-04 14:35+0300\n"
+"PO-Revision-Date: 2023-07-04 14:40+0300\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
 "Language: en\n"
@@ -19,7 +19,15 @@ msgstr ""
 "Generated-By: Babel 2.12.1\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: bot/handlers/common.py:22 bot/handlers/language.py:22
+#: bot/keyboards.py:8
+msgid "Видео"
+msgstr "Video"
+
+#: bot/keyboards.py:9
+msgid "Аудио"
+msgstr "Audio"
+
+#: bot/handlers/common.py:22 bot/handlers/language.py:23 bot/keyboards.py:11
 msgid "Отмена"
 msgstr "Cancel"
 
@@ -32,17 +40,29 @@ msgstr "Hi. With this bot you can download any video or audio from YouTube. If y
 "To change the language, type\n"
 "/language ."
 
-#: bot/handlers/language.py:23
+#: bot/handlers/language.py:24
 msgid "Выберите язык"
 msgstr "Choose the language"
 
-#: bot/handlers/language.py:36
+#: bot/handlers/language.py:37
 msgid "Вы успешно сменили язык"
 msgstr "You have successfully changed language"
 
-#: bot/handlers/language.py:43
+#: bot/handlers/language.py:46
 msgid "отмена"
 msgstr "cancel"
+
+#: bot/handlers/downloaders/entry_point.py:25
+msgid "Нет ссылки в сообщении"
+msgstr "There is no link in the message"
+
+#: bot/handlers/downloaders/entry_point.py:35
+msgid "Данный сайт не поддерживается"
+msgstr "This site is not supported"
+
+#: bot/handlers/downloaders/entry_point.py:39
+msgid "Выберите тип файла"
+msgstr "Select file type"
 
 #~ msgid "отмена"
 #~ msgstr "cancel"

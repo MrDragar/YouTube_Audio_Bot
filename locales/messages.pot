@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-04 01:00+0300\n"
+"POT-Creation-Date: 2023-07-04 14:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: bot/handlers/common.py:22 bot/handlers/language.py:22
+#: bot/keyboards.py:8
+msgid "Видео"
+msgstr ""
+
+#: bot/keyboards.py:9
+msgid "Аудио"
+msgstr ""
+
+#: bot/handlers/common.py:22 bot/handlers/language.py:23 bot/keyboards.py:11
 msgid "Отмена"
 msgstr ""
 
@@ -30,15 +38,27 @@ msgid ""
 "/language ."
 msgstr ""
 
-#: bot/handlers/language.py:23
+#: bot/handlers/language.py:24
 msgid "Выберите язык"
 msgstr ""
 
-#: bot/handlers/language.py:36
+#: bot/handlers/language.py:37
 msgid "Вы успешно сменили язык"
 msgstr ""
 
-#: bot/handlers/language.py:43
+#: bot/handlers/language.py:46
 msgid "отмена"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:25
+msgid "Нет ссылки в сообщении"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:35
+msgid "Данный сайт не поддерживается"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:39
+msgid "Выберите тип файла"
 msgstr ""
 
