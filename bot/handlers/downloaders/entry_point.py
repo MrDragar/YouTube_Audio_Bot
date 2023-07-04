@@ -13,7 +13,7 @@ from bot.states import YoutubeState
 from bot.keyboards import get_type_keyboard
 
 
-entry_point_router = Router()
+entry_point_router = Router() #Должен быть в иерархии последним
 
 
 @entry_point_router.message()
@@ -26,9 +26,9 @@ class GetLinkHandler(StateMassageHandler):
                                reply_markup=types.ReplyKeyboardRemove)
         url = urls[0]
         if "tiktok" in url:
-            logging.info("Tiktiok link")
+            logging.debug("Tiktiok link")
         elif "youtube.com" in url or "youtu.be" in url:
-            logging.info("Youtube link")
+            logging.debug("Youtube link")
             await self.state.set_state(YoutubeState.type)
         else:
             return SendMessage(chat_id=self.chat.id,

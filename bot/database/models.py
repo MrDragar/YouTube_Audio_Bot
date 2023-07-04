@@ -31,6 +31,11 @@ class Language(str, Enum):
         return language_codes.get(language_name, None)
 
 
+class MediaType(str, Enum):
+    VIDEO = "video"
+    AUDIO = "audio"
+
+
 class User(Model):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=50)
@@ -40,5 +45,6 @@ class User(Model):
 class Media(Model):
     id = fields.IntField(pk=True)
     link_id = fields.CharField(max_length=50)
-    type = fields.CharField(max_length=10)
-    resolution = fields.CharField(max_length=10)
+    type = fields.CharEnumField(MediaType)
+    resolution = fields.CharField(max_length=10, default=None, null=True)
+    file_id = fields.TextField(default=None, null=True)
