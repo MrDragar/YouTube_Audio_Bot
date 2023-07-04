@@ -48,3 +48,6 @@ class MediaAdapter:
                     os.remove(self._file_path)
                 except Exception as ex:
                     logging.info(ex)
+
+    def get_media_type(self) -> MediaType:
+        return self._media.type
