@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Optional
+from typing import Callable, Dict, Optional, AsyncGenerator
 import asyncio
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
@@ -9,8 +9,17 @@ from yt_dlp import YoutubeDL
 from bot.database.adapters import MediaAdapter
 
 
+class ToBigVideo(Exception):
+    ...
+
+
 class Youtube(ABC):
     ydl_opts: dict = {"quiet": True}
+    _callback: Optional[AsyncGenerator] = None
+
+    async def send_callback(self):
+        if self._callback:
+            await self._callback.__anext__()
 
     async def _run(self, function: Callable):
         loop = asyncio.get_running_loop()
@@ -35,7 +44,7 @@ class YoutubeResolutionParser(Youtube):
     @staticmethod
     def check_format(format_: dict):
         return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none"\
-            and "filesize" in format_ and "format_note" in format_\
+            and "filesize" in format_ and "format_note" in format_ \
             and format_["protocol"] == "https"
 
     def get_resolutions(self) -> Dict[str, str]:
@@ -57,16 +66,26 @@ class YoutubeResolutionParser(Youtube):
 class Downloader(Youtube):
     media_adapter: MediaAdapter
 
-    def __init__(self, url: str, resolution: Optional[str] = ""):
+    def __init__(self, url: str, resolution: Optional[str] = "",
+                 callback: AsyncGenerator = None):
         self._url = url
         self._resolution = resolution
+        self._callback = callback
         self.ydl_opts["format"] = (resolution + "+") if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = f'video/%(title)s {resolution}.%(ext)s'
 
+    @staticmethod
+    def check_size(size):
+        return size / 1000 / 1000 / 1000 < 2
+
     def collect_information(self):
         with YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(self._url, download=False)
+            # размер указан в байтах
+            size = info.get("filesize_approx", info.get('filesize', None))
+            if not self.check_size(size):
+                raise ToBigVideo
             self.media_adapter = MediaAdapter(info["id"], self._resolution)
 
     def download(self):
@@ -75,16 +94,19 @@ class Downloader(Youtube):
             file_path = ydl.prepare_filename(info)
             self.media_adapter.set_file_path(file_path)
 
-    def get_media_adapter(self) -> MediaAdapter:
+    async def get_media_adapter(self) -> MediaAdapter:
         # Смотрим, есть ли запрашенное видео в базе данных
-        self.collect_information()
+        await self.send_callback()
+        await self._run(self.collect_information)
         if self.media_adapter.is_on_server():
             return self.media_adapter
-        self.download()
+        await self.send_callback()
+        await self._run(self.download)
+        await self.send_callback()
         return self.media_adapter
 
     async def run(self) -> MediaAdapter:
-        return await self._run(self.get_media_adapter)
+        return await self.get_media_adapter()
 
 
 async def main():
@@ -95,6 +117,7 @@ async def main():
     # URL = "https://www.youtube.com/watch?v=2ya7I81xKl8"
     # downloader = Downloader(url=URL, resolution="160")
     # await downloader.run()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

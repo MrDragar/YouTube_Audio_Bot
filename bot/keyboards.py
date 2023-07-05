@@ -4,6 +4,7 @@ from aiogram.utils.i18n import gettext as _
 
 from bot.database.models import Language
 
+
 def get_type_keyboard() -> types.ReplyKeyboardMarkup:
     keyboard = ReplyKeyboardBuilder()
 
@@ -15,6 +16,7 @@ def get_type_keyboard() -> types.ReplyKeyboardMarkup:
 
     markup = keyboard.as_markup()
     markup.resize_keyboard = True
+    markup.one_time_keyboard = True
     return markup
 
 
@@ -27,6 +29,7 @@ def get_resolution_keyboard(resolutions: dict[str, str]) \
 
     keyboard.row(types.KeyboardButton(text=_("Отмена")))
     markup = keyboard.as_markup()
+    markup.one_time_keyboard = True
     markup.resize_keyboard = True
     return markup
 
@@ -39,5 +42,6 @@ def get_language_keyboard() -> types.ReplyKeyboardMarkup:
 
     keyboard.row(types.KeyboardButton(text=_("Отмена")))
     markup = keyboard.as_markup()
+    markup.one_time_keyboard = True
     markup.resize_keyboard = True
     return markup

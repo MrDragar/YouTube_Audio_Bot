@@ -42,12 +42,13 @@ class MediaAdapter:
             return FSInputFile(self._file_path)
 
     def __del__(self):
-        if not self.is_on_server():
-            if self._file_path:
-                try:
-                    os.remove(self._file_path)
-                except Exception as ex:
-                    logging.info(ex)
+        if self.is_on_server():
+            return
+        if self._file_path:
+            try:
+                os.remove(self._file_path)
+            except Exception as ex:
+                logging.info(ex)
 
     def get_media_type(self) -> MediaType:
         return self._media.type
