@@ -6,10 +6,9 @@ from aiogram import types
 from aiogram.dispatcher.router import Router
 from aiogram.utils.i18n import gettext as _
 from aiogram.methods import SendMessage
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, ButtonType
 
 from ..base_handlers import StateMassageHandler
-from bot.states import YoutubeState
+from bot.states import YoutubeState, TiktokState
 from bot.keyboards import get_type_keyboard
 
 
@@ -26,6 +25,7 @@ class GetLinkHandler(StateMassageHandler):
                                reply_markup=types.ReplyKeyboardRemove)
         url = urls[0]
         if "tiktok" in url:
+            await self.state.set_state(TiktokState.type)
             logging.debug("Tiktiok link")
         elif "youtube.com" in url or "youtu.be" in url:
             logging.debug("Youtube link")

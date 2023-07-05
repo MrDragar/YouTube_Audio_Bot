@@ -15,8 +15,9 @@ send_media_router = Router()
 
 
 class SendMediaHandler(StateMassageHandler, ABC):
-    SendMediaMethod: Union[SendVideo, SendAudio] = SendAudio
+    SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
 
+    @abstractmethod
     async def send_callback(self):
         while True:
             yield None
@@ -52,7 +53,7 @@ class SendMediaHandler(StateMassageHandler, ABC):
 
 @send_media_router.message(YoutubeState.type, F.text == __("Аудио"))
 class SendAudioHandler(SendMediaHandler):
-    SendMediaMethod: Union[SendVideo, SendAudio] = SendAudio
+    SendMediaMethod = SendAudio
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         return None, False
@@ -76,7 +77,7 @@ class SendAudioHandler(SendMediaHandler):
 
 @send_media_router.message(YoutubeState.resolution)
 class SendVideoHandler(SendMediaHandler):
-    SendMediaMethod: Union[SendVideo, SendAudio] = SendVideo
+    SendMediaMethod = SendVideo
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         data = await self.state.get_data()
