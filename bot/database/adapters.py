@@ -31,17 +31,17 @@ class MediaAdapter:
     def set_file_path(self, file_path: str) -> None:
         self._file_path = file_path
 
-    async def set_file_id(self, file_id: str):
+    async def set_file_id(self, file_id: str) -> None:
         self._media.file_id = file_id
         await self._media.save()
 
-    def __call__(self):
+    def __call__(self) -> FSInputFile:
         if self.is_on_server():
             return self._media.file_id
         else:
             return FSInputFile(self._file_path)
 
-    def __del__(self):
+    def __del__(self) -> None:
         if self.is_on_server():
             return
         if self._file_path:

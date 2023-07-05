@@ -16,3 +16,7 @@ class FeedBackState(StatesGroup):
 
 class PostingState(StatesGroup):
     step = State()
+
+
+class TiktokState(StatesGroup):
+    type = State()

@@ -67,7 +67,7 @@ class Downloader(Youtube):
     media_adapter: MediaAdapter
 
     def __init__(self, url: str, resolution: Optional[str] = "",
-                 callback: AsyncGenerator = None):
+                 callback: Optional[AsyncGenerator] = None):
         self._url = url
         self._resolution = resolution
         self._callback = callback
