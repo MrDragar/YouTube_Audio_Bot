@@ -4,8 +4,8 @@ from typing import Union, Optional, Tuple
 from aiogram.dispatcher.router import Router
 from aiogram import F
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
-from aiogram.methods import SendAudio, SendMessage, SendVideo
-
+from aiogram.methods import SendAudio, SendMessage, SendVideo, EditMessageText,\
+    SendChatAction
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.states import YoutubeState
 from bot.utils.downloaders.youtube import Downloader
@@ -16,6 +16,10 @@ send_media_router = Router()
 
 class SendMediaHandler(StateMassageHandler, ABC):
     SendMediaMethod: Union[SendVideo, SendAudio] = SendAudio
+
+    async def send_callback(self):
+        while True:
+            yield None
 
     @abstractmethod
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -30,8 +34,8 @@ class SendMediaHandler(StateMassageHandler, ABC):
         resolution, error = await self.get_resolution()
         if error:
             return
-
-        downloader = Downloader(data["url"], resolution)
+        downloader = Downloader(data["url"], resolution,
+                                callback=self.send_callback())
         media_adapter = await downloader.run()
         kwargs = {"chat_id": self.chat.id,
                   media_adapter.get_media_type().value: media_adapter(),
@@ -56,6 +60,19 @@ class SendAudioHandler(SendMediaHandler):
     def get_file_id(self, info) -> str:
         return info.audio.file_id
 
+    async def send_callback(self) -> None:
+        message = await SendMessage(chat_id=self.chat.id,
+                                    text=_("Сбор данных о видео"))
+        yield
+        message = await EditMessageText(chat_id=self.chat.id,
+                                        text=_("Скачивание аудио"),
+                                        message_id=message.message_id)
+        yield
+        await EditMessageText(chat_id=self.chat.id, text=_("Отправление аудио"),
+                              message_id=message.message_id)
+        await SendChatAction(chat_id=self.chat.id, action="upload_audio")
+        yield
+
 
 @send_media_router.message(YoutubeState.resolution)
 class SendVideoHandler(SendMediaHandler):
@@ -64,9 +81,23 @@ class SendVideoHandler(SendMediaHandler):
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         data = await self.state.get_data()
         if self.event.text.strip() not in data["resolution"].keys():
-            await SendMessage(chat_id=self.chat.id, text=_("Нет такой партии"))
+            await SendMessage(chat_id=self.chat.id,
+                              text=_("Неверное расширение"))
             return None, True
         return data["resolution"][self.event.text.strip()], False
 
     def get_file_id(self, info) -> str:
         return info.video.file_id
+
+    async def send_callback(self) -> None:
+        message = await SendMessage(chat_id=self.chat.id,
+                                    text=_("Сбор данных о видео"))
+        yield
+        message = await EditMessageText(chat_id=self.chat.id,
+                                        text=_("Скачивание видео"),
+                                        message_id=message.message_id)
+        yield
+        await EditMessageText(chat_id=self.chat.id, text=_("Отправление видео"),
+                              message_id=message.message_id)
+        await SendChatAction(chat_id=self.chat.id, action="upload_video")
+        yield
