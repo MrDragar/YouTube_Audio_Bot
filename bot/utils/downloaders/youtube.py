@@ -9,7 +9,7 @@ from yt_dlp import YoutubeDL
 from bot.database.adapters import MediaAdapter
 
 
-class ToBigVideo(Exception):
+class TooBigVideo(Exception):
     ...
 
 
@@ -85,7 +85,7 @@ class Downloader(Youtube):
             # размер указан в байтах
             size = info.get("filesize_approx", info.get('filesize', None))
             if not self.check_size(size):
-                raise ToBigVideo
+                raise TooBigVideo
             self.media_adapter = MediaAdapter(info["id"], self._resolution)
 
     def download(self):
