@@ -5,6 +5,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.methods import SendMessage, EditMessageText, SendChatAction
 from aiogram.types import Message, error_event
 from aiogram.utils.i18n import gettext as _
+from aiogram.utils.chat_action import ChatActionSender
+
+from bot.loader import bot
 
 
 class StateMassageHandler(MessageHandler, ABC):
@@ -41,10 +44,11 @@ class AudioMassageHandlerCallback(BaseMessageHandlerCallback, ABC):
                                         text=_("Скачивание аудио"),
                                         message_id=message.message_id)
         yield
-        await EditMessageText(chat_id=self.chat.id, text=_("Отправление аудио"),
-                              message_id=message.message_id)
-        await SendChatAction(chat_id=self.chat.id, action="upload_audio")
-        yield
+        async with ChatActionSender.upload_voice(bot=bot, chat_id=self.chat.id):
+            await EditMessageText(chat_id=self.chat.id,
+                                  text=_("Отправление аудио"),
+                                  message_id=message.message_id)
+            yield
 
 
 class VideoMassageHandlerCallback(BaseMessageHandlerCallback, ABC):
@@ -56,7 +60,8 @@ class VideoMassageHandlerCallback(BaseMessageHandlerCallback, ABC):
                                         text=_("Скачивание видео"),
                                         message_id=message.message_id)
         yield
-        await EditMessageText(chat_id=self.chat.id, text=_("Отправление видео"),
-                              message_id=message.message_id)
-        await SendChatAction(chat_id=self.chat.id, action="upload_video")
-        yield
+        async with ChatActionSender.upload_video(bot=bot, chat_id=self.chat.id):
+            await EditMessageText(chat_id=self.chat.id,
+                                  text=_("Отправление видео"),
+                                  message_id=message.message_id)
+            yield
