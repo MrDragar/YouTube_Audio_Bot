@@ -43,10 +43,9 @@ class Downloader:
         await self.send_callback()
         d = await tikwm_async(self._url)
         if self._video.type == MediaType.VIDEO:
-            i = 1
+            i = 0
         else:
             i = 2
-        print(d)
         await self.send_callback()
         await d[i].download(self._video.path)
         await self.send_callback()
