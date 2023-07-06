@@ -48,3 +48,11 @@ class Media(Model):
     type = fields.CharEnumField(MediaType)
     resolution = fields.CharField(max_length=10, default=None, null=True)
     file_id = fields.TextField(default=None, null=True)
+
+
+class DayStatistic(Model):
+    date = fields.DateField(pk=True)
+    new_users = fields.IntField(default=0)
+    successful_requests = fields.IntField(default=0)
+    unsuccessful_requests = fields.IntField(default=0)
+

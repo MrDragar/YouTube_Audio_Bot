@@ -1,4 +1,5 @@
 from .models import User
+from .day_statistic import add_user
 
 
 async def get_user_by_id(id: int) -> User:
@@ -8,6 +9,7 @@ async def get_user_by_id(id: int) -> User:
 async def create_user(id: int, name: str, language: str) -> User:
     user = await get_user_by_id(id)
     if not user:
+        await add_user()
         user = await User.create(id=id, name=name, language=language)
         await user.save()
     return user

@@ -10,6 +10,7 @@ from requests.exceptions import InvalidURL
 
 from bot.handlers.base_handlers import StateErrorHandler
 from bot.utils.downloaders.youtube import TooBigVideo
+from bot.database.day_statistic import add_unsuccessful_request
 
 error_router = Router()
 
@@ -38,6 +39,7 @@ class YoutubeErrorHandler(StateErrorHandler):
             if "Name or service not known>" in self.event.exception.msg:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Некорректная ссылка"))
+            await add_unsuccessful_request()
             logging.exception(self.event.exception)
             logging.info(type(self.event.exception))
             return SendMessage(chat_id=self.event.update.message.chat.id,
@@ -48,6 +50,7 @@ class YoutubeErrorHandler(StateErrorHandler):
                 isinstance(self.event.exception, InvalidURL):
             return SendMessage(chat_id=self.event.update.message.chat.id,
                                text=_("Некорректная ссылка"))
+        await add_unsuccessful_request()
         logging.exception(self.event.exception)
         logging.info(type(self.event.exception))
         return SendMessage(chat_id=self.event.update.message.chat.id,

@@ -1,10 +1,9 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import Union
 
-from aiogram.utils.i18n import lazy_gettext as __, gettext as _
+from aiogram.utils.i18n import lazy_gettext as __
 from aiogram.dispatcher.router import Router
-from aiogram.methods import SendAudio, SendMessage, SendVideo, SendChatAction, \
-    EditMessageText
+from aiogram.methods import SendAudio, SendVideo
 from aiogram import F
 
 from bot.handlers.base_handlers import StateMassageHandler, \
@@ -13,6 +12,7 @@ from bot.handlers.base_handlers import StateMassageHandler, \
 from bot.utils.downloaders.tiktok import Downloader, TiktokVideo
 from bot.database.models import MediaType
 from bot.states import TiktokState
+from bot.database.day_statistic import add_successful_request
 
 
 send_media_router = Router()
@@ -33,6 +33,7 @@ class SendTiktokMedia(StateMassageHandler, BaseMessageHandlerCallback, ABC):
                   }
         await self.SendMediaMethod(**kwargs)
         del media
+        await add_successful_request()
         await self.state.clear()
 
 
