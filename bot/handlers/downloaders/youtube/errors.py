@@ -5,9 +5,11 @@ from aiogram.methods import SendMessage
 from aiogram.exceptions import TelegramEntityTooLarge
 from yt_dlp.utils import DownloadError
 from aiogram.utils.i18n import gettext as _
+from httpx import ReadTimeout
+from requests.exceptions import InvalidURL
 
 from bot.handlers.base_handlers import StateErrorHandler
-from bot.utils.downloaders.youtube import ToBigVideo
+from bot.utils.downloaders.youtube import TooBigVideo
 
 error_router = Router()
 
@@ -16,7 +18,7 @@ error_router = Router()
 class YoutubeErrorHandler(StateErrorHandler):
     async def handle(self):
         await self.state.clear()
-        if isinstance(self.event.exception, ToBigVideo) or \
+        if isinstance(self.event.exception, TooBigVideo) or \
                 isinstance(self.event.exception, TelegramEntityTooLarge):
             return SendMessage(chat_id=self.event.update.message.chat.id,
                                text=_("Файл весит больше 2 ГБ", locale="ru"))
@@ -33,13 +35,19 @@ class YoutubeErrorHandler(StateErrorHandler):
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Видео недоступно для скачивания."
                                           " Ошибка 404"))
-
+            if "Name or service not known>" in self.event.exception.msg:
+                return SendMessage(chat_id=self.event.update.message.chat.id,
+                                   text=_("Некорректная ссылка"))
             logging.exception(self.event.exception)
             logging.info(type(self.event.exception))
             return SendMessage(chat_id=self.event.update.message.chat.id,
                                text=_("Произошла какая-та ошибка при"
                                       " скачивании видео"))
 
+        if isinstance(self.event.exception, ReadTimeout) or \
+                isinstance(self.event.exception, InvalidURL):
+            return SendMessage(chat_id=self.event.update.message.chat.id,
+                               text=_("Некорректная ссылка"))
         logging.exception(self.event.exception)
         logging.info(type(self.event.exception))
         return SendMessage(chat_id=self.event.update.message.chat.id,

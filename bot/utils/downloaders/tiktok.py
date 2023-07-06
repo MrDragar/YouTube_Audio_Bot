@@ -25,7 +25,8 @@ class TiktokVideo:
             try:
                 os.remove(path=self.path)
             except Exception as ex:
-                logging.exception(ex)
+                if not isinstance(ex, FileNotFoundError):
+                    logging.exception(ex)
 
 
 class Downloader:
