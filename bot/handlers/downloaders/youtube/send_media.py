@@ -5,11 +5,13 @@ from aiogram.dispatcher.router import Router
 from aiogram import F
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo
+
 from bot.handlers.base_handlers import StateMassageHandler, \
     BaseMessageHandlerCallback, AudioMassageHandlerCallback, \
     VideoMassageHandlerCallback
 from bot.states import YoutubeState
 from bot.utils.downloaders.youtube import Downloader
+from bot.database.day_statistic import add_successful_request
 
 
 send_media_router = Router()
@@ -44,6 +46,7 @@ class SendMediaHandler(StateMassageHandler, BaseMessageHandlerCallback, ABC):
         media_info = await self.SendMediaMethod(**kwargs)
         await media_adapter.set_file_id(self.get_file_id(media_info))
         del media_adapter
+        await add_successful_request()
         await self.state.clear()
 
 
