@@ -5,6 +5,7 @@ from aiogram.utils.i18n import lazy_gettext as __
 from aiogram.dispatcher.router import Router
 from aiogram.methods import SendAudio, SendVideo
 from aiogram import F
+from aiogram.types import ReplyKeyboardRemove
 
 from bot.handlers.base_handlers import StateMassageHandler, \
     AudioMassageHandlerCallback, VideoMassageHandlerCallback, \
@@ -29,7 +30,8 @@ class SendTiktokMedia(StateMassageHandler, BaseMessageHandlerCallback, ABC):
         downloader = Downloader(url, media, self.send_callback())
         await downloader.run()
         kwargs = {"chat_id": self.chat.id,
-                  self.type.value: media()
+                  self.type.value: media(),
+                  "reply_markup": ReplyKeyboardRemove()
                   }
         await self.SendMediaMethod(**kwargs)
         del media

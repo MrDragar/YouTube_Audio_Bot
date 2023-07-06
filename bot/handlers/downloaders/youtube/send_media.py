@@ -3,6 +3,7 @@ from typing import Union, Optional, Tuple
 
 from aiogram.dispatcher.router import Router
 from aiogram import F
+from aiogram.types import ReplyKeyboardRemove
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo
 
@@ -40,7 +41,8 @@ class SendMediaHandler(StateMassageHandler, BaseMessageHandlerCallback, ABC):
                   media_adapter.get_media_type().value: media_adapter(),
                   "supports_streaming": True,
                   "width": 256,
-                  "height": 144
+                  "height": 144,
+                  "reply_markup": ReplyKeyboardRemove()
                   }
 
         media_info = await self.SendMediaMethod(**kwargs)
