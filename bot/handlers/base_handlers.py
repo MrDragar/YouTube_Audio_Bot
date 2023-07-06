@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from aiogram.handlers import MessageHandler, ErrorHandler
 from aiogram.fsm.context import FSMContext
-from aiogram.methods import SendMessage, EditMessageText
+from aiogram.methods import SendMessage, EditMessageText, EditMessageReplyMarkup
 from aiogram.types import Message, error_event, ReplyKeyboardRemove
 from aiogram.utils.i18n import gettext as _
 from aiogram.utils.chat_action import ChatActionSender
@@ -38,8 +38,7 @@ class BaseMessageHandlerCallback(MessageHandler, ABC):
 class AudioMassageHandlerCallback(BaseMessageHandlerCallback, ABC):
     async def send_callback(self):
         message = await SendMessage(chat_id=self.chat.id,
-                                    text=_("Сбор данных о аудио"),
-                                    reply_markup=ReplyKeyboardRemove())
+                                    text=_("Сбор данных о аудио"))
         yield
         message = await EditMessageText(chat_id=self.chat.id,
                                         text=_("Скачивание аудио"),
@@ -55,8 +54,7 @@ class AudioMassageHandlerCallback(BaseMessageHandlerCallback, ABC):
 class VideoMassageHandlerCallback(BaseMessageHandlerCallback, ABC):
     async def send_callback(self):
         message = await SendMessage(chat_id=self.chat.id,
-                                    text=_("Сбор данных о видео"),
-                                    reply_murkup=ReplyKeyboardRemove())
+                                    text=_("Сбор данных о видео"))
         yield
         message = await EditMessageText(chat_id=self.chat.id,
                                         text=_("Скачивание видео"),
