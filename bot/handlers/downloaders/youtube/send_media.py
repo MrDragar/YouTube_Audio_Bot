@@ -4,8 +4,7 @@ from typing import Union, Optional, Tuple
 from aiogram.dispatcher.router import Router
 from aiogram import F
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
-from aiogram.methods import SendAudio, SendMessage, SendVideo, EditMessageText,\
-    SendChatAction
+from aiogram.methods import SendAudio, SendMessage, SendVideo
 from bot.handlers.base_handlers import StateMassageHandler, \
     BaseMessageHandlerCallback, AudioMassageHandlerCallback, \
     VideoMassageHandlerCallback
