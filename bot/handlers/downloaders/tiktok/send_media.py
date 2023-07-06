@@ -7,7 +7,9 @@ from aiogram.methods import SendAudio, SendMessage, SendVideo, SendChatAction, \
     EditMessageText
 from aiogram import F
 
-from bot.handlers.base_handlers import StateMassageHandler
+from bot.handlers.base_handlers import StateMassageHandler, \
+    AudioMassageHandlerCallback, VideoMassageHandlerCallback, \
+    BaseMessageHandlerCallback
 from bot.utils.downloaders.tiktok import Downloader, TiktokVideo
 from bot.database.models import MediaType
 from bot.states import TiktokState
@@ -16,14 +18,9 @@ from bot.states import TiktokState
 send_media_router = Router()
 
 
-class SendTiktokMedia(StateMassageHandler, ABC):
+class SendTiktokMedia(StateMassageHandler, BaseMessageHandlerCallback, ABC):
     type: MediaType
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
-
-    @abstractmethod
-    async def send_callback(self):
-        while True:
-            yield None
 
     async def handle(self):
         data = await self.state.get_data()
@@ -40,38 +37,12 @@ class SendTiktokMedia(StateMassageHandler, ABC):
 
 
 @send_media_router.message(TiktokState.type, F.text == __("Аудио"))
-class SendTiktokAudio(SendTiktokMedia):
+class SendTiktokAudio(SendTiktokMedia, AudioMassageHandlerCallback):
     type = MediaType.AUDIO
     SendMediaMethod = SendAudio
 
-    async def send_callback(self):
-        message = await SendMessage(chat_id=self.chat.id,
-                                    text=_("Сбор данных о аудио"))
-        yield
-        message = await EditMessageText(chat_id=self.chat.id,
-                                        text=_("Скачивание аудио"),
-                                        message_id=message.message_id)
-        yield
-        await EditMessageText(chat_id=self.chat.id, text=_("Отправление аудио"),
-                              message_id=message.message_id)
-        await SendChatAction(chat_id=self.chat.id, action="upload_audio")
-        yield
-
 
 @send_media_router.message(TiktokState.type, F.text == __("Видео"))
-class SendTiktokVideo(SendTiktokMedia):
+class SendTiktokVideo(SendTiktokMedia, VideoMassageHandlerCallback):
     type = MediaType.VIDEO
     SendMediaMethod = SendVideo
-
-    async def send_callback(self):
-        message = await SendMessage(chat_id=self.chat.id,
-                                    text=_("Сбор данных о видео"))
-        yield
-        message = await EditMessageText(chat_id=self.chat.id,
-                                        text=_("Скачивание видео"),
-                                        message_id=message.message_id)
-        yield
-        await EditMessageText(chat_id=self.chat.id, text=_("Отправление видео"),
-                              message_id=message.message_id)
-        await SendChatAction(chat_id=self.chat.id, action="upload_video")
-        yield

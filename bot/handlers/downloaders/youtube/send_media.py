@@ -6,7 +6,9 @@ from aiogram import F
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo, EditMessageText,\
     SendChatAction
-from bot.handlers.base_handlers import StateMassageHandler
+from bot.handlers.base_handlers import StateMassageHandler, \
+    BaseMessageHandlerCallback, AudioMassageHandlerCallback, \
+    VideoMassageHandlerCallback
 from bot.states import YoutubeState
 from bot.utils.downloaders.youtube import Downloader
 
@@ -14,13 +16,8 @@ from bot.utils.downloaders.youtube import Downloader
 send_media_router = Router()
 
 
-class SendMediaHandler(StateMassageHandler, ABC):
+class SendMediaHandler(StateMassageHandler, BaseMessageHandlerCallback, ABC):
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
-
-    @abstractmethod
-    async def send_callback(self):
-        while True:
-            yield None
 
     @abstractmethod
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -52,7 +49,7 @@ class SendMediaHandler(StateMassageHandler, ABC):
 
 
 @send_media_router.message(YoutubeState.type, F.text == __("Аудио"))
-class SendAudioHandler(SendMediaHandler):
+class SendAudioHandler(SendMediaHandler, AudioMassageHandlerCallback):
     SendMediaMethod = SendAudio
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -61,22 +58,9 @@ class SendAudioHandler(SendMediaHandler):
     def get_file_id(self, info) -> str:
         return info.audio.file_id
 
-    async def send_callback(self) -> None:
-        message = await SendMessage(chat_id=self.chat.id,
-                                    text=_("Сбор данных о видео"))
-        yield
-        message = await EditMessageText(chat_id=self.chat.id,
-                                        text=_("Скачивание аудио"),
-                                        message_id=message.message_id)
-        yield
-        await EditMessageText(chat_id=self.chat.id, text=_("Отправление аудио"),
-                              message_id=message.message_id)
-        await SendChatAction(chat_id=self.chat.id, action="upload_audio")
-        yield
-
 
 @send_media_router.message(YoutubeState.resolution)
-class SendVideoHandler(SendMediaHandler):
+class SendVideoHandler(SendMediaHandler, VideoMassageHandlerCallback):
     SendMediaMethod = SendVideo
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -89,16 +73,3 @@ class SendVideoHandler(SendMediaHandler):
 
     def get_file_id(self, info) -> str:
         return info.video.file_id
-
-    async def send_callback(self) -> None:
-        message = await SendMessage(chat_id=self.chat.id,
-                                    text=_("Сбор данных о видео"))
-        yield
-        message = await EditMessageText(chat_id=self.chat.id,
-                                        text=_("Скачивание видео"),
-                                        message_id=message.message_id)
-        yield
-        await EditMessageText(chat_id=self.chat.id, text=_("Отправление видео"),
-                              message_id=message.message_id)
-        await SendChatAction(chat_id=self.chat.id, action="upload_video")
-        yield
