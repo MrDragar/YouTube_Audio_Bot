@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from aiogram.utils.i18n import gettext as _
 
 from bot.database.models import Language
@@ -45,3 +45,12 @@ def get_language_keyboard() -> types.ReplyKeyboardMarkup:
     markup.one_time_keyboard = True
     markup.resize_keyboard = True
     return markup
+
+
+def get_share_link_keyboard() -> types.InlineKeyboardMarkup:
+    keyboard = InlineKeyboardBuilder()
+    keyboard.button(text=_("Подписаться на канал",
+                           url="https://t.me/AudioDownloader"))
+    keyboard.button(text=_("Проверить подписку"),
+                    callback_data="check_subscribe")
+    return keyboard.as_markup()

@@ -10,12 +10,13 @@ from aiogram.methods import SendMessage
 from ..base_handlers import StateMassageHandler
 from bot.states import YoutubeState, TiktokState
 from bot.keyboards import get_type_keyboard
+from bot.filters import IsSubscriberFilter
 
 
 entry_point_router = Router() #Должен быть в иерархии последним
 
 
-@entry_point_router.message()
+@entry_point_router.message(IsSubscriberFilter())
 class GetLinkHandler(StateMassageHandler):
     async def handle(self) -> Any:
         urls = re.findall(r'http(?:s)?://\S+', self.event.text)
