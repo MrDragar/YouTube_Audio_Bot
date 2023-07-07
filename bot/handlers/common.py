@@ -1,15 +1,15 @@
 from typing import Any
 
 from aiogram.dispatcher.router import Router
-from aiogram.handlers import MessageHandler
+from aiogram.handlers import CallbackQueryHandler
 from aiogram.methods import SendMessage
 from aiogram.filters import Command, Text
 from aiogram import types
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram import F
 
-from . base_handlers import StateMassageHandler
-from bot.states import YoutubeState
+from .base_handlers import StateMassageHandler
+from bot.filters import IsSubscriberFilter
 
 common_router = Router()
 
@@ -27,7 +27,31 @@ class CancelHandler(StateMassageHandler):
 @common_router.message(Command("start", "help"))
 class StartHandler(StateMassageHandler):
     async def handle(self) -> Any:
-        await self.state.set_state(YoutubeState.type)
+        await SendMessage(chat_id=self.chat.id,
+                          text=_("Привет. С помощью этого бота ты можешь "
+                                 "скачать любое видео или аудио с Ютуба."
+                                 "Для этого вам необходимо скинуть ссылку на "
+                                 "этот ролик. По всем вопросам пишите на"
+                                 "yshhenyaev@mail.ru\n"
+                                 "Для смены языка пропишите \n/language ."))
+
+
+@common_router.message(Command("start", "help"))
+class StartHandler(StateMassageHandler):
+    async def handle(self) -> Any:
+        await SendMessage(chat_id=self.chat.id,
+                          text=_("Привет. С помощью этого бота ты можешь "
+                                 "скачать любое видео или аудио с Ютуба."
+                                 "Для этого вам необходимо скинуть ссылку на "
+                                 "этот ролик. По всем вопросам пишите на"
+                                 "yshhenyaev@mail.ru\n"
+                                 "Для смены языка пропишите \n/language ."))
+
+
+@common_router.callback_query(Text("check_subscribe"),
+                              IsSubscriberFilter())
+class StartCallbackHandler(CallbackQueryHandler):
+    async def handle(self) -> Any:
         await SendMessage(chat_id=self.chat.id,
                           text=_("Привет. С помощью этого бота ты можешь "
                                  "скачать любое видео или аудио с Ютуба."
