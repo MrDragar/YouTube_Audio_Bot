@@ -27,9 +27,9 @@ class ErrorDatabaseI18nMiddleware(I18nMiddleware):
 class CallbackDatabaseI18nMiddleware(I18nMiddleware):
     async def get_locale(self, event: CallbackQuery, data: Dict[str, Any])\
             -> str:
-        user = await create_user(id=event.message.from_user.id,
-                                 name=event.message.from_user.full_name,
-                                 language=event.message.from_user.language_code)
+        user = await create_user(id=event.from_user.id,
+                                 name=event.from_user.full_name,
+                                 language=event.from_user.language_code)
         return user.language.value
 
 
