@@ -9,7 +9,7 @@ from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram import F
 
 from .base_handlers import StateMassageHandler
-from bot.filters import IsSubscriberFilter
+from bot.filters import IsSubscriberFilter, IsSubscriberCallbackFilter
 
 common_router = Router()
 
@@ -49,10 +49,10 @@ class StartHandler(StateMassageHandler):
 
 
 @common_router.callback_query(Text("check_subscribe"),
-                              IsSubscriberFilter())
+                              IsSubscriberCallbackFilter())
 class StartCallbackHandler(CallbackQueryHandler):
     async def handle(self) -> Any:
-        await SendMessage(chat_id=self.chat.id,
+        await SendMessage(chat_id=self.event.message.chat.id,
                           text=_("Привет. С помощью этого бота ты можешь "
                                  "скачать любое видео или аудио с Ютуба."
                                  "Для этого вам необходимо скинуть ссылку на "
