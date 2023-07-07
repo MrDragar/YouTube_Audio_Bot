@@ -8,7 +8,7 @@ from aiogram import types
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram import F
 
-from bot.filters import IsSubscriberFilter
+from bot.filters import IsSubscriberFilter, IsSubscriberCallbackFilter
 from bot.keyboards import get_share_link_keyboard
 
 
@@ -25,7 +25,7 @@ class ShareLinkHandler(MessageHandler):
 
 
 @subscribe_channel_router.callback_query(Text("check_subscribe"),
-                                         ~IsSubscriberFilter())
+                                         ~IsSubscriberCallbackFilter())
 class ShareLinkCallbackHandler(CallbackQueryHandler):
     async def handle(self) -> Any:
         await SendMessage(chat_id=self.message.chat.id,

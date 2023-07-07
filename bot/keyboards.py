@@ -50,7 +50,7 @@ def get_language_keyboard() -> types.ReplyKeyboardMarkup:
 def get_share_link_keyboard() -> types.InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
     keyboard.button(text=_("Подписаться на канал"),
-                           url="https://t.me/AudioDownloader")
+                    url="https://t.me/AudioDownloader")
     keyboard.button(text=_("Проверить подписку"),
                     callback_data="check_subscribe")
     return keyboard.as_markup()
