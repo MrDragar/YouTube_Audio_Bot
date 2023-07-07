@@ -10,7 +10,7 @@ async def create_user(id: int, name: str, language: str) -> User:
     user = await get_user_by_id(id)
     if not user:
         await add_user()
-        if language not in [i.value() for i in Language]:
+        if language not in [i.value for i in Language]:
             language = Language.ENGLISH
         user = await User.create(id=id, name=name, language=language)
         await user.save()
