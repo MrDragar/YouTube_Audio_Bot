@@ -15,7 +15,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Копирование кода в образ
 COPY bot .
 COPY main.py .
-COPY env .
+COPY .env .
 
 # Запуск приложения
 CMD ["python3", "main.py"]
