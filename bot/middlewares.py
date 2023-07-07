@@ -38,7 +38,7 @@ def setup_i18n(dp: Dispatcher):
     middleware = DatabaseI18nMiddleware(i18n)
     dp.message.middleware.register(middleware)
     dp.message.outer_middleware(middleware)
-    callback_middleware = DatabaseI18nMiddleware(i18n)
+    callback_middleware = CallbackDatabaseI18nMiddleware(i18n)
     dp.callback_query.middleware.register(callback_middleware)
 
     error_middleware = ErrorDatabaseI18nMiddleware(i18n)
