@@ -19,6 +19,8 @@ entry_point_router = Router() #Должен быть в иерархии пос�
 @entry_point_router.message(IsSubscriberFilter())
 class GetLinkHandler(StateMassageHandler):
     async def handle(self) -> Any:
+        if not self.event.text:
+            return SendMessage(chat_id=self.chat.id, text=_("Чё надо?"))
         urls = re.findall(r'http(?:s)?://\S+', self.event.text)
         if not urls:
             return SendMessage(chat_id=self.chat.id,

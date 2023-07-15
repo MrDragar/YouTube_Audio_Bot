@@ -2,7 +2,7 @@ import logging
 
 from aiogram.dispatcher.router import Router
 from aiogram.methods import SendMessage
-from aiogram.exceptions import TelegramEntityTooLarge
+from aiogram.exceptions import TelegramEntityTooLarge, TelegramNetworkError
 from yt_dlp.utils import DownloadError
 from aiogram.utils.i18n import gettext as _
 from httpx import ReadTimeout
@@ -23,6 +23,7 @@ class YoutubeErrorHandler(StateErrorHandler):
                 isinstance(self.event.exception, TelegramEntityTooLarge):
             return SendMessage(chat_id=self.event.update.message.chat.id,
                                text=_("Файл весит больше 2 ГБ", locale="ru"))
+
         if isinstance(self.event.exception, DownloadError):
             if "This video contains content from SME, who has blocked it in " \
                "your country on copyright grounds" in self.event.exception.msg:
@@ -39,20 +40,41 @@ class YoutubeErrorHandler(StateErrorHandler):
             if "Name or service not known>" in self.event.exception.msg:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Некорректная ссылка"))
+            if "Requested format is not available." in self.event.exception.msg:
+                return SendMessage(chat_id=self.event.update.message.chat.id,
+                                   text=_("Ошибка с форматом видео. Пожалуйста,"
+                                          " сообщите админам об этой ошибку"))
+            if "ERROR: Unable to rename file" in self.event.exception.msg:
+                return SendMessage(chat_id=self.event.update.message.chat.id,
+                                   text=_("Ошибка из-за того, что это видео "
+                                          "сейчас кто-то скачивал. "
+                                          "Пожалуйста, повторите попытку "
+                                          "через 5 минут."))
+
             await add_unsuccessful_request()
             logging.exception(self.event.exception)
             logging.info(type(self.event.exception))
             return SendMessage(chat_id=self.event.update.message.chat.id,
                                text=_("Произошла какая-та ошибка при"
-                                      " скачивании видео"))
+                                      " скачивании видео. Сообщите админам"))
 
         if isinstance(self.event.exception, ReadTimeout) or \
                 isinstance(self.event.exception, InvalidURL):
             return SendMessage(chat_id=self.event.update.message.chat.id,
                                text=_("Некорректная ссылка"))
+
+        if isinstance(self.event.exception, TelegramNetworkError):
+            if "No such file or directory" in self.exception_message:
+                return SendMessage(chat_id=self.event.update.message.chat.id,
+                                   text=_("Ошибка из-за того, что это видео "
+                                          "сейчас кто-то скачивал. "
+                                          "Пожалуйста, повторите попытку "
+                                          "через 5 минут."))
+
         await add_unsuccessful_request()
         logging.exception(self.event.exception)
         logging.info(type(self.event.exception))
         return SendMessage(chat_id=self.event.update.message.chat.id,
                            text=_("Произошла какая-то ошибка (никто не"
-                                  " знает, из-за чего она произошла)"))
+                                  " знает, из-за чего она произошла). "
+                                  "Сообщите админам"))
