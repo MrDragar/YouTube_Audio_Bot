@@ -11,7 +11,7 @@ from bot.handlers import root_router
 async def main():
     await init_db()
     setup_i18n(dp)
-    await register_commands(bot)
+    await register_commands()
     dp.include_router(root_router)
     register_services()
     await dp.start_polling(bot)

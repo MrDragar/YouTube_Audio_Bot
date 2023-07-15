@@ -9,6 +9,7 @@ from bot.states import ChangingLanguageState
 from .base_handlers import StateMassageHandler
 from bot.database.user import change_language
 from bot.keyboards import get_language_keyboard
+from bot.commands import set_commands_for_user
 
 
 language_router = Router()
@@ -34,6 +35,7 @@ class GetLanguageHandler(ShowLanguagesHandler):
                                  locale=language_code),
                           reply_markup=ReplyKeyboardRemove())
         await self.state.clear()
+        await set_commands_for_user(language_code, self.from_user.id)
 
 
 def useless_function_for_babel():
