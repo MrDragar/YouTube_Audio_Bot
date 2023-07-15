@@ -30,6 +30,7 @@ class SendTiktokMedia(StateMassageHandler, BaseMessageHandlerCallback, ABC):
         downloader = Downloader(url, media, self.send_callback())
         await downloader.run()
         kwargs = {"chat_id": self.chat.id,
+                  "supports_streaming": True,
                   self.type.value: media(),
                   "reply_markup": ReplyKeyboardRemove()
                   }
