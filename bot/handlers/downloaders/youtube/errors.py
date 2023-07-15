@@ -78,6 +78,12 @@ class YoutubeErrorHandler(StateErrorHandler):
                                           "сейчас кто-то скачивал. "
                                           "Пожалуйста, повторите попытку "
                                           "через 5 минут."))
+            logging.info(self.event.exception.message)
+            return SendMessage(chat_id=self.event.update.message.chat.id,
+                               text=_("Ошибка из-за того, что это видео "
+                                      "сейчас кто-то скачивал. "
+                                      "Пожалуйста, повторите попытку "
+                                      "через 5 минут."))
 
         await add_unsuccessful_request()
         logging.exception(self.event.exception)
