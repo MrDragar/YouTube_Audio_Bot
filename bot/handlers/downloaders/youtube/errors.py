@@ -32,7 +32,11 @@ class YoutubeErrorHandler(StateErrorHandler):
                "your country on copyright grounds" in self.event.exception.msg:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Видео заблокировано в РФ"))
+            if "The uploader has not made this video available in your country" in self.event.exception.msg:
+                return SendMessage(chat_id=self.event.update.message.chat.id,
+                                   text=_("Видео заблокировано в РФ"))
             if "Video unavailable" in self.event.exception.msg:
+                print(self.event.exception.msg)
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Видео недоступно для скачивания"))
             if "Unable to download API page: HTTP Error 404" \
@@ -67,7 +71,7 @@ class YoutubeErrorHandler(StateErrorHandler):
                                text=_("Некорректная ссылка"))
 
         if isinstance(self.event.exception, TelegramNetworkError):
-            if "No such file or directory" in self.exception_message:
+            if "No such file or directory" in self.event.exception.message:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Ошибка из-за того, что это видео "
                                           "сейчас кто-то скачивал. "
