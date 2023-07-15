@@ -71,7 +71,8 @@ class YoutubeErrorHandler(StateErrorHandler):
                                text=_("Некорректная ссылка"))
 
         if isinstance(self.event.exception, TelegramNetworkError):
-            if "No such file or directory" in self.event.exception.message:
+            if "Telegram server says ClientOSError: [Errno 2]" \
+               " Can not write request body " in self.event.exception.message:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Ошибка из-за того, что это видео "
                                           "сейчас кто-то скачивал. "
