@@ -98,6 +98,7 @@ class Downloader(Youtube):
         # Смотрим, есть ли запрашенное видео в базе данных
         await self.send_callback()
         await self._run(self.collect_information)
+        await self.media_adapter.get_media()
         if self.media_adapter.is_on_server():
             return self.media_adapter
         await self.send_callback()

@@ -19,5 +19,5 @@ async def delete_old_files():
 
 def register_services():
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(delete_old_files, trigger="interval", minutes=1)
+    scheduler.add_job(delete_old_files, trigger="interval", minutes=2)
     scheduler.start()

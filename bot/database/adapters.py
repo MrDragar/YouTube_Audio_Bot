@@ -16,14 +16,19 @@ class MediaAdapter:
     _on_server: bool = False
 
     def __init__(self, link_id: str, resolution: Optional[str] = None) -> None:
-        type = MediaType.VIDEO if resolution else MediaType.AUDIO
-        self._media = asyncio.run(get_media(link_id=link_id, type=type,
-                                            resolution=resolution))
+        self._type = MediaType.VIDEO if resolution else MediaType.AUDIO
+        self._link_id = link_id
+        self._resolution = resolution
+
+    async def get_media(self):
+        self._media = await get_media(link_id=self._link_id, type=self._type,
+                                      resolution=self._resolution)
         if self._media:
             self._on_server = self._media.file_id is not None
         else:
-            self._media = asyncio.run(create_media(link_id=link_id, type=type,
-                                                   resolution=resolution))
+            self._media = await create_media(link_id=self._link_id,
+                                             type=self._type,
+                                             resolution=self._resolution)
 
     def is_on_server(self) -> bool:
         return self._on_server
