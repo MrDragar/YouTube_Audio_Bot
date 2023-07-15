@@ -9,7 +9,7 @@ from httpx import ReadTimeout
 from requests.exceptions import InvalidURL
 
 from bot.handlers.base_handlers import StateErrorHandler
-from bot.utils.downloaders.youtube import TooBigVideo
+from bot.utils.downloaders.youtube import TooBigVideo, PlaylistError
 from bot.database.day_statistic import add_unsuccessful_request
 
 error_router = Router()
@@ -22,7 +22,10 @@ class YoutubeErrorHandler(StateErrorHandler):
         if isinstance(self.event.exception, TooBigVideo) or \
                 isinstance(self.event.exception, TelegramEntityTooLarge):
             return SendMessage(chat_id=self.event.update.message.chat.id,
-                               text=_("Файл весит больше 2 ГБ", locale="ru"))
+                               text=_("Файл весит больше 2 ГБ"))
+        if isinstance(self.event.exception, PlaylistError):
+            return SendMessage(chat_id=self.event.update.message.chat.id,
+                               text=_("Плейлисты не поддерживаются"))
 
         if isinstance(self.event.exception, DownloadError):
             if "This video contains content from SME, who has blocked it in " \
