@@ -36,18 +36,6 @@ class StartHandler(StateMassageHandler):
                                  "Для смены языка пропишите \n/language ."))
 
 
-@common_router.message(Command("start", "help"))
-class StartHandler(StateMassageHandler):
-    async def handle(self) -> Any:
-        await SendMessage(chat_id=self.chat.id,
-                          text=_("Привет. С помощью этого бота ты можешь "
-                                 "скачать любое видео или аудио с Ютуба."
-                                 "Для этого вам необходимо скинуть ссылку на "
-                                 "этот ролик. По всем вопросам пишите на"
-                                 "yshhenyaev@mail.ru\n"
-                                 "Для смены языка пропишите \n/language ."))
-
-
 @common_router.callback_query(Text("check_subscribe"),
                               IsSubscriberCallbackFilter())
 class StartCallbackHandler(CallbackQueryHandler):
