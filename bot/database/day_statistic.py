@@ -1,6 +1,8 @@
-from datetime import date
+from datetime import date, timedelta
 
 from .models import DayStatistic
+
+from typing import Dict
 
 
 async def get_day_statistic() -> DayStatistic:
@@ -24,3 +26,20 @@ async def add_unsuccessful_request():
     day_statistic = await get_day_statistic()
     day_statistic.unsuccessful_requests += 1
     await day_statistic.save()
+
+
+async def get_monthly_statistics(month: date) -> Dict[str, int]:
+    start_date = month.replace(day=1)
+    end_date = (start_date + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+    query = await DayStatistic.filter(date__gte=start_date, date__lte=end_date)
+    new_users = successful_requests = unsuccessful_requests = 0
+    for day in query:
+        new_users += day.new_users
+        successful_requests += day.successful_requests
+        unsuccessful_requests += day.unsuccessful_requests
+
+    return {
+        'new_users': new_users,
+        'successful_requests': successful_requests,
+        'unsuccessful_requests': unsuccessful_requests,
+    }
