@@ -33,6 +33,8 @@ admin_bot_commands = [
     BotCommand(command="language", description="Сменить язык"),
     BotCommand(command="send_feedback", description="Зачем тебе отправлять отзыв?"),
     BotCommand(command="post", description="Отправка сообщения пользователям"),
+    BotCommand(command="get_day_statistic", description="Получить статистику за день"),
+    BotCommand(command="get_month_statistic", description="Получить статистику за месяц"),
 ]
 
 
