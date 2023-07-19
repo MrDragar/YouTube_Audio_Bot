@@ -63,3 +63,11 @@ async def edit_advert_total_number(advert_id: int, total_number: int) -> int:
         return 1
     advert.total_number = total_number
     await advert.save()
+
+
+async def add_current_number_to_advert(advert_id: int) -> int:
+    """Возвращает 1 в слуячае конца рекламы"""
+    advert = await Advert.get(id=advert_id)
+    advert.current_number = advert.current_number + 1
+    await advert.save()
+    return advert.total_number <= advert.current_number

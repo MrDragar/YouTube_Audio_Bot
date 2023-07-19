@@ -14,12 +14,14 @@ from bot.utils.downloaders.tiktok import Downloader, TiktokVideo
 from bot.database.models import MediaType
 from bot.states import TiktokState
 from bot.database.day_statistic import add_successful_request
+from bot.handlers.advert_mixins import AdvertMixin
 
 
 send_media_router = Router()
 
 
-class SendTiktokMedia(StateMassageHandler, BaseMessageCallbackMixin, ABC):
+class SendTiktokMedia(AdvertMixin, StateMassageHandler,
+                      BaseMessageCallbackMixin, ABC):
     type: MediaType
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
 
@@ -38,6 +40,7 @@ class SendTiktokMedia(StateMassageHandler, BaseMessageCallbackMixin, ABC):
         del media
         await add_successful_request()
         await self.state.clear()
+        await self.send_advert()
 
 
 @send_media_router.message(TiktokState.type, F.text == __("Аудио"))

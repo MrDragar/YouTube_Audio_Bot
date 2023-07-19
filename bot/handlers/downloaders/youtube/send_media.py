@@ -6,19 +6,21 @@ from aiogram import F
 from aiogram.types import ReplyKeyboardRemove
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo
+
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.handlers.callback_mixins import BaseMessageCallbackMixin, \
     VideoMassageCallbackMixin, AudioMassageCallbackMixin
 from bot.states import YoutubeState
 from bot.utils.downloaders.youtube import Downloader
 from bot.database.day_statistic import add_successful_request
+from bot.handlers.advert_mixins import AdvertMixin
 
 
 send_media_router = Router()
 
 
-
-class SendMediaHandler(BaseMessageCallbackMixin, StateMassageHandler, ABC):
+class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
+                       StateMassageHandler, ABC):
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
 
     @abstractmethod
@@ -50,6 +52,7 @@ class SendMediaHandler(BaseMessageCallbackMixin, StateMassageHandler, ABC):
         del media_adapter
         await add_successful_request()
         await self.state.clear()
+        await self.send_advert()
 
 
 @send_media_router.message(YoutubeState.type, F.text == __("Аудио"))

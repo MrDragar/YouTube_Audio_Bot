@@ -31,10 +31,23 @@ admin_bot_commands = [
     BotCommand(command="help", description="Помощь"),
     BotCommand(command="cancel", description="Отмена"),
     BotCommand(command="language", description="Сменить язык"),
-    BotCommand(command="send_feedback", description="Зачем тебе отправлять отзыв?"),
+    BotCommand(command="send_feedback",
+               description="Зачем тебе отправлять отзыв?"),
     BotCommand(command="post", description="Отправка сообщения пользователям"),
-    BotCommand(command="get_day_statistic", description="Получить статистику за день"),
-    BotCommand(command="get_month_statistic", description="Получить статистику за месяц"),
+    BotCommand(command="get_day_statistic",
+               description="Получить статистику за день"),
+    BotCommand(command="get_month_statistic",
+               description="Получить статистику за месяц"),
+    BotCommand(command="new_advert",
+               description="Создать новую рекламу"),
+    BotCommand(command="get_advert",
+               description="Получить информацию о рекламе по id"),
+    BotCommand(command="get_active_adverts",
+               description="Получить список активных реклам"),
+    BotCommand(command="edit_advert_total_number",
+               description="Изменить максимальное количество просмотров у рекламы"),
+    BotCommand(command="edit_advert_text", description="Изменить текст рекламы")
+
 ]
 
 
