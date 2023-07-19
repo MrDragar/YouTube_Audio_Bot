@@ -20,3 +20,21 @@ class PostingState(StatesGroup):
 
 class TiktokState(StatesGroup):
     type = State()
+
+
+class NewAdvertState(StatesGroup):
+    step1 = State()
+    step2 = State()
+
+
+class EditAdvertTextState(StatesGroup):
+    step1 = State()
+    step2 = State()
+
+
+class EditAdvertTotalNumberState(StatesGroup):
+    step1 = State()
+    step2 = State()
+
+class GetAdvertByIdState(StatesGroup):
+    step1 = State()

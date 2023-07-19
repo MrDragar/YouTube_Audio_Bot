@@ -56,3 +56,10 @@ class DayStatistic(Model):
     successful_requests = fields.IntField(default=0)
     unsuccessful_requests = fields.IntField(default=0)
 
+
+class Advert(Model):
+    id = fields.IntField(pk=True)
+    chat_id = fields.IntField()
+    message_id = fields.IntField()
+    current_number = fields.IntField(default=0)
+    total_number = fields.IntField(default=10)
