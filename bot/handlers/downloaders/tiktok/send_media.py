@@ -7,9 +7,9 @@ from aiogram.methods import SendAudio, SendVideo
 from aiogram import F
 from aiogram.types import ReplyKeyboardRemove
 
-from bot.handlers.base_handlers import StateMassageHandler, \
-    AudioMassageHandlerCallback, VideoMassageHandlerCallback, \
-    BaseMessageHandlerCallback
+from bot.handlers.base_handlers import StateMassageHandler
+from bot.handlers.callback_mixins import BaseMessageCallbackMixin, \
+    VideoMassageCallbackMixin, AudioMassageCallbackMixin
 from bot.utils.downloaders.tiktok import Downloader, TiktokVideo
 from bot.database.models import MediaType
 from bot.states import TiktokState
@@ -19,7 +19,7 @@ from bot.database.day_statistic import add_successful_request
 send_media_router = Router()
 
 
-class SendTiktokMedia(StateMassageHandler, BaseMessageHandlerCallback, ABC):
+class SendTiktokMedia(StateMassageHandler, BaseMessageCallbackMixin, ABC):
     type: MediaType
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
 
@@ -41,12 +41,12 @@ class SendTiktokMedia(StateMassageHandler, BaseMessageHandlerCallback, ABC):
 
 
 @send_media_router.message(TiktokState.type, F.text == __("Аудио"))
-class SendTiktokAudio(SendTiktokMedia, AudioMassageHandlerCallback):
+class SendTiktokAudio(SendTiktokMedia, AudioMassageCallbackMixin):
     type = MediaType.AUDIO
     SendMediaMethod = SendAudio
 
 
 @send_media_router.message(TiktokState.type, F.text == __("Видео"))
-class SendTiktokVideo(SendTiktokMedia, VideoMassageHandlerCallback):
+class SendTiktokVideo(SendTiktokMedia, VideoMassageCallbackMixin):
     type = MediaType.VIDEO
     SendMediaMethod = SendVideo

@@ -7,9 +7,9 @@ from aiogram.types import ReplyKeyboardRemove
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo
 
-from bot.handlers.base_handlers import StateMassageHandler, \
-    BaseMessageHandlerCallback, AudioMassageHandlerCallback, \
-    VideoMassageHandlerCallback
+from bot.handlers.base_handlers import StateMassageHandler
+from bot.handlers.callback_mixins import BaseMessageCallbackMixin, \
+    VideoMassageCallbackMixin, AudioMassageCallbackMixin
 from bot.states import YoutubeState
 from bot.utils.downloaders.youtube import Downloader
 from bot.database.day_statistic import add_successful_request
@@ -18,7 +18,7 @@ from bot.database.day_statistic import add_successful_request
 send_media_router = Router()
 
 
-class SendMediaHandler(StateMassageHandler, BaseMessageHandlerCallback, ABC):
+class SendMediaHandler(BaseMessageCallbackMixin, StateMassageHandler, ABC):
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
 
     @abstractmethod
@@ -53,7 +53,7 @@ class SendMediaHandler(StateMassageHandler, BaseMessageHandlerCallback, ABC):
 
 
 @send_media_router.message(YoutubeState.type, F.text == __("Аудио"))
-class SendAudioHandler(SendMediaHandler, AudioMassageHandlerCallback):
+class SendAudioHandlerMixin(AudioMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendAudio
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -64,7 +64,7 @@ class SendAudioHandler(SendMediaHandler, AudioMassageHandlerCallback):
 
 
 @send_media_router.message(YoutubeState.resolution)
-class SendVideoHandler(SendMediaHandler, VideoMassageHandlerCallback):
+class SendVideoHandlerMixin(VideoMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendVideo
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
