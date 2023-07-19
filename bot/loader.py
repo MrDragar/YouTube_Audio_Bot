@@ -5,7 +5,7 @@ from aiogram.client.telegram import TelegramAPIServer
 from bot.config import API_TOKEN
 
 session = AiohttpSession(
-    # api=TelegramAPIServer.from_base('http://localhost:8081'),
+    api=TelegramAPIServer.from_base('http://localhost:8081'),
     timeout=0
 )
 bot = Bot(token=API_TOKEN, session=session)
