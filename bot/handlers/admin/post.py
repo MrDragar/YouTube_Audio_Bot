@@ -4,14 +4,13 @@ from aiogram.filters import Command
 from aiogram.utils.i18n import gettext as _
 
 from bot.handlers.base_handlers import StateMassageHandler
-from bot.filters import IsAdmin
 from bot.states import PostingState
 from bot.database.user import get_users
 
 post_router = Router()
 
 
-@post_router.message(Command("post"), IsAdmin())
+@post_router.message(Command("post"))
 class StartPostHandler(StateMassageHandler):
     async def handle(self):
         await SendMessage(chat_id=self.chat.id, text=_("Напишите ваш пост"))

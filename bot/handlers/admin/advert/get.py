@@ -5,13 +5,12 @@ from aiogram.methods import SendMessage, CopyMessage
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.states import GetAdvertByIdState
 from bot.database.advert import get_advert_by_id, get_active_adverts
-from bot.filters import IsAdmin
 
 
 get_router = Router()
 
 
-@get_router.message(Command("get_advert"), IsAdmin())
+@get_router.message(Command("get_advert"))
 class GetActiveAdvertsHandler(StateMassageHandler):
     async def handle(self):
         await self.state.set_state(GetAdvertByIdState.step1)
@@ -40,7 +39,7 @@ class GetIdHandler(StateMassageHandler):
                           message_id=advert.message_id)
 
 
-@get_router.message(Command("get_active_adverts"), IsAdmin())
+@get_router.message(Command("get_active_adverts"))
 class GetActiveAdvertHandler(StateMassageHandler):
     async def handle(self):
         adverts = await get_active_adverts()

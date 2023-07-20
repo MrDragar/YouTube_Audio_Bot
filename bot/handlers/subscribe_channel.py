@@ -3,10 +3,8 @@ from typing import Any
 from aiogram.dispatcher.router import Router
 from aiogram.handlers import MessageHandler, CallbackQueryHandler
 from aiogram.methods import SendMessage
-from aiogram.filters import Command, Text
-from aiogram import types
-from aiogram.utils.i18n import lazy_gettext as __, gettext as _
-from aiogram import F
+from aiogram.filters import Text
+from aiogram.utils.i18n import gettext as _
 
 from bot.filters import IsSubscriberFilter, IsSubscriberCallbackFilter
 from bot.keyboards import get_share_link_keyboard

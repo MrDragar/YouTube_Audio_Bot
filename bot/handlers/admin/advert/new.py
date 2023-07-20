@@ -5,13 +5,12 @@ from aiogram.methods import SendMessage
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.states import NewAdvertState
 from bot.database.advert import create_advert
-from bot.filters import IsAdmin
 
 
 new_router = Router()
 
 
-@new_router.message(Command("new_advert"), IsAdmin())
+@new_router.message(Command("new_advert"))
 class CreateAdvertHandler(StateMassageHandler):
     async def handle(self):
         await self.state.set_state(NewAdvertState.step1)

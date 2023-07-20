@@ -6,12 +6,11 @@ from aiogram.methods import SendMessage
 from aiogram.handlers import MessageHandler
 
 from bot.database.day_statistic import get_monthly_statistics, get_day_statistic
-from bot.filters import IsAdmin
 
 statistic_router = Router()
 
 
-@statistic_router.message(Command("get_month_statistic"), IsAdmin())
+@statistic_router.message(Command("get_month_statistic"))
 class SentMonthlyStatisticHandler(MessageHandler):
     async def handle(self):
         result = await get_monthly_statistics(date.today())
@@ -24,7 +23,7 @@ class SentMonthlyStatisticHandler(MessageHandler):
                                   result["unsuccessful_requests"]))
 
 
-@statistic_router.message(Command("get_day_statistic"), IsAdmin())
+@statistic_router.message(Command("get_day_statistic"))
 class SentMonthlyStatisticHandler(MessageHandler):
     async def handle(self):
         result = await get_day_statistic()

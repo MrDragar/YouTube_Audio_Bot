@@ -5,13 +5,12 @@ from aiogram.methods import SendMessage
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.states import EditAdvertTextState
 from bot.database.advert import edit_advert_text
-from bot.filters import IsAdmin
 
 
 edit_text_router = Router()
 
 
-@edit_text_router.message(Command("edit_advert_text"), IsAdmin())
+@edit_text_router.message(Command("edit_advert_text"))
 class EditTextHandler(StateMassageHandler):
     async def handle(self):
         await self.state.set_state(EditAdvertTextState.step1)
