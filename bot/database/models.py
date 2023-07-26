@@ -38,7 +38,7 @@ class MediaType(str, Enum):
 
 class User(Model):
     id = fields.IntField(pk=True)
-    name = fields.CharField(max_length=50)
+    name = fields.CharField(max_length=180)
     language = fields.CharEnumField(Language)
 
 
