@@ -19,8 +19,7 @@ class PlaylistError(Exception):
 
 class Youtube(ABC):
     ydl_opts: dict = {"quiet": True,
-                      "noplaylist": True,
-                      "ignoreerrors": 'only_download'
+                      "noplaylist": True
                       }
     _callback: Optional[AsyncGenerator] = None
 
@@ -47,6 +46,7 @@ class YoutubeResolutionParser(Youtube):
 
     def __init__(self, url: str):
         self._url = url
+        self.ydl_opts["ignore_no_formats_error"] = True
 
     @staticmethod
     def check_format(format_: dict):
