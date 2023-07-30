@@ -12,12 +12,15 @@ from bot.database.adapters import MediaAdapter
 class TooBigVideo(Exception):
     ...
 
+
 class PlaylistError(Exception):
     ...
 
+
 class Youtube(ABC):
     ydl_opts: dict = {"quiet": True,
-                      "noplaylist": True
+                      "noplaylist": True,
+                      "ignoreerrors": 'only_download'
                       }
     _callback: Optional[AsyncGenerator] = None
 
@@ -47,7 +50,7 @@ class YoutubeResolutionParser(Youtube):
 
     @staticmethod
     def check_format(format_: dict):
-        return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none"\
+        return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none" \
             and "filesize" in format_ and "format_note" in format_ \
             and format_["protocol"] == "https"
 
@@ -79,7 +82,8 @@ class Downloader(Youtube):
         self._callback = callback
         self.ydl_opts["format"] = (resolution + "+") if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
-        self.ydl_opts['outtmpl'] = f'video/%(title)s {resolution}.%(ext)s'
+        self.ydl_opts['outtmpl'] = {'default':
+                                        f'video/%(title)s {resolution}.%(ext)s'}
 
     @staticmethod
     def check_size(size):
