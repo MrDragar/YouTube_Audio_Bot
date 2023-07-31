@@ -46,7 +46,6 @@ class YoutubeResolutionParser(Youtube):
 
     def __init__(self, url: str):
         self._url = url
-        self.ydl_opts["ignore_no_formats_error"] = True
 
     @staticmethod
     def check_format(format_: dict):
