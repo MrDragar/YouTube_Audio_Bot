@@ -18,7 +18,6 @@ error_router = Router()
 @error_router.errors()
 class YoutubeErrorHandler(StateErrorHandler):
     async def handle(self):
-        logging.exception(self.event.exception)
         await self.state.clear()
         if isinstance(self.event.exception, TooBigVideo) or \
                 isinstance(self.event.exception, TelegramEntityTooLarge):
@@ -33,7 +32,8 @@ class YoutubeErrorHandler(StateErrorHandler):
                "your country on copyright grounds" in self.event.exception.msg:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Видео заблокировано в РФ"))
-            if "The uploader has not made this video available in your country" in self.event.exception.msg:
+            if "The uploader has not made this video available in your country"\
+                    in self.event.exception.msg:
                 return SendMessage(chat_id=self.event.update.message.chat.id,
                                    text=_("Видео заблокировано в РФ"))
             if "Video unavailable" in self.event.exception.msg:
