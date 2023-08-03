@@ -21,7 +21,6 @@ class PlaylistError(Exception):
 class Youtube(ABC):
     ydl_opts: dict = {"quiet": True,
                       "noplaylist": True,
-                      "extractor_retries": 5
                       }
     _callback: Optional[AsyncGenerator] = None
 
@@ -58,6 +57,7 @@ class YoutubeResolutionParser(Youtube):
 
     def get_resolutions(self) -> Dict[str, str]:
         with YoutubeDL(self.ydl_opts) as ydl:
+            ydl.format_selector = None
             info = ydl.extract_info(self._url, download=False)
             if "entries" in info:
                 raise PlaylistError
