@@ -6,6 +6,11 @@ class YoutubeState(StatesGroup):
     resolution = State()
 
 
+class VKState(StatesGroup):
+    type = State()
+    resolution = State()
+
+
 class ChangingLanguageState(StatesGroup):
     step = State()
 
@@ -35,6 +40,7 @@ class EditAdvertTextState(StatesGroup):
 class EditAdvertTotalNumberState(StatesGroup):
     step1 = State()
     step2 = State()
+
 
 class GetAdvertByIdState(StatesGroup):
     step1 = State()

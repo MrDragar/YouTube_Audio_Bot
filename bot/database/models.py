@@ -36,6 +36,11 @@ class MediaType(str, Enum):
     AUDIO = "audio"
 
 
+class Platform(str, Enum):
+    YOUTUBE = "youtube"
+    VK = "vk"
+
+
 class User(Model):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=180)
@@ -44,6 +49,7 @@ class User(Model):
 
 class Media(Model):
     id = fields.IntField(pk=True)
+    platform = fields.CharEnumField(Platform, default=Platform.YOUTUBE)
     link_id = fields.CharField(max_length=50)
     type = fields.CharEnumField(MediaType)
     resolution = fields.CharField(max_length=10, default=None, null=True)

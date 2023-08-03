@@ -7,6 +7,7 @@ import logging
 from yt_dlp import YoutubeDL
 
 from bot.database.adapters import MediaAdapter
+from bot.database.models import Platform
 
 
 class TooBigVideo(Exception):
@@ -43,6 +44,7 @@ class Youtube(ABC):
 
 class YoutubeResolutionParser(Youtube):
     _url = None
+    resolution_name = "format_note"
 
     def __init__(self, url: str):
         self._url = url
@@ -62,7 +64,7 @@ class YoutubeResolutionParser(Youtube):
             video_resolutions = {}
             for format_ in all_formats:
                 if self.check_format(format_):
-                    video_resolutions[format_["format_note"]] = \
+                    video_resolutions[format_[self.resolution_name]] = \
                         format_["format_id"]
             return video_resolutions
 
@@ -71,7 +73,7 @@ class YoutubeResolutionParser(Youtube):
         return result
 
 
-class Downloader(Youtube):
+class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
 
     def __init__(self, url: str, resolution: Optional[str] = "",
@@ -97,7 +99,9 @@ class Downloader(Youtube):
             size = info.get("filesize_approx", info.get('filesize', None))
             if not self.check_size(size):
                 raise TooBigVideo
-            self.media_adapter = MediaAdapter(info["id"], self._resolution)
+            self.media_adapter = MediaAdapter(info["id"],
+                                              platform=Platform.YOUTUBE,
+                                              resolution=self._resolution)
 
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:

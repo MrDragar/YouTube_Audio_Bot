@@ -11,7 +11,7 @@ from bot.handlers.base_handlers import StateMassageHandler
 from bot.handlers.callback_mixins import BaseMessageCallbackMixin, \
     VideoMassageCallbackMixin, AudioMassageCallbackMixin
 from bot.states import YoutubeState
-from bot.utils.downloaders.youtube import Downloader
+from bot.utils.downloaders.youtube import YoutubeDownloader
 from bot.database.day_statistic import add_successful_request
 from bot.handlers.advert_mixins import AdvertMixin
 
@@ -22,6 +22,7 @@ send_media_router = Router()
 class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
                        StateMassageHandler, ABC):
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
+    Downloader: YoutubeDownloader.__class__
 
     @abstractmethod
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -36,8 +37,9 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
         resolution, error = await self.get_resolution()
         if error:
             return
-        downloader = Downloader(data["url"], resolution,
-                                callback=self.send_callback())
+        downloader = self.Downloader(data["url"], resolution,
+                                     callback=self.send_callback())
+
         media_adapter = await downloader.run()
         kwargs = {"chat_id": self.chat.id,
                   media_adapter.get_media_type().value: media_adapter(),
@@ -56,8 +58,9 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
 
 
 @send_media_router.message(YoutubeState.type, F.text == __("Аудио"))
-class SendAudioHandlerMixin(AudioMassageCallbackMixin, SendMediaHandler):
+class SendAudioHandler(AudioMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendAudio
+    Downloader: YoutubeDownloader
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         return None, False
@@ -67,8 +70,9 @@ class SendAudioHandlerMixin(AudioMassageCallbackMixin, SendMediaHandler):
 
 
 @send_media_router.message(YoutubeState.resolution)
-class SendVideoHandlerMixin(VideoMassageCallbackMixin, SendMediaHandler):
+class SendVideoHandler(VideoMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendVideo
+    Downloader: YoutubeDownloader
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         data = await self.state.get_data()

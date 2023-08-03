@@ -15,12 +15,15 @@ resolution_router = Router()
 
 @resolution_router.message(YoutubeState.type, F.text == __("Видео"))
 class ShowResolutionsHandler(StateMassageHandler):
+    next_state = YoutubeState.resolution.state
+    Parser: YoutubeResolutionParser.__class__ = YoutubeResolutionParser
+
     async def handle(self):
         await SendChatAction(chat_id=self.chat.id, action=_("typing"))
         data = await self.state.get_data()
-        parser = YoutubeResolutionParser(data["url"])
+        parser = self.Parser(data["url"])
         resolutions = await parser.run()
         await SendMessage(chat_id=self.chat.id, text=_("Выберите разрешение"),
                           reply_markup=get_resolution_keyboard(resolutions))
         await self.state.update_data(resolution=resolutions)
-        await self.state.set_state(YoutubeState.resolution)
+        await self.state.set_state(self.next_state)

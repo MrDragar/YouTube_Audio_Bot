@@ -5,7 +5,7 @@ import os
 
 from aiogram.types import FSInputFile
 
-from .models import Media, MediaType
+from .models import Media, MediaType, Platform
 from .media import get_media, create_media
 
 
@@ -15,20 +15,24 @@ class MediaAdapter:
     _file_path: Optional[str] = None
     _on_server: bool = False
 
-    def __init__(self, link_id: str, resolution: Optional[str] = None) -> None:
+    def __init__(self, link_id: str, platform: Platform,
+                 resolution: Optional[str] = None) -> None:
         self._type = MediaType.VIDEO if resolution else MediaType.AUDIO
         self._link_id = link_id
         self._resolution = resolution
+        self._platform = platform
 
     async def get_media(self):
         self._media = await get_media(link_id=self._link_id, type=self._type,
-                                      resolution=self._resolution)
+                                      resolution=self._resolution,
+                                      platform=self._platform)
         if self._media:
             self._on_server = self._media.file_id is not None
         else:
             self._media = await create_media(link_id=self._link_id,
                                              type=self._type,
-                                             resolution=self._resolution)
+                                             resolution=self._resolution,
+                                             platform=self._platform)
 
     def is_on_server(self) -> bool:
         return self._on_server
