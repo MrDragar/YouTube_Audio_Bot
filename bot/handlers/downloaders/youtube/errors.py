@@ -18,7 +18,7 @@ error_router = Router()
 @error_router.errors()
 class YoutubeErrorHandler(StateErrorHandler):
     async def handle(self):
-        print(self.exception_message)
+        logging.exception(self.event.exception)
         await self.state.clear()
         if isinstance(self.event.exception, TooBigVideo) or \
                 isinstance(self.event.exception, TelegramEntityTooLarge):

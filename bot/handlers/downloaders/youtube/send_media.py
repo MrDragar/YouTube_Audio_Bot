@@ -60,7 +60,7 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
 @send_media_router.message(YoutubeState.type, F.text == __("Аудио"))
 class SendAudioHandler(AudioMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendAudio
-    Downloader: YoutubeDownloader
+    Downloader = YoutubeDownloader
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         return None, False
@@ -72,7 +72,7 @@ class SendAudioHandler(AudioMassageCallbackMixin, SendMediaHandler):
 @send_media_router.message(YoutubeState.resolution)
 class SendVideoHandler(VideoMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendVideo
-    Downloader: YoutubeDownloader
+    Downloader = YoutubeDownloader
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         data = await self.state.get_data()

@@ -28,10 +28,9 @@ class VKDownloader(YoutubeDownloader):
             info = ydl.extract_info(self._url, download=False)
             if "entries" in info:
                 raise PlaylistError
-
+            info = ydl.sanitize_info(info)
             # размер указан в байтах
-            size = int(ydl.sanitize_info(info)['duration'] *
-                       info['tbr'] * (1024 / 8))
+            size = int(info['duration'] * info['tbr'] * (1024 / 8))
             if not self.check_size(size):
                 raise TooBigVideo
 
