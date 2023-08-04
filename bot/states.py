@@ -4,11 +4,13 @@ from aiogram.fsm.state import StatesGroup, State
 class YoutubeState(StatesGroup):
     type = State()
     resolution = State()
+    waiting = State()
 
 
 class VKState(StatesGroup):
     type = State()
     resolution = State()
+    waiting = State()
 
 
 class ChangingLanguageState(StatesGroup):
@@ -25,6 +27,7 @@ class PostingState(StatesGroup):
 
 class TiktokState(StatesGroup):
     type = State()
+    waiting = State()
 
 
 class NewAdvertState(StatesGroup):

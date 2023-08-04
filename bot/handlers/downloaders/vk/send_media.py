@@ -15,6 +15,7 @@ send_media_router = Router()
 class SendAudioHandler(youtube.SendAudioHandler):
     SendMediaMethod = SendAudio
     Downloader = VKDownloader
+    next_state = VKState.waiting.state
 
     async def handle(self):
         await SendMessage(chat_id=self.chat.id,

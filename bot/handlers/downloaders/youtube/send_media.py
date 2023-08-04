@@ -10,7 +10,7 @@ from aiogram.methods import SendAudio, SendMessage, SendVideo, DeleteMessage
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.handlers.callback_mixins import BaseMessageCallbackMixin, \
     VideoMassageCallbackMixin, AudioMassageCallbackMixin
-from bot.states import YoutubeState
+from bot.states import YoutubeState, State
 from bot.utils.downloaders.youtube import YoutubeDownloader
 from bot.database.day_statistic import add_successful_request
 from bot.handlers.advert_mixins import AdvertMixin
@@ -23,6 +23,7 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
                        StateMassageHandler, ABC):
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
     Downloader: YoutubeDownloader.__class__
+    next_state: str
 
     @abstractmethod
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
@@ -37,6 +38,7 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
         resolution, error = await self.get_resolution()
         if error:
             return
+        await self.state.set_state(self.next_state)
 
         message = await SendMessage(chat_id=self.chat.id,
                                     text="Удаление клавиатуры",
@@ -68,6 +70,7 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
 class SendAudioHandler(AudioMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendAudio
     Downloader = YoutubeDownloader
+    next_state = YoutubeState.waiting.state
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         return None, False
@@ -80,6 +83,7 @@ class SendAudioHandler(AudioMassageCallbackMixin, SendMediaHandler):
 class SendVideoHandler(VideoMassageCallbackMixin, SendMediaHandler):
     SendMediaMethod = SendVideo
     Downloader = YoutubeDownloader
+    next_state = YoutubeState.waiting.state
 
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         data = await self.state.get_data()
