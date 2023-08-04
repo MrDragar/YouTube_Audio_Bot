@@ -3,7 +3,7 @@ from typing import Union
 
 from aiogram.utils.i18n import lazy_gettext as __
 from aiogram.dispatcher.router import Router
-from aiogram.methods import SendAudio, SendVideo
+from aiogram.methods import SendAudio, SendVideo, SendMessage, DeleteMessage
 from aiogram import F
 from aiogram.types import ReplyKeyboardRemove
 
@@ -29,6 +29,13 @@ class SendTiktokMedia(AdvertMixin, StateMassageHandler,
         data = await self.state.get_data()
         url = data["url"]
         media = TiktokVideo(self.type, self.chat.id, self.event.message_id)
+
+        message = await SendMessage(chat_id=self.chat.id,
+                                    text="Удаление клавиатуры",
+                                    disable_notification=True,
+                                    reply_markup=ReplyKeyboardRemove())
+        await DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
+
         downloader = Downloader(url, media, self.send_callback())
         await downloader.run()
         kwargs = {"chat_id": self.chat.id,

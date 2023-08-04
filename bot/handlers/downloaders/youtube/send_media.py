@@ -5,7 +5,7 @@ from aiogram.dispatcher.router import Router
 from aiogram import F
 from aiogram.types import ReplyKeyboardRemove
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
-from aiogram.methods import SendAudio, SendMessage, SendVideo
+from aiogram.methods import SendAudio, SendMessage, SendVideo, DeleteMessage
 
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.handlers.callback_mixins import BaseMessageCallbackMixin, \
@@ -37,6 +37,13 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
         resolution, error = await self.get_resolution()
         if error:
             return
+
+        message = await SendMessage(chat_id=self.chat.id,
+                                    text="Удаление клавиатуры",
+                                    disable_notification=True,
+                                    reply_markup=ReplyKeyboardRemove())
+        await DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
+
         downloader = self.Downloader(data["url"], resolution,
                                      callback=self.send_callback())
 
