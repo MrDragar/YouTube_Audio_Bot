@@ -8,10 +8,11 @@ async def delete_old_files():
     files = os.listdir(directory)
     for file in files:
         file_path = os.path.join(directory, file)
-        a = os.path.getctime(file_path)
+        a = max(os.path.getctime(file_path), os.path.getatime(file_path),
+                os.path.getmtime(file_path))
         time = (datetime.datetime.utcnow() - datetime.datetime.utcfromtimestamp(a)).seconds
         try:
-            if time > 600:
+            if time > 1200:
                 os.remove(file_path)
         finally:
             ...
