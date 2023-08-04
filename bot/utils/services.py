@@ -12,7 +12,7 @@ async def delete_old_files():
                 os.path.getmtime(file_path))
         time = (datetime.datetime.utcnow() - datetime.datetime.utcfromtimestamp(a)).seconds
         try:
-            if time > 1200:
+            if time > 600:
                 os.remove(file_path)
         finally:
             ...
