@@ -109,7 +109,7 @@ class YoutubeDownloader(Youtube):
             info = ydl.extract_info(self._url, download=True)
             file_path = ydl.prepare_filename(info, outtmpl=self.ydl_opts["outtmpl"]["default"])
             print(file_path)
-            if file_path[-6:-8] == "None" and self._resolution:
+            if file_path[-10:-4] == "[None]" and self._resolution:
                 file_path = file_path[:-10] + f"[{self._resolution}]" \
                             + file_path[-4::]
             self.media_adapter.set_file_path(file_path)
