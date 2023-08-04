@@ -85,7 +85,7 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] = (resolution + "+") if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default':
-                                        f'video/%(title)s {resolution}.%(ext)s'}
+                                        f'video/%(title)s [{resolution}].%(ext)s'}
 
     @staticmethod
     def check_size(size):
