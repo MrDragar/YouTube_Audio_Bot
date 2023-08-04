@@ -2,6 +2,8 @@ from typing import AsyncGenerator, Optional
 import logging
 
 from tiktok_downloader.tikwm import tikwm_async
+from tiktok_downloader.snaptik import snaptik_async
+
 from aiogram.types import FSInputFile
 
 from bot.database.media import MediaType
@@ -42,11 +44,14 @@ class Downloader:
 
     async def run(self):
         await self.send_callback()
-        d = await tikwm_async(self._url)
+
         if self._video.type == MediaType.VIDEO:
+            d = await snaptik_async(self._url)
             i = 0
         else:
+            d = await tikwm_async(self._url)
             i = 2
+
         await self.send_callback()
         await d[i].download(self._video.path)
         await self.send_callback()
