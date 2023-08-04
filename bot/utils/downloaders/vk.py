@@ -20,7 +20,9 @@ class VKResolutionParser(YoutubeResolutionParser):
 class VKDownloader(YoutubeDownloader):
     def __init__(self, url: str, resolution: str,
                  callback: Optional[AsyncGenerator] = None):
-        super().__init__(url, resolution, callback)
+        self._url = url
+        self._resolution = resolution
+        self._callback = callback
         self.ydl_opts["format"] = resolution
 
     def collect_information(self):
