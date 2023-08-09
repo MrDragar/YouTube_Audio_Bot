@@ -53,7 +53,7 @@ class Media(Model):
     platform = fields.CharEnumField(Platform, default=Platform.YOUTUBE)
     link_id = fields.CharField(max_length=50)
     type = fields.CharEnumField(MediaType)
-    resolution = fields.CharField(max_length=10, default=None, null=True)
+    resolution = fields.CharField(max_length=20, default=None, null=True)
     file_id = fields.TextField(default=None, null=True)
 
 
