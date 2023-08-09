@@ -39,6 +39,7 @@ class MediaType(str, Enum):
 class Platform(str, Enum):
     YOUTUBE = "youtube"
     VK = "vk"
+    RUTUBE = "rutube"
 
 
 class User(Model):

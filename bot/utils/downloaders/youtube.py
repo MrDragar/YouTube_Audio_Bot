@@ -77,6 +77,7 @@ class YoutubeResolutionParser(Youtube):
 
 class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
+    platform: Platform = Platform.VK
 
     def __init__(self, url: str, resolution: Optional[str] = "",
                  callback: Optional[AsyncGenerator] = None):
@@ -102,7 +103,7 @@ class YoutubeDownloader(Youtube):
             if not self.check_size(size):
                 raise TooBigVideo
             self.media_adapter = MediaAdapter(info["id"],
-                                              platform=Platform.YOUTUBE,
+                                              platform=self.platform,
                                               resolution=self._resolution)
 
     def download(self):

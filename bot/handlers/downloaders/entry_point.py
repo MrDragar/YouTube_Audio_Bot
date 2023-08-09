@@ -8,7 +8,7 @@ from aiogram.utils.i18n import gettext as _
 from aiogram.methods import SendMessage
 
 from ..base_handlers import StateMassageHandler
-from bot.states import YoutubeState, TiktokState, VKState
+from bot.states import YoutubeState, TiktokState, VKState, RutubeState
 from bot.keyboards import get_type_keyboard
 from bot.filters import IsSubscriberFilter
 
@@ -35,6 +35,9 @@ class GetLinkHandler(StateMassageHandler):
         elif "vk.com" in url:
             logging.debug("VK link")
             await self.state.set_state(VKState.type)
+        elif "rutube.ru" in url:
+            logging.debug("Rutube link")
+            await self.state.set_state(RutubeState.type)
         else:
             return SendMessage(chat_id=self.chat.id,
                                text=_("Данный сайт не поддерживается"),

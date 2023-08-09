@@ -13,6 +13,12 @@ class VKState(StatesGroup):
     waiting = State()
 
 
+class RutubeState(StatesGroup):
+    type = State()
+    resolution = State()
+    waiting = State()
+
+
 class ChangingLanguageState(StatesGroup):
     step = State()
 

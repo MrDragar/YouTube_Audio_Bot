@@ -18,6 +18,8 @@ class VKResolutionParser(YoutubeResolutionParser):
 
 
 class VKDownloader(YoutubeDownloader):
+    platform = Platform.VK
+
     def __init__(self, url: str, resolution: str,
                  callback: Optional[AsyncGenerator] = None):
         super().__init__(url, resolution, callback)
@@ -35,6 +37,6 @@ class VKDownloader(YoutubeDownloader):
                 raise TooBigVideo
 
             self.media_adapter = MediaAdapter(info["id"],
-                                              platform=Platform.VK,
+                                              platform=self.platform,
                                               resolution=self._resolution)
 

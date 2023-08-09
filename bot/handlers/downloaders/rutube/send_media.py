@@ -3,19 +3,19 @@ from aiogram import F
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo
 
-from bot.states import VKState
+from bot.states import RutubeState
 
 import bot.handlers.downloaders.youtube.send_media as youtube
-from bot.utils.downloaders.vk import VKDownloader
+from bot.utils.downloaders.rutube import RutubeDownloader
 
 send_media_router = Router()
 
 
-@send_media_router.message(VKState.type, F.text == __("Аудио"))
+@send_media_router.message(RutubeState.type, F.text == __("Аудио"))
 class SendAudioHandler(youtube.SendAudioHandler):
     SendMediaMethod = SendAudio
-    Downloader = VKDownloader
-    next_state = VKState.waiting.state
+    Downloader = RutubeDownloader
+    next_state = RutubeState.waiting.state
 
     async def handle(self):
         await SendMessage(chat_id=self.chat.id,
@@ -24,10 +24,10 @@ class SendAudioHandler(youtube.SendAudioHandler):
         await self.state.clear()
 
 
-@send_media_router.message(VKState.resolution)
+@send_media_router.message(RutubeState.resolution)
 class SendVideoHandler(youtube.SendVideoHandler):
     SendMediaMethod = SendVideo
-    Downloader = VKDownloader
-    next_state = VKState.waiting.state
+    Downloader = RutubeDownloader
+    next_state = RutubeState.waiting.state
 
 
