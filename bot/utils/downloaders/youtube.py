@@ -86,8 +86,7 @@ class YoutubeDownloader(Youtube):
         self._callback = callback
         self.ydl_opts["format"] = (resolution + "+") if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
-        self.ydl_opts['outtmpl'] = {'default':
-                                        'video/%(title)s [{0}].%(ext)s'.format(resolution)}
+        self.ydl_opts['outtmpl'] = {'default': 'video/%(title)s.%(ext)s'}
 
     @staticmethod
     def check_size(size):
@@ -109,11 +108,7 @@ class YoutubeDownloader(Youtube):
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(self._url, download=True)
-            file_path = ydl.prepare_filename(info, outtmpl=self.ydl_opts["outtmpl"]["default"])
-            if file_path[-10:-4] == "[None]" and self._resolution\
-                    and not os.path.exists(file_path):
-                file_path = file_path[:-10] + f"[{self._resolution}]" \
-                            + file_path[-4::]
+            file_path = ydl.prepare_filename(info)
             self.media_adapter.set_file_path(file_path)
 
     async def get_media_adapter(self) -> MediaAdapter:
