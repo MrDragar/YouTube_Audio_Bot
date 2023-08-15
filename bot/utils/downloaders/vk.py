@@ -19,6 +19,7 @@ class VKResolutionParser(YoutubeResolutionParser):
 
 class VKDownloader(YoutubeDownloader):
     platform = Platform.VK
+    proxy = ""
 
     def __init__(self, url: str, resolution: str,
                  callback: Optional[AsyncGenerator] = None):
