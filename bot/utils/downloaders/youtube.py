@@ -78,7 +78,7 @@ class YoutubeResolutionParser(Youtube):
 class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
     platform: Platform = Platform.VK
-    proxy: str = "127.0.0.1:8888"
+    proxy: str = "socks://127.0.0.1:8888"
 
     def __init__(self, url: str, resolution: Optional[str] = "",
                  callback: Optional[AsyncGenerator] = None):
