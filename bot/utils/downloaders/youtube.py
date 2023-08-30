@@ -89,6 +89,7 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title)s.%(ext)s'}
         self.ydl_opts["proxy"] = self.proxy
+        self.ydl_opts["cookiesfrombrowser"] = ('firefox', )
 
     @staticmethod
     def check_size(size):
