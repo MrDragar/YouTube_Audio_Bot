@@ -78,7 +78,7 @@ class YoutubeResolutionParser(Youtube):
 class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
     platform: Platform = Platform.YOUTUBE
-    proxy: str = "socks://127.0.0.1:8888"
+    # proxy: str = "socks://127.0.0.1:8888"
 
     def __init__(self, url: str, resolution: Optional[str] = "",
                  callback: Optional[AsyncGenerator] = None):
@@ -88,7 +88,7 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] = (resolution + "+") if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title)s.%(ext)s'}
-        self.ydl_opts["proxy"] = self.proxy
+        # self.ydl_opts["proxy"] = self.proxy
         self.ydl_opts["cookiesfrombrowser"] = ('firefox', )
 
     @staticmethod
