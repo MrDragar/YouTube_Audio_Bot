@@ -85,6 +85,9 @@ class YoutubeErrorHandler(StateErrorHandler):
                                       "сейчас кто-то скачивал. "
                                       "Пожалуйста, повторите попытку "
                                       "через 5 минут."))
+        if isinstance(self.event.exception, IndexError):
+            return SendMessage(chat_id=self.event.update.message.chat.id,
+                               text=_("Данный формат видео не поддерживается"))
 
         await add_unsuccessful_request()
         logging.exception(self.event.exception)
