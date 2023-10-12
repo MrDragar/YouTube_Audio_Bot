@@ -13,18 +13,14 @@ from bot.handlers import root_router
 import bot.config as config
 
 
-async def run_polling(dp, bot):
+async def main():
     await init_db()
-    await register_commands()
-    await dp.start_polling(bot)
-
-
-def main():
     setup_i18n(dp)
     dp.include_router(root_router)
+    await register_commands()
     register_services()
     # if config.DEBUG:
-    asyncio.run(dp.start_polling(bot))
+    await dp.start_polling(bot)
     # else:
     #     app = FastAPI(docs_url=None)
     #     @app.post("/webhoock")
@@ -37,7 +33,7 @@ def main():
     #         await register_commands()
     #         await bot.set_webhook("127.0.0.1:8081/bot/" + config.API_TOKEN)
     #     uvicorn.run(app, host=config.WEBHOOK_HOST, port=config.WEBHOOK_PORT)
-    asyncio.run(close_db())
+    await close_db()
 
 
 if __name__ == "__main__":
