@@ -35,8 +35,7 @@ def main():
         async def init_bot():
             await init_db()
             await register_commands()
-            await bot.set_webhook("127.0.0.1:8081/webhoock",
-                                  secret_token=config.API_TOKEN)
+            await bot.set_webhook("127.0.0.1:8081/bot/" + config.API_TOKEN)
         uvicorn.run(app, host=config.WEBHOOK_HOST, port=config.WEBHOOK_PORT)
     asyncio.run(close_db())
 
