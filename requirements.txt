@@ -4,4 +4,6 @@ tortoise-orm==0.19.3
 Babel==2.12.1
 yt_dlp==2023.7.6
 Apscheduler==3.10.1
+FastAPI==0.103.2
+uvicorn==0.23.2
 git+https://github.com/MrDragar/tiktok-downloader
