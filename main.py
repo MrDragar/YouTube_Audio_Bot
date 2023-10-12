@@ -23,20 +23,20 @@ def main():
     setup_i18n(dp)
     dp.include_router(root_router)
     register_services()
-    if config.DEBUG:
-        asyncio.run(dp.start_polling(bot))
-    else:
-        app = FastAPI(docs_url=None)
-        @app.post("/webhoock")
-        async def webhoock_response(update: dict):
-            return await dp.feed_update(bot=bot, update=Update(**update))
-
-        @app.on_event("startup")
-        async def init_bot():
-            await init_db()
-            await register_commands()
-            await bot.set_webhook("127.0.0.1:8081/bot/" + config.API_TOKEN)
-        uvicorn.run(app, host=config.WEBHOOK_HOST, port=config.WEBHOOK_PORT)
+    # if config.DEBUG:
+    asyncio.run(dp.start_polling(bot))
+    # else:
+    #     app = FastAPI(docs_url=None)
+    #     @app.post("/webhoock")
+    #     async def webhoock_response(update: dict):
+    #         return await dp.feed_update(bot=bot, update=Update(**update))
+    #
+    #     @app.on_event("startup")
+    #     async def init_bot():
+    #         await init_db()
+    #         await register_commands()
+    #         await bot.set_webhook("127.0.0.1:8081/bot/" + config.API_TOKEN)
+    #     uvicorn.run(app, host=config.WEBHOOK_HOST, port=config.WEBHOOK_PORT)
     asyncio.run(close_db())
 
 
