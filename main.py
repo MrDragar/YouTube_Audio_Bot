@@ -50,7 +50,8 @@ def main():
             await bot.delete_webhook()
             await close_db()
 
-        uvicorn.run(app, host=config.WEBHOOK_HOST, port=config.WEBHOOK_PORT, ssl_certfile="./cert.pem")
+        uvicorn.run(app, host=config.WEBHOOK_HOST, port=config.WEBHOOK_PORT,
+                    ssl_certfile="./cert.pem", ssl_keyfile="./key.pem")
 
 
 
