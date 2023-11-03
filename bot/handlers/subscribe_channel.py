@@ -3,7 +3,7 @@ from typing import Any
 from aiogram.dispatcher.router import Router
 from aiogram.handlers import MessageHandler, CallbackQueryHandler
 from aiogram.methods import SendMessage
-from aiogram.filters import Text
+from aiogram import F
 from aiogram.utils.i18n import gettext as _
 
 from bot.filters import IsSubscriberFilter, IsSubscriberCallbackFilter
@@ -22,7 +22,7 @@ class ShareLinkHandler(MessageHandler):
                           reply_markup=get_share_link_keyboard())
 
 
-@subscribe_channel_router.callback_query(Text("check_subscribe"),
+@subscribe_channel_router.callback_query(F.text == "check_subscribe",
                                          ~IsSubscriberCallbackFilter())
 class ShareLinkCallbackHandler(CallbackQueryHandler):
     async def handle(self) -> Any:

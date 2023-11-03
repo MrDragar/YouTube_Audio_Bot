@@ -26,7 +26,7 @@ class SendPostHandler(StateMassageHandler):
             try:
                 await CopyMessage(chat_id=user.id, from_chat_id=self.chat.id,
                                   message_id=self.event.message_id)
-            finally:
+            except Exception as ex:
                 ...
         await SendMessage(chat_id=self.chat.id,
                           text=_("Отправка поста закончена"))

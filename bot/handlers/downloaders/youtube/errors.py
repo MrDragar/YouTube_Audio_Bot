@@ -11,6 +11,7 @@ from requests.exceptions import InvalidURL
 from bot.handlers.base_handlers import StateErrorHandler
 from bot.utils.downloaders.youtube import TooBigVideo, PlaylistError
 from bot.database.day_statistic import add_unsuccessful_request
+from bot.loader import bot
 
 error_router = Router()
 

@@ -3,7 +3,7 @@ from typing import Any
 from aiogram.dispatcher.router import Router
 from aiogram.handlers import CallbackQueryHandler
 from aiogram.methods import SendMessage
-from aiogram.filters import Command, Text
+from aiogram.filters import Command
 from aiogram import types
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram import F
@@ -36,7 +36,7 @@ class StartHandler(StateMassageHandler):
                                  "Для смены языка пропишите \n/language ."))
 
 
-@common_router.callback_query(Text("check_subscribe"),
+@common_router.callback_query(F.text == "check_subscribe",
                               IsSubscriberCallbackFilter())
 class StartCallbackHandler(CallbackQueryHandler):
     async def handle(self) -> Any:
