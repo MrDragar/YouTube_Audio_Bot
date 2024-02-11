@@ -15,6 +15,14 @@ from bot.filters import IsSubscriberFilter
 entry_point_router = Router()  # Должен быть в иерархии последним
 
 
+@entry_point_router.message(YoutubeState.waiting)
+@entry_point_router.message(TiktokState.waiting)
+@entry_point_router.message(VKState.waiting)
+@entry_point_router.message(RutubeState.waiting)
+async def waiting_handler(message: types.Message):
+    await message.answer(_("Да подогоди ты, я занят твоим предыдущим видео"))
+
+
 @entry_point_router.message(IsSubscriberFilter())
 class GetLinkHandler(StateMassageHandler):
     async def handle(self) -> Any:

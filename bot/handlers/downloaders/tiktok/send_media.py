@@ -24,11 +24,12 @@ class SendTiktokMedia(AdvertMixin, StateMassageHandler,
                       BaseMessageCallbackMixin, ABC):
     type: MediaType
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
-    next_state: str
+    next_state = TiktokState.waiting.state
 
     async def handle(self):
         data = await self.state.get_data()
         url = data["url"]
+        await self.state.set_state(self.next_state)
         media = TiktokVideo(self.type, self.chat.id, self.event.message_id)
 
         message = await SendMessage(chat_id=self.chat.id,
@@ -55,12 +56,10 @@ class SendTiktokMedia(AdvertMixin, StateMassageHandler,
 class SendTiktokAudio(SendTiktokMedia, AudioMassageCallbackMixin):
     type = MediaType.AUDIO
     SendMediaMethod = SendAudio
-    next_state = TiktokState.waiting.state
 
 
 @send_media_router.message(TiktokState.type, F.text == __("Видео"))
 class SendTiktokVideo(SendTiktokMedia, VideoMassageCallbackMixin):
     type = MediaType.VIDEO
     SendMediaMethod = SendVideo
-    next_state = TiktokState.waiting.state
 
