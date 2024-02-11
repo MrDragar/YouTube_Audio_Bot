@@ -29,6 +29,7 @@ class AnswerPostHandler(StateCallbackQueryHandler):
 class SendPostHandler(StateMassageHandler):
     async def handle(self):
         user_chat_id = (await self.state.get_data())["chat_id"]
+        await self.state.clear()
         try:
             sent_massage = await SendMessage(
                 chat_id=user_chat_id,
