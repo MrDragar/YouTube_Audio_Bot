@@ -12,7 +12,7 @@ async def delete_old_files():
                 os.path.getmtime(file_path))
         time = (datetime.datetime.utcnow() - datetime.datetime.utcfromtimestamp(a)).seconds
         try:
-            if time > 600:
+            if time > 300:
                 os.remove(file_path)
         finally:
             ...
@@ -20,5 +20,5 @@ async def delete_old_files():
 
 def register_services():
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(delete_old_files, trigger="interval", minutes=2)
+    scheduler.add_job(delete_old_files, trigger="interval", minutes=1)
     scheduler.start()
