@@ -3,6 +3,7 @@ import logging
 
 from tiktok_downloader.tikwm import tikwm_async
 from tiktok_downloader.mdown import mdown_async
+from tiktok_downloader.snaptik import snaptik_async
 
 from aiogram.types import FSInputFile
 
@@ -47,11 +48,15 @@ class Downloader:
 
         if self._video.type == MediaType.VIDEO:
             d = await mdown_async(self._url)
+            if not d:
+                d = await snaptik_async(self._url)
+                print(123)
             i = 0
         else:
             d = await tikwm_async(self._url)
             i = 2
-        # print(d)
         await self.send_callback()
+        if d[i].render:
+            d[i] = await d[i].get_render(1)
         await d[i].download(self._video.path)
         await self.send_callback()
