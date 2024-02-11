@@ -3,6 +3,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from aiogram.utils.i18n import gettext as _
 
 from bot.database.models import Language
+from bot.callbacks import FeedbackCallback
 
 
 def get_type_keyboard() -> types.ReplyKeyboardMarkup:
@@ -53,4 +54,11 @@ def get_share_link_keyboard() -> types.InlineKeyboardMarkup:
                     url="https://t.me/AudioDownloader")
     keyboard.button(text=_("Проверить подписку"),
                     callback_data="check_subscribe")
+    return keyboard.as_markup()
+
+
+def get_feedback_keyboard(user_id: int) -> types.InlineKeyboardMarkup:
+    keyboard = InlineKeyboardBuilder()
+    keyboard.button(text=_("Ответить пользователю"),
+                    callback_data=FeedbackCallback(user_id=user_id).pack())
     return keyboard.as_markup()

@@ -53,3 +53,7 @@ class EditAdvertTotalNumberState(StatesGroup):
 
 class GetAdvertByIdState(StatesGroup):
     step1 = State()
+
+
+class AnswerFeedbackState(StatesGroup):
+    step1 = State()
