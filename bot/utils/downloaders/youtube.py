@@ -22,6 +22,7 @@ class PlaylistError(Exception):
 class Youtube(ABC):
     ydl_opts: dict = {"quiet": True,
                       "noplaylist": True,
+                      "no_warnings": True
                       }
     _callback: Optional[AsyncGenerator] = None
 
