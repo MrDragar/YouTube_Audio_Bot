@@ -11,9 +11,11 @@ from bot.keyboards import get_share_link_keyboard
 
 
 subscribe_channel_router = Router()
+subscribe_channel_router.message.filter(~IsSubscriberFilter())
+subscribe_channel_router.callback_query.filter(~IsSubscriberFilter())
 
 
-@subscribe_channel_router.message(~IsSubscriberFilter())
+@subscribe_channel_router.message()
 class ShareLinkHandler(MessageHandler):
     async def handle(self) -> Any:
         await SendMessage(chat_id=self.chat.id,
@@ -22,8 +24,7 @@ class ShareLinkHandler(MessageHandler):
                           reply_markup=get_share_link_keyboard())
 
 
-@subscribe_channel_router.callback_query(F.text == "check_subscribe",
-                                         ~IsSubscriberCallbackFilter())
+@subscribe_channel_router.callback_query(F.data == "check_subscribe")
 class ShareLinkCallbackHandler(CallbackQueryHandler):
     async def handle(self) -> Any:
         await SendMessage(chat_id=self.message.chat.id,

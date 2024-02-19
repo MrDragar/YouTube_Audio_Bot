@@ -23,7 +23,7 @@ async def waiting_handler(message: types.Message):
     await message.answer(_("Да подогоди ты, я занят твоим предыдущим видео"))
 
 
-@entry_point_router.message(IsSubscriberFilter())
+@entry_point_router.message()
 class GetLinkHandler(StateMassageHandler):
     async def handle(self) -> Any:
         if not self.event.text:

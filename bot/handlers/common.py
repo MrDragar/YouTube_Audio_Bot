@@ -36,8 +36,7 @@ class StartHandler(StateMassageHandler):
                                  "Для смены языка пропишите \n/language ."))
 
 
-@common_router.callback_query(F.text == "check_subscribe",
-                              IsSubscriberCallbackFilter())
+@common_router.callback_query(F.data == "check_subscribe")
 class StartCallbackHandler(CallbackQueryHandler):
     async def handle(self) -> Any:
         await SendMessage(chat_id=self.event.message.chat.id,
