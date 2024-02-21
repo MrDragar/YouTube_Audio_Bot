@@ -23,6 +23,6 @@ async def create_media(link_id: str, type: MediaType,
                        resolution: Optional[str],
                        platform: Platform = Platform.YOUTUBE) -> Media:
     media = await Media.get_or_create(link_id=link_id, type=type,
-                                      resolution=resolution, platform=platform)
+                                      resolution=resolution, platform=platform)[0]
     await media.save()
     return media
