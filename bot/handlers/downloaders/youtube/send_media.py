@@ -46,9 +46,9 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
                                     reply_markup=ReplyKeyboardRemove())
         await DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
 
+        callback_generator = self.send_callback()
         downloader = self.Downloader(data["url"], resolution,
-                                     callback=self.send_callback())
-
+                                     callback=callback_generator)
         media_adapter = await downloader.run()
         kwargs = {"chat_id": self.chat.id,
                   media_adapter.get_media_type().value: media_adapter(),
@@ -59,6 +59,7 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
                   }
 
         media_info = await self.SendMediaMethod(**kwargs)
+        await callback_generator.aclose()
         await media_adapter.set_file_id(self.get_file_id(media_info))
         del media_adapter
         await add_successful_request()

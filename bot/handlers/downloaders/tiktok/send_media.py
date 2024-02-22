@@ -38,7 +38,8 @@ class SendTiktokMedia(AdvertMixin, StateMassageHandler,
                                     reply_markup=ReplyKeyboardRemove())
         await DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
 
-        downloader = Downloader(url, media, self.send_callback())
+        callback = self.send_callback()
+        downloader = Downloader(url, media, callback=callback)
         await downloader.run()
         kwargs = {"chat_id": self.chat.id,
                   "supports_streaming": True,
@@ -46,6 +47,7 @@ class SendTiktokMedia(AdvertMixin, StateMassageHandler,
                   "reply_markup": ReplyKeyboardRemove()
                   }
         await self.SendMediaMethod(**kwargs)
+        await callback.aclose()
         del media
         await add_successful_request()
         await self.state.clear()
