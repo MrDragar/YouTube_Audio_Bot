@@ -53,9 +53,11 @@ class YoutubeResolutionParser(Youtube):
 
     @staticmethod
     def check_format(format_: dict):
-        return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none" \
-            and "filesize" in format_ and "format_note" in format_ \
+        return (
+            format_["video_ext"] == "mp4"
+            and "filesize" in format_ and "format_note" in format_
             and format_["protocol"] == "https"
+        )
 
     def get_resolutions(self) -> Dict[str, str]:
         with YoutubeDL(self.ydl_opts) as ydl:
@@ -67,8 +69,12 @@ class YoutubeResolutionParser(Youtube):
             video_resolutions = {}
             for format_ in all_formats:
                 if self.check_format(format_):
-                    video_resolutions[format_[self.resolution_name]] = \
-                        format_["format_id"]
+                    if format_[self.resolution_name] not in video_resolutions:
+                        video_resolutions[format_[self.resolution_name]] = \
+                            format_["format_id"]
+                    elif "asr" not in format_ or format_["asr"] is not None:
+                        video_resolutions[format_[self.resolution_name]] = \
+                            format_["format_id"]
             return video_resolutions
 
     async def run(self) -> Dict[str, str]:
@@ -79,6 +85,7 @@ class YoutubeResolutionParser(Youtube):
 class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
     platform: Platform = Platform.YOUTUBE
+
     # proxy: str = "socks://127.0.0.1:8888"
 
     def __init__(self, url: str, resolution: Optional[str] = "",
@@ -90,7 +97,7 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title)s.%(ext)s'}
         # self.ydl_opts["proxy"] = self.proxy
-        self.ydl_opts["cookiesfrombrowser"] = ('firefox', )
+        self.ydl_opts["cookiesfrombrowser"] = ('firefox',)
 
     @staticmethod
     def check_size(size):
