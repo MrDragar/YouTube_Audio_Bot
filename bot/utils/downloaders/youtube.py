@@ -95,7 +95,7 @@ class YoutubeDownloader(Youtube):
         self._callback = callback
         self.ydl_opts["format"] = (resolution + "+") if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
-        self.ydl_opts['outtmpl'] = {'default': 'video/%(title)s.%(ext)s'}
+        self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
         # self.ydl_opts["proxy"] = self.proxy
         self.ydl_opts["cookiesfrombrowser"] = ('firefox',)
 
