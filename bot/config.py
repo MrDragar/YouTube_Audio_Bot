@@ -12,4 +12,4 @@ DEBUG = (config["DEBUG"]).lower().strip() == "true"
 WEBHOOK_HOST = config["WEBHOOK_HOST"]
 WEBHOOK_PORT = int(config["WEBHOOK_PORT"])
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
