@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Union, Optional, Tuple
+import logging
 
 from aiogram.dispatcher.router import Router
 from aiogram import F
@@ -92,7 +93,17 @@ class SendVideoHandler(VideoMassageCallbackMixin, SendMediaHandler):
             await SendMessage(chat_id=self.chat.id,
                               text=_("Неверное расширение"))
             return None, True
-        return data["resolution"][self.event.text.strip()], False
+
+        resolution = data["resolution"][self.event.text.strip()]
+        if not resolution:
+            logging.warning("Ошибка связаная с чёрным экраном")
+            await SendMessage(
+                chat_id=self.chat.id,
+                text=_("Произошла ошибка с хранением данных, повторите запрос")
+            )
+            await self.state.clear()
+            return None, False
+        return resolution, False
 
     def get_file_id(self, info) -> str:
         return info.video.file_id
