@@ -57,3 +57,8 @@ class GetAdvertByIdState(StatesGroup):
 
 class AnswerFeedbackState(StatesGroup):
     step1 = State()
+
+
+class JokeState(StatesGroup):
+    step1 = State()
+    step2 = State()

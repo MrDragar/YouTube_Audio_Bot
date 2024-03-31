@@ -62,3 +62,15 @@ def get_feedback_keyboard(user_id: int) -> types.InlineKeyboardMarkup:
     keyboard.button(text=_("Ответить пользователю"),
                     callback_data=FeedbackCallback(user_id=user_id).pack())
     return keyboard.as_markup()
+
+
+def get_joke_keyboard() -> types.reply_keyboard_markup:
+    keyboard = ReplyKeyboardBuilder()
+    keyboard.button(text=_("Купить подписку"))
+    keyboard.button(text=_("Админ лох"))
+    keyboard.button(text=_("Отмена"))
+    keyboard.adjust(2, 1)
+    markup = keyboard.as_markup()
+    markup.resize_keyboard = True
+
+    return markup

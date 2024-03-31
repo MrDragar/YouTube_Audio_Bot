@@ -2,14 +2,14 @@ import re
 import logging
 from typing import Any
 
-from aiogram import types
+from aiogram import types, F
 from aiogram.dispatcher.router import Router
-from aiogram.utils.i18n import gettext as _
+from aiogram.utils.i18n import gettext as _, lazy_gettext as __
 from aiogram.methods import SendMessage
 
 from ..base_handlers import StateMassageHandler
-from bot.states import YoutubeState, TiktokState, VKState, RutubeState
-from bot.keyboards import get_type_keyboard
+from bot.states import YoutubeState, TiktokState, VKState, RutubeState, JokeState
+from bot.keyboards import get_type_keyboard, get_joke_keyboard
 from bot.filters import IsSubscriberFilter
 
 entry_point_router = Router()  # Должен быть в иерархии последним
@@ -23,7 +23,33 @@ async def waiting_handler(message: types.Message):
     await message.answer(_("Да подогоди ты, я занят твоим предыдущим видео"))
 
 
-@entry_point_router.message()
+@entry_point_router.message(F.text == "Купить подписку", JokeState.step1)
+class JokeHandler2(StateMassageHandler):
+    async def handle(self) -> Any:
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_('Админ стал богаче на 0 рублей, теперь можете отправить мне ссылку на видео'),
+                reply_markup=types.ReplyKeyboardRemove()
+            )
+        )
+        await self.state.set_state(JokeState.step2)
+
+
+@entry_point_router.message(F.text == "Админ лох", JokeState.step1)
+class JokeHandler2(StateMassageHandler):
+    async def handle(self) -> Any:
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_('Админ стал беднее на 0 рублей, теперь ты можешь отправить мне ссылку на видео'),
+                reply_markup=types.ReplyKeyboardRemove()
+            )
+        )
+        await self.state.set_state(JokeState.step2)
+
+
+@entry_point_router.message(JokeState.step2)
 class GetLinkHandler(StateMassageHandler):
     async def handle(self) -> Any:
         if not self.event.text:
@@ -54,3 +80,17 @@ class GetLinkHandler(StateMassageHandler):
         await self.state.update_data(url=url)
         return SendMessage(chat_id=self.chat.id, text=_("Выберите тип файла"),
                            reply_markup=get_type_keyboard())
+
+
+@entry_point_router.message()
+class JokeHandler(StateMassageHandler):
+    async def handle(self) -> Any:
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_('Для продолжения работы бота купите подписку'),
+                reply_markup=get_joke_keyboard()
+            )
+        )
+        await self.state.set_state(JokeState.step1)
+
