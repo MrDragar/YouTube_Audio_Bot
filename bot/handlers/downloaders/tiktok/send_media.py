@@ -16,7 +16,6 @@ from bot.states import TiktokState
 from bot.database.day_statistic import add_successful_request
 from bot.handlers.advert_mixins import AdvertMixin
 
-
 send_media_router = Router()
 
 
@@ -32,21 +31,28 @@ class SendTiktokMedia(AdvertMixin, StateMassageHandler,
         await self.state.set_state(self.next_state)
         media = TiktokVideo(self.type, self.chat.id, self.event.message_id)
 
-        message = await SendMessage(chat_id=self.chat.id,
-                                    text="Удаление клавиатуры",
-                                    disable_notification=True,
-                                    reply_markup=ReplyKeyboardRemove())
-        await DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
+        message = await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text="Удаление клавиатуры",
+                disable_notification=True,
+                reply_markup=ReplyKeyboardRemove()
+            )
+        )
+        await self.bot(
+            DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
+        )
 
         callback = self.send_callback()
         downloader = Downloader(url, media, callback=callback)
         await downloader.run()
-        kwargs = {"chat_id": self.chat.id,
-                  "supports_streaming": True,
-                  self.type.value: media(),
-                  "reply_markup": ReplyKeyboardRemove()
-                  }
-        await self.SendMediaMethod(**kwargs)
+        kwargs = {
+            "chat_id": self.chat.id,
+            "supports_streaming": True,
+            self.type.value: media(),
+            "reply_markup": ReplyKeyboardRemove()
+        }
+        await self.bot(self.SendMediaMethod(**kwargs))
         await callback.aclose()
         del media
         await add_successful_request()
@@ -64,4 +70,3 @@ class SendTiktokAudio(SendTiktokMedia, AudioMassageCallbackMixin):
 class SendTiktokVideo(SendTiktokMedia, VideoMassageCallbackMixin):
     type = MediaType.VIDEO
     SendMediaMethod = SendVideo
-

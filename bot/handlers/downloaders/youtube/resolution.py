@@ -19,11 +19,15 @@ class ShowResolutionsHandler(StateMassageHandler):
     Parser: YoutubeResolutionParser.__class__ = YoutubeResolutionParser
 
     async def handle(self):
-        await SendChatAction(chat_id=self.chat.id, action=_("typing"))
+        await self.bot(SendChatAction(chat_id=self.chat.id, action=_("typing")))
         data = await self.state.get_data()
         parser = self.Parser(data["url"])
         resolutions = await parser.run()
-        await SendMessage(chat_id=self.chat.id, text=_("Выберите разрешение"),
-                          reply_markup=get_resolution_keyboard(resolutions))
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id, text=_("Выберите разрешение"),
+                reply_markup=get_resolution_keyboard(resolutions)
+            )
+        )
         await self.state.update_data(resolution=resolutions)
         await self.state.set_state(self.next_state)

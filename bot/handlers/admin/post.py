@@ -13,7 +13,9 @@ post_router = Router()
 @post_router.message(Command("post"))
 class StartPostHandler(StateMassageHandler):
     async def handle(self):
-        await SendMessage(chat_id=self.chat.id, text=_("Напишите ваш пост"))
+        await self.bot(
+            SendMessage(chat_id=self.chat.id, text=_("Напишите ваш пост"))
+        )
         await self.state.set_state(PostingState.step)
 
 
@@ -24,10 +26,14 @@ class SendPostHandler(StateMassageHandler):
         users = await get_users()
         for user in users:
             try:
-                await CopyMessage(chat_id=user.id, from_chat_id=self.chat.id,
-                                  message_id=self.event.message_id)
+                await self.bot(
+                    CopyMessage(
+                        chat_id=user.id, from_chat_id=self.chat.id,
+                        message_id=self.event.message_id
+                    )
+                )
             except Exception as ex:
                 ...
-        await SendMessage(chat_id=self.chat.id,
-                          text=_("Отправка поста закончена"))
-
+        await self.bot(
+            SendMessage(chat_id=self.chat.id, text=_("Отправка поста закончена"))
+        )

@@ -18,9 +18,12 @@ class SendAudioHandler(youtube.SendAudioHandler):
     next_state = RutubeState.waiting.state
 
     async def handle(self):
-        await SendMessage(chat_id=self.chat.id,
-                          text=_("Эта функция не работает и нужна "
-                                 "только ради красоты"))
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_("Эта функция не работает и нужна только ради красоты")
+            )
+        )
         await self.state.clear()
 
 

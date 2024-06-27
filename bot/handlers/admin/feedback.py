@@ -17,9 +17,11 @@ feedback_router = Router()
 class AnswerPostHandler(StateCallbackQueryHandler):
     async def handle(self):
         await self.state.set_state(AnswerFeedbackState.step1)
-        await SendMessage(
-            chat_id=self.message.chat.id,
-            text=_("Отправьте сообщение для ответа пользователю")
+        await self.bot(
+            SendMessage(
+                chat_id=self.message.chat.id,
+                text=_("Отправьте сообщение для ответа пользователю")
+            )
         )
         forwarded_chat_id = FeedbackCallback.unpack(self.callback_data)
         await self.state.update_data(chat_id=forwarded_chat_id.user_id)
@@ -31,23 +33,31 @@ class SendPostHandler(StateMassageHandler):
         user_chat_id = (await self.state.get_data())["chat_id"]
         await self.state.clear()
         try:
-            sent_massage = await SendMessage(
-                chat_id=user_chat_id,
-                text=_("Ответ админа:")
+            sent_massage = await self.bot(
+                SendMessage(
+                    chat_id=user_chat_id,
+                    text=_("Ответ админа:")
+                )
             )
-            await CopyMessage(
-                chat_id=user_chat_id,
-                from_chat_id=self.chat.id,
-                message_id=self.event.message_id,
-                reply_to_message_id=sent_massage.message_id
+            await self.bot(
+                CopyMessage(
+                    chat_id=user_chat_id,
+                    from_chat_id=self.chat.id,
+                    message_id=self.event.message_id,
+                    reply_to_message_id=sent_massage.message_id
+                )
             )
         except Exception:
-            await SendMessage(
-                chat_id=self.chat.id,
-                text=_("Скорее всего, пользователь заблокировал бота")
+            await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_("Скорее всего, пользователь заблокировал бота")
+                )
             )
         else:
-            await SendMessage(
-                chat_id=self.chat.id,
-                text=_("Ответ отправлен")
+            await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_("Ответ отправлен")
+                )
             )

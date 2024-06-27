@@ -16,16 +16,27 @@ class AdvertMixin(MessageHandler, ABC):
         if not advert:
             return
 
-        await CopyMessage(chat_id=self.chat.id, from_chat_id=advert.chat_id,
-                          message_id=advert.message_id)
+        await self.bot(
+            CopyMessage(
+                chat_id=self.chat.id, from_chat_id=advert.chat_id,
+                message_id=advert.message_id
+            )
+        )
         full = await add_current_number_to_advert(advert.id)
 
-        if full:
-            for admin in ADMINS_ID:
-                await SendMessage(chat_id=admin,
-                                  text="Реклама №{0} закончилась \n"
-                                       "Набрано {1} просмотров"
-                                  .format(advert.id, advert.total_number))
-                await CopyMessage(chat_id=admin,
-                                  from_chat_id=advert.chat_id,
-                                  message_id=advert.message_id)
+        if not full:
+            return
+        for admin in ADMINS_ID:
+            await self.bot(
+                SendMessage(
+                    chat_id=admin,
+                    text="Реклама №{0} закончилась \n Набрано {1} просмотров"
+                    .format(advert.id, advert.total_number)
+                )
+            )
+            await self.bot(
+                CopyMessage(
+                    chat_id=self.chat.id, from_chat_id=advert.chat_id,
+                    message_id=advert.message_id
+                )
+            )

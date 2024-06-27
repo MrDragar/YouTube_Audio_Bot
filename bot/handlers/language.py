@@ -11,15 +11,19 @@ from bot.database.user import change_language
 from bot.keyboards import get_language_keyboard
 from bot.commands import set_commands_for_user
 
-
 language_router = Router()
 
 
 @language_router.message(Command("language"))
 class ShowLanguagesHandler(StateMassageHandler):
     async def handle(self):
-        await SendMessage(chat_id=self.chat.id, text=_("Выберите язык"),
-                          reply_markup=get_language_keyboard())
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_("Выберите язык"),
+                reply_markup=get_language_keyboard()
+            )
+        )
         await self.state.set_state(ChangingLanguageState.step)
 
 
@@ -30,10 +34,11 @@ class GetLanguageHandler(ShowLanguagesHandler):
         if not language_code:
             return
         await change_language(self.event.from_user.id, language_code)
-        await SendMessage(chat_id=self.chat.id,
-                          text=_("Вы успешно сменили язык",
-                                 locale=language_code),
-                          reply_markup=ReplyKeyboardRemove())
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_("Вы успешно сменили язык", locale=language_code),
+                reply_markup=ReplyKeyboardRemove()))
         await self.state.clear()
         await set_commands_for_user(language_code, self.from_user.id)
 

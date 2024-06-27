@@ -16,12 +16,13 @@ from bot.utils.downloaders.youtube import YoutubeDownloader
 from bot.database.day_statistic import add_successful_request
 from bot.handlers.advert_mixins import AdvertMixin
 
-
 send_media_router = Router()
 
 
-class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
-                       StateMassageHandler, ABC):
+class SendMediaHandler(
+    AdvertMixin, BaseMessageCallbackMixin,
+    StateMassageHandler, ABC
+):
     SendMediaMethod: Union[SendVideo.__class__, SendAudio.__class__]
     Downloader: YoutubeDownloader.__class__
     next_state: str
@@ -41,25 +42,33 @@ class SendMediaHandler(AdvertMixin, BaseMessageCallbackMixin,
             return
         await self.state.set_state(self.next_state)
 
-        message = await SendMessage(chat_id=self.chat.id,
-                                    text="Удаление клавиатуры",
-                                    disable_notification=True,
-                                    reply_markup=ReplyKeyboardRemove())
-        await DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
+        message = await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text="Удаление клавиатуры",
+                disable_notification=True,
+                reply_markup=ReplyKeyboardRemove()
+            )
+        )
+        await self.bot(
+            DeleteMessage(chat_id=self.chat.id, message_id=message.message_id)
+        )
 
         callback_generator = self.send_callback()
-        downloader = self.Downloader(data["url"], resolution,
-                                     callback=callback_generator)
+        downloader = self.Downloader(
+            data["url"], resolution, callback=callback_generator
+        )
         media_adapter = await downloader.run()
-        kwargs = {"chat_id": self.chat.id,
-                  media_adapter.get_media_type().value: media_adapter(),
-                  "supports_streaming": True,
-                  "width": 256,
-                  "height": 144,
-                  "reply_markup": ReplyKeyboardRemove()
-                  }
+        kwargs = {
+            "chat_id": self.chat.id,
+            media_adapter.get_media_type().value: media_adapter(),
+            "supports_streaming": True,
+            "width": 256,
+            "height": 144,
+            "reply_markup": ReplyKeyboardRemove()
+        }
 
-        media_info = await self.SendMediaMethod(**kwargs)
+        media_info = await self.bot(self.SendMediaMethod(**kwargs))
         await callback_generator.aclose()
         await media_adapter.set_file_id(self.get_file_id(media_info))
         del media_adapter
@@ -90,16 +99,23 @@ class SendVideoHandler(VideoMassageCallbackMixin, SendMediaHandler):
     async def get_resolution(self) -> Tuple[Optional[str], bool]:
         data = await self.state.get_data()
         if self.event.text.strip() not in data["resolution"].keys():
-            await SendMessage(chat_id=self.chat.id,
-                              text=_("Неверное расширение"))
+            await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_("Неверное расширение")
+                )
+            )
             return None, True
 
         resolution = data["resolution"][self.event.text.strip()]
         if not resolution:
             logging.warning("Ошибка связаная с чёрным экраном")
-            await SendMessage(
-                chat_id=self.chat.id,
-                text=_("Произошла ошибка с хранением данных, повторите запрос")
+            await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_(
+                        "Произошла ошибка с хранением данных, повторите запрос")
+                )
             )
             await self.state.clear()
             return None, False

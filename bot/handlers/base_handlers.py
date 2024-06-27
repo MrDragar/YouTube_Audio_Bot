@@ -16,10 +16,10 @@ class StateMassageHandler(MessageHandler, ABC):
 
 class StateCallbackQueryHandler(CallbackQueryHandler, ABC):
     state: FSMContext
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.state = self.data["state"]
-
 
 
 class StateErrorHandler(ErrorHandler, ABC):

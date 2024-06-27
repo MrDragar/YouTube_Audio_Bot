@@ -14,22 +14,29 @@ statistic_router = Router()
 class SentMonthlyStatisticHandler(MessageHandler):
     async def handle(self):
         result = await get_monthly_statistics(date.today())
-        await SendMessage(chat_id=self.chat.id,
-                          text="За этот месяц новых пользователей: {0} \n"
-                               "Успешных запросов: {1} \n"
-                               "Запросов с неотловленной ошибкой: {2}"
-                          .format(result["new_users"],
-                                  result["successful_requests"],
-                                  result["unsuccessful_requests"]))
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text="За этот месяц новых пользователей: {0} \n"
+                     "Успешных запросов: {1} \n"
+                     "Запросов с неотловленной ошибкой: {2}"
+                .format(
+                    result["new_users"], result["successful_requests"],
+                    result["unsuccessful_requests"])
+            )
+        )
 
 
 @statistic_router.message(Command("get_day_statistic"))
 class SentMonthlyStatisticHandler(MessageHandler):
     async def handle(self):
         result = await get_day_statistic()
-        await SendMessage(chat_id=self.chat.id,
-                          text="За этот день новых пользователей: {0} \n"
-                               "Успешных запросов: {1} \n"
-                               "Запросов с неотловленной ошибкой: {2}"
-                          .format(result.new_users, result.successful_requests,
-                                  result.unsuccessful_requests))
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text="За этот день новых пользователей: {0} \n"
+                     "Успешных запросов: {1} \n"
+                     "Запросов с неотловленной ошибкой: {2}"
+                .format(result.new_users, result.successful_requests,
+                        result.unsuccessful_requests))
+        )

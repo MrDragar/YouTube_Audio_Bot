@@ -10,7 +10,6 @@ from aiogram.methods import SendMessage
 from ..base_handlers import StateMassageHandler
 from bot.states import YoutubeState, TiktokState, VKState, RutubeState
 from bot.keyboards import get_type_keyboard
-from bot.filters import IsSubscriberFilter
 
 entry_point_router = Router()  # Должен быть в иерархии последним
 
@@ -27,12 +26,18 @@ async def waiting_handler(message: types.Message):
 class GetLinkHandler(StateMassageHandler):
     async def handle(self) -> Any:
         if not self.event.text:
-            return SendMessage(chat_id=self.chat.id, text=_("Чё надо?"))
+            return await self.bot(
+                SendMessage(chat_id=self.chat.id, text=_("Чё надо?"))
+            )
         urls = re.findall(r'http(?:s)?://\S+', self.event.text)
         if not urls:
-            return SendMessage(chat_id=self.chat.id,
-                               text=_("Нет ссылки в сообщении"),
-                               reply_markup=types.ReplyKeyboardRemove)
+            return await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_("Нет ссылки в сообщении"),
+                    reply_markup=types.ReplyKeyboardRemove()
+                )
+            )
         url = urls[0]
         if "tiktok" in url:
             await self.state.set_state(TiktokState.type)
@@ -47,10 +52,17 @@ class GetLinkHandler(StateMassageHandler):
             logging.debug("Rutube link")
             await self.state.set_state(RutubeState.type)
         else:
-            return SendMessage(chat_id=self.chat.id,
-                               text=_("Данный сайт не поддерживается"),
-                               reply_markup=types.ReplyKeyboardRemove)
+            return await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_("Данный сайт не поддерживается"),
+                    reply_markup=types.ReplyKeyboardRemove())
+            )
 
         await self.state.update_data(url=url)
-        return SendMessage(chat_id=self.chat.id, text=_("Выберите тип файла"),
-                           reply_markup=get_type_keyboard())
+        return await self.bot(
+            SendMessage(
+                chat_id=self.chat.id, text=_("Выберите тип файла"),
+                reply_markup=get_type_keyboard()
+            )
+        )

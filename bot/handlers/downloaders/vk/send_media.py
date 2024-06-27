@@ -18,9 +18,12 @@ class SendAudioHandler(youtube.SendAudioHandler):
     next_state = VKState.waiting.state
 
     async def handle(self):
-        await SendMessage(chat_id=self.chat.id,
-                          text=_("Эта функция не работает и нужна "
-                                 "только ради красоты"))
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_("Эта функция не работает и нужна только ради красоты")
+            )
+        )
         await self.state.clear()
 
 
@@ -29,5 +32,3 @@ class SendVideoHandler(youtube.SendVideoHandler):
     SendMediaMethod = SendVideo
     Downloader = VKDownloader
     next_state = VKState.waiting.state
-
-

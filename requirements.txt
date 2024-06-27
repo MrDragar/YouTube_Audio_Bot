@@ -1,8 +1,8 @@
-aiogram==3.0.0b7
+aiogram==3.8.0
 python-dotenv==1.0.0
 tortoise-orm==0.19.3
 Babel==2.12.1
-yt_dlp==2023.7.6
+yt_dlp==2024.5.27
 Apscheduler==3.10.1
 FastAPI==0.103.2
 uvicorn==0.23.2
