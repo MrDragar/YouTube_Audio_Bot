@@ -44,6 +44,10 @@ class MediaAdapter:
         self._media.file_id = file_id
         await self._media.save()
 
+    async def set_file_unique_id(self, file_unique_id: str) -> None:
+        self._media.file_unique_id = file_unique_id
+        await self._media.save()
+
     def __call__(self) -> FSInputFile:
         if self.is_on_server():
             return self._media.file_id

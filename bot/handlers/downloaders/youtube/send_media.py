@@ -4,7 +4,7 @@ import logging
 
 from aiogram.dispatcher.router import Router
 from aiogram import F
-from aiogram.types import ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardRemove, Message
 from aiogram.utils.i18n import lazy_gettext as __, gettext as _
 from aiogram.methods import SendAudio, SendMessage, SendVideo, DeleteMessage
 
@@ -33,6 +33,10 @@ class SendMediaHandler(
 
     @abstractmethod
     def get_file_id(self, info) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_file_unique_id(self, info: Message) -> str:
         raise NotImplementedError
 
     async def handle(self):
@@ -71,6 +75,7 @@ class SendMediaHandler(
         media_info = await self.bot(self.SendMediaMethod(**kwargs))
         await callback_generator.aclose()
         await media_adapter.set_file_id(self.get_file_id(media_info))
+        await media_adapter.set_file_unique_id(self.get_file_unique_id(media_info))
         del media_adapter
         await add_successful_request()
         await self.state.clear()
@@ -88,6 +93,9 @@ class SendAudioHandler(AudioMassageCallbackMixin, SendMediaHandler):
 
     def get_file_id(self, info) -> str:
         return info.audio.file_id
+
+    def get_file_unique_id(self, info: Message) -> str:
+        return info.audio.file_unique_id
 
 
 @send_media_router.message(YoutubeState.resolution)
@@ -123,3 +131,6 @@ class SendVideoHandler(VideoMassageCallbackMixin, SendMediaHandler):
 
     def get_file_id(self, info) -> str:
         return info.video.file_id
+
+    def get_file_unique_id(self, info: Message) -> str:
+        return info.video.file_unique_id

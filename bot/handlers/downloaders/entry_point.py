@@ -1,8 +1,9 @@
 import re
+import abc
 import logging
 from typing import Any
 
-from aiogram import types
+from aiogram import types, F
 from aiogram.dispatcher.router import Router
 from aiogram.utils.i18n import gettext as _
 from aiogram.methods import SendMessage
@@ -10,6 +11,7 @@ from aiogram.methods import SendMessage
 from ..base_handlers import StateMassageHandler
 from bot.states import YoutubeState, TiktokState, VKState, RutubeState
 from bot.keyboards import get_type_keyboard
+from bot.database.media import delete_media
 
 entry_point_router = Router()  # Должен быть в иерархии последним
 
@@ -20,6 +22,42 @@ entry_point_router = Router()  # Должен быть в иерархии по�
 @entry_point_router.message(RutubeState.waiting)
 async def waiting_handler(message: types.Message):
     await message.answer(_("Да подогоди ты, я занят твоим предыдущим видео"))
+
+
+class DeleteMedia(StateMassageHandler, abc.ABC):
+    @abc.abstractmethod
+    def get_file_unique_id(self) -> str:
+        raise NotImplementedError
+
+    async def handle(self):
+        logging.debug(self.event)
+        error = await delete_media(self.get_file_unique_id())
+        if error:
+            await self.bot(
+                SendMessage(
+                    chat_id=self.chat.id,
+                    text=_("Ошибка, такого файла нет в базе данных")
+                )
+            )
+            return
+        await self.bot(
+            SendMessage(
+                chat_id=self.chat.id,
+                text=_("Видео успешно удалено, можете скачать его заново")
+                )
+        )
+
+
+@entry_point_router.message(F.video)
+class DeleteVideo(DeleteMedia):
+    def get_file_unique_id(self) -> str:
+        return self.event.video.file_unique_id
+
+
+@entry_point_router.message(F.audio)
+class DeleteAudio(DeleteMedia):
+    def get_file_unique_id(self) -> str:
+        return self.event.audio.file_unique_id
 
 
 @entry_point_router.message()

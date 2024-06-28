@@ -18,7 +18,6 @@ class IsSubscriberFilter(Filter):
         member = await message.bot(
             GetChatMember(chat_id=CHANNEL_ID, user_id=message.from_user.id)
         )
-        return member.status in ['creator', 'administrator', 'member', 'restricted']
         return isinstance(
             member,
             (
@@ -35,7 +34,6 @@ class IsSubscriberCallbackFilter(Filter):
         member = await callback.bot(
             GetChatMember(chat_id=CHANNEL_ID, user_id=callback.from_user.id)
         )
-        return member.status in ['creator', 'administrator', 'member', 'restricted']
         return isinstance(
             member,
             (
