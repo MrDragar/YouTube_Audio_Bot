@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-04 14:35+0300\n"
+"POT-Creation-Date: 2024-06-29 01:50+0300\n"
 "PO-Revision-Date: 2023-07-03 23:10+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,49 +19,212 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: bot/keyboards.py:8
+#: bot/keyboards.py:12
 msgid "Видео"
 msgstr ""
 
-#: bot/keyboards.py:9
+#: bot/keyboards.py:13
 msgid "Аудио"
 msgstr ""
 
-#: bot/handlers/common.py:22 bot/handlers/language.py:23 bot/keyboards.py:11
+#: bot/handlers/common.py:24 bot/keyboards.py:14 bot/keyboards.py:31
+#: bot/keyboards.py:44
 msgid "Отмена"
 msgstr ""
 
-#: bot/handlers/common.py:32
-msgid ""
-"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
-"Ютуба.Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
-"вопросам пишите наyshhenyaev@mail.ru\n"
-"Для смены языка пропишите \n"
-"/language ."
+#: bot/keyboards.py:53
+msgid "Подписаться на канал"
 msgstr ""
 
-#: bot/handlers/language.py:24
+#: bot/keyboards.py:55
+msgid "Проверить подписку"
+msgstr ""
+
+#: bot/keyboards.py:62
+msgid "Ответить пользователю"
+msgstr ""
+
+#: bot/handlers/callback_mixins.py:23
+msgid "Сбор данных о аудио"
+msgstr ""
+
+#: bot/handlers/callback_mixins.py:30
+msgid "Скачивание аудио"
+msgstr ""
+
+#: bot/handlers/callback_mixins.py:39
+msgid "Отправление аудио"
+msgstr ""
+
+#: bot/handlers/callback_mixins.py:49
+msgid "Сбор данных о видео"
+msgstr ""
+
+#: bot/handlers/callback_mixins.py:55
+msgid "Скачивание видео"
+msgstr ""
+
+#: bot/handlers/callback_mixins.py:64
+msgid "Отправление видео"
+msgstr ""
+
+#: bot/handlers/common.py:37 bot/handlers/common.py:57
+msgid ""
+"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
+"Ютуба. Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
+"вопросам пишите на yshhenyaev@mail.ru\n"
+"Для смены языка пропишите /language \n"
+"Если бот отправил вам сломанное видео или аудио, перешлите боту это видео"
+" или аудио и повторите скачивание."
+msgstr ""
+
+#: bot/handlers/feedback.py:18
+msgid "Напишите ваш отзыв"
+msgstr ""
+
+#: bot/handlers/feedback.py:39
+msgid "Ответить пользователю @{name}"
+msgstr ""
+
+#: bot/handlers/language.py:23
 msgid "Выберите язык"
 msgstr ""
 
-#: bot/handlers/language.py:37
+#: bot/handlers/language.py:40
 msgid "Вы успешно сменили язык"
 msgstr ""
 
-#: bot/handlers/language.py:46
+#: bot/handlers/language.py:49
 msgid "отмена"
 msgstr ""
 
-#: bot/handlers/downloaders/entry_point.py:25
-msgid "Нет ссылки в сообщении"
+#: bot/handlers/subscribe_channel.py:23 bot/handlers/subscribe_channel.py:36
+msgid "Для работы бота сперва необходимо подписаться на наш канал"
 msgstr ""
 
-#: bot/handlers/downloaders/entry_point.py:35
-msgid "Данный сайт не поддерживается"
+#: bot/handlers/admin/feedback.py:23
+msgid "Отправьте сообщение для ответа пользователю"
+msgstr ""
+
+#: bot/handlers/admin/feedback.py:39
+msgid "Ответ админа:"
+msgstr ""
+
+#: bot/handlers/admin/feedback.py:54
+msgid "Скорее всего, пользователь заблокировал бота"
+msgstr ""
+
+#: bot/handlers/admin/feedback.py:61
+msgid "Ответ отправлен"
+msgstr ""
+
+#: bot/handlers/admin/post.py:17
+msgid "Напишите ваш пост"
+msgstr ""
+
+#: bot/handlers/admin/post.py:38
+msgid "Отправка поста закончена"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:24
+msgid "Да подогоди ты, я занят твоим предыдущим видео"
 msgstr ""
 
 #: bot/handlers/downloaders/entry_point.py:39
+msgid "Ошибка, такого файла нет в базе данных"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:46
+msgid "Видео успешно удалено, можете скачать его заново"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:68
+msgid "Чё надо?"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:75
+msgid "Нет ссылки в сообщении"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:96
+msgid "Данный сайт не поддерживается"
+msgstr ""
+
+#: bot/handlers/downloaders/entry_point.py:103
 msgid "Выберите тип файла"
+msgstr ""
+
+#: bot/handlers/downloaders/rutube/send_media.py:24
+#: bot/handlers/downloaders/vk/send_media.py:24
+msgid "Эта функция не работает и нужна только ради красоты"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:27
+msgid "Файл весит больше 2 ГБ"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:34
+msgid "Плейлисты не поддерживаются"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:44
+#: bot/handlers/downloaders/youtube/errors.py:52
+msgid "Видео заблокировано в РФ"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:60
+msgid "Видео недоступно для скачивания"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:68
+msgid "Видео недоступно для скачивания. Ошибка 404"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:75
+#: bot/handlers/downloaders/youtube/errors.py:113
+msgid "Некорректная ссылка"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:82
+msgid "Ошибка с форматом видео. Пожалуйста, сообщите админам об этой ошибке"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:90
+#: bot/handlers/downloaders/youtube/errors.py:123
+#: bot/handlers/downloaders/youtube/errors.py:132
+msgid ""
+"Ошибка из-за того, что это видео сейчас кто-то скачивал. Пожалуйста, "
+"повторите попытку через 5 минут."
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:103
+msgid "Произошла какая-та ошибка при скачивании видео. Сообщите админам"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:142
+msgid "Данный формат видео не поддерживается"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/errors.py:152
+msgid ""
+"Произошла какая-то ошибка (никто не знает, из-за чего она произошла). "
+"Сообщите админам"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/resolution.py:22
+msgid "typing"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/resolution.py:28
+msgid "Выберите разрешение"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/send_media.py:113
+msgid "Неверное расширение"
+msgstr ""
+
+#: bot/handlers/downloaders/youtube/send_media.py:124
+msgid "Произошла ошибка с хранением данных, повторите запрос"
 msgstr ""
 
 #~ msgid ""
@@ -87,4 +250,220 @@ msgstr ""
 
 #~ msgid "отмена"
 #~ msgstr ""
+
+#~ msgid ""
+#~ "Привет. С помощью этого бота ты "
+#~ "можешь скачать любое видео или аудио "
+#~ "с Ютуба.Для этого вам необходимо скинуть"
+#~ " ссылку на этот ролик. По всем "
+#~ "вопросам пишите наyshhenyaev@mail.ru\n"
+#~ "Для смены языка пропишите \n"
+#~ "/language ."
+#~ msgstr ""
+
+#~ msgid "{editor}: Editing failed"
+#~ msgstr ""
+
+#~ msgid "{editor}: Editing failed: {e}"
+#~ msgstr ""
+
+#~ msgid "Aborted!"
+#~ msgstr ""
+
+#~ msgid "Show this message and exit."
+#~ msgstr ""
+
+#~ msgid "(Deprecated) {text}"
+#~ msgstr ""
+
+#~ msgid "Options"
+#~ msgstr ""
+
+#~ msgid "Got unexpected extra argument ({args})"
+#~ msgid_plural "Got unexpected extra arguments ({args})"
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "DeprecationWarning: The command {name!r} is deprecated."
+#~ msgstr ""
+
+#~ msgid "Commands"
+#~ msgstr ""
+
+#~ msgid "Missing command."
+#~ msgstr ""
+
+#~ msgid "No such command {name!r}."
+#~ msgstr ""
+
+#~ msgid "Value must be an iterable."
+#~ msgstr ""
+
+#~ msgid "Takes {nargs} values but 1 was given."
+#~ msgid_plural "Takes {nargs} values but {len} were given."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "env var: {var}"
+#~ msgstr ""
+
+#~ msgid "(dynamic)"
+#~ msgstr ""
+
+#~ msgid "default: {default}"
+#~ msgstr ""
+
+#~ msgid "required"
+#~ msgstr ""
+
+#~ msgid "%(prog)s, version %(version)s"
+#~ msgstr ""
+
+#~ msgid "Show the version and exit."
+#~ msgstr ""
+
+#~ msgid "Error: {message}"
+#~ msgstr ""
+
+#~ msgid "Try '{command} {option}' for help."
+#~ msgstr ""
+
+#~ msgid "Invalid value: {message}"
+#~ msgstr ""
+
+#~ msgid "Invalid value for {param_hint}: {message}"
+#~ msgstr ""
+
+#~ msgid "Missing argument"
+#~ msgstr ""
+
+#~ msgid "Missing option"
+#~ msgstr ""
+
+#~ msgid "Missing parameter"
+#~ msgstr ""
+
+#~ msgid "Missing {param_type}"
+#~ msgstr ""
+
+#~ msgid "Missing parameter: {param_name}"
+#~ msgstr ""
+
+#~ msgid "No such option: {name}"
+#~ msgstr ""
+
+#~ msgid "Did you mean {possibility}?"
+#~ msgid_plural "(Possible options: {possibilities})"
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "unknown error"
+#~ msgstr ""
+
+#~ msgid "Could not open file {filename!r}: {message}"
+#~ msgstr ""
+
+#~ msgid "Usage:"
+#~ msgstr ""
+
+#~ msgid "Argument {name!r} takes {nargs} values."
+#~ msgstr ""
+
+#~ msgid "Option {name!r} does not take a value."
+#~ msgstr ""
+
+#~ msgid "Option {name!r} requires an argument."
+#~ msgid_plural "Option {name!r} requires {nargs} arguments."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Shell completion is not supported for Bash versions older than 4.4."
+#~ msgstr ""
+
+#~ msgid "Couldn't detect Bash version, shell completion is not supported."
+#~ msgstr ""
+
+#~ msgid "Repeat for confirmation"
+#~ msgstr ""
+
+#~ msgid "Error: The value you entered was invalid."
+#~ msgstr ""
+
+#~ msgid "Error: {e.message}"
+#~ msgstr ""
+
+#~ msgid "Error: The two entered values do not match."
+#~ msgstr ""
+
+#~ msgid "Error: invalid input"
+#~ msgstr ""
+
+#~ msgid "Press any key to continue..."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Choose from:\n"
+#~ "\t{choices}"
+#~ msgstr ""
+
+#~ msgid "{value!r} is not {choice}."
+#~ msgid_plural "{value!r} is not one of {choices}."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "{value!r} does not match the format {format}."
+#~ msgid_plural "{value!r} does not match the formats {formats}."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "{value!r} is not a valid {number_type}."
+#~ msgstr ""
+
+#~ msgid "{value} is not in the range {range}."
+#~ msgstr ""
+
+#~ msgid "{value!r} is not a valid boolean."
+#~ msgstr ""
+
+#~ msgid "{value!r} is not a valid UUID."
+#~ msgstr ""
+
+#~ msgid "file"
+#~ msgstr ""
+
+#~ msgid "directory"
+#~ msgstr ""
+
+#~ msgid "path"
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} does not exist."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is a file."
+#~ msgstr ""
+
+#~ msgid "{name} '{filename}' is a directory."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is not readable."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is not writable."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is not executable."
+#~ msgstr ""
+
+#~ msgid "{len_type} values are required, but {len_value} was given."
+#~ msgid_plural "{len_type} values are required, but {len_value} were given."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
 

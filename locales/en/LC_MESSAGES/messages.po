@@ -2,67 +2,240 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# Unknown1 <yshhenyaev>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-04 14:35+0300\n"
-"PO-Revision-Date: 2023-07-04 14:40+0300\n"
-"Last-Translator: \n"
-"Language-Team: en <LL@li.org>\n"
+"POT-Creation-Date: 2024-06-29 01:50+0300\n"
+"PO-Revision-Date: 2024-06-29 02:18+0300\n"
+"Last-Translator: Unknown1 <yshhenyaev>\n"
 "Language: en\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: English <yshhenyaev>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Gtranslator 46.1\n"
 
-#: bot/keyboards.py:8
+#: bot/keyboards.py:12
 msgid "Видео"
 msgstr "Video"
 
-#: bot/keyboards.py:9
+#: bot/keyboards.py:13
 msgid "Аудио"
 msgstr "Audio"
 
-#: bot/handlers/common.py:22 bot/handlers/language.py:23 bot/keyboards.py:11
+#: bot/handlers/common.py:24 bot/keyboards.py:14 bot/keyboards.py:31
+#: bot/keyboards.py:44
 msgid "Отмена"
 msgstr "Cancel"
 
-#: bot/handlers/common.py:32
-#, fuzzy
-msgid "Привет. С помощью этого бота ты можешь скачать любое видео или аудио с Ютуба.Для этого вам необходимо скинуть ссылку на этот ролик. По всем вопросам пишите наyshhenyaev@mail.ru\n"
-"Для смены языка пропишите \n"
-"/language ."
-msgstr "Hi. With this bot you can download any video or audio from YouTube. If you have any questions write to yshhenyaev@mail.ru\n"
-"To change the language, type\n"
-"/language ."
+#: bot/keyboards.py:53
+msgid "Подписаться на канал"
+msgstr "Subscribe to the channel"
 
-#: bot/handlers/language.py:24
+#: bot/keyboards.py:55
+msgid "Проверить подписку"
+msgstr "Check a subscription"
+
+#: bot/keyboards.py:62
+msgid "Ответить пользователю"
+msgstr "Answer to user"
+
+#: bot/handlers/callback_mixins.py:23
+msgid "Сбор данных о аудио"
+msgstr "Collecting data about audio"
+
+#: bot/handlers/callback_mixins.py:30
+msgid "Скачивание аудио"
+msgstr "Downloading a audio"
+
+#: bot/handlers/callback_mixins.py:39
+msgid "Отправление аудио"
+msgstr "Sending a audio"
+
+#: bot/handlers/callback_mixins.py:49
+msgid "Сбор данных о видео"
+msgstr "Collecting data about video"
+
+#: bot/handlers/callback_mixins.py:55
+msgid "Скачивание видео"
+msgstr "Downloading a video"
+
+#: bot/handlers/callback_mixins.py:64
+msgid "Отправление видео"
+msgstr "Sending a video"
+
+#: bot/handlers/common.py:37 bot/handlers/common.py:57
+msgid ""
+"Привет. С помощью этого бота ты можешь скачать любое видео или аудио с "
+"Ютуба. Для этого вам необходимо скинуть ссылку на этот ролик. По всем "
+"вопросам пишите на yshhenyaev@mail.ru\n"
+"Для смены языка пропишите /language \n"
+"Если бот отправил вам сломанное видео или аудио, перешлите боту это видео "
+"или аудио и повторите скачивание."
+msgstr ""
+"Hello, fellow user. This bot can download any video or audio from YouTube. "
+"Just send a link to the desired video. If you have any questions, please "
+"don't hesitate to write to my email yshhenyaev@mail.ru\n"
+"To change the language type /language\n"
+"If bot sends you a corrupted file, please resend the link to the video/audio "
+"and repeat the process again."
+
+#: bot/handlers/feedback.py:18
+msgid "Напишите ваш отзыв"
+msgstr "Write your feedback"
+
+#: bot/handlers/feedback.py:39
+msgid "Ответить пользователю @{name}"
+msgstr "Answer to user @{name}"
+
+#: bot/handlers/language.py:23
 msgid "Выберите язык"
 msgstr "Choose the language"
 
-#: bot/handlers/language.py:37
+#: bot/handlers/language.py:40
 msgid "Вы успешно сменили язык"
 msgstr "You have successfully changed language"
 
-#: bot/handlers/language.py:46
+#: bot/handlers/language.py:49
 msgid "отмена"
 msgstr "cancel"
 
-#: bot/handlers/downloaders/entry_point.py:25
+#: bot/handlers/subscribe_channel.py:23 bot/handlers/subscribe_channel.py:36
+msgid "Для работы бота сперва необходимо подписаться на наш канал"
+msgstr "To make a bot work, you need to subscribe to our channel"
+
+#: bot/handlers/admin/feedback.py:23
+msgid "Отправьте сообщение для ответа пользователю"
+msgstr "Send a reply message to the user"
+
+#: bot/handlers/admin/feedback.py:39
+msgid "Ответ админа:"
+msgstr "The adnmin`s response:"
+
+#: bot/handlers/admin/feedback.py:54
+msgid "Скорее всего, пользователь заблокировал бота"
+msgstr "Most likely, the user has blocked the bot"
+
+#: bot/handlers/admin/feedback.py:61
+msgid "Ответ отправлен"
+msgstr "Response is incorrect"
+
+#: bot/handlers/admin/post.py:17
+msgid "Напишите ваш пост"
+msgstr "Write your post"
+
+#: bot/handlers/admin/post.py:38
+msgid "Отправка поста закончена"
+msgstr "Post sending is ended"
+
+#: bot/handlers/downloaders/entry_point.py:24
+msgid "Да подогоди ты, я занят твоим предыдущим видео"
+msgstr "Don't interrupt me, son. I'm already busy with the previous video"
+
+#: bot/handlers/downloaders/entry_point.py:39
+msgid "Ошибка, такого файла нет в базе данных"
+msgstr "Error, there is no such file in database"
+
+#: bot/handlers/downloaders/entry_point.py:46
+msgid "Видео успешно удалено, можете скачать его заново"
+msgstr "Video was successfully deleted"
+
+#: bot/handlers/downloaders/entry_point.py:68
+msgid "Чё надо?"
+msgstr "Alright, mate?"
+
+#: bot/handlers/downloaders/entry_point.py:75
 msgid "Нет ссылки в сообщении"
 msgstr "There is no link in the message"
 
-#: bot/handlers/downloaders/entry_point.py:35
+#: bot/handlers/downloaders/entry_point.py:96
 msgid "Данный сайт не поддерживается"
 msgstr "This site is not supported"
 
-#: bot/handlers/downloaders/entry_point.py:39
+#: bot/handlers/downloaders/entry_point.py:103
 msgid "Выберите тип файла"
 msgstr "Select file type"
 
-#~ msgid "отмена"
-#~ msgstr "cancel"
+#: bot/handlers/downloaders/rutube/send_media.py:24
+#: bot/handlers/downloaders/vk/send_media.py:24
+msgid "Эта функция не работает и нужна только ради красоты"
+msgstr "This function does not work and is needed only for the sake of beauty"
+
+#: bot/handlers/downloaders/youtube/errors.py:27
+msgid "Файл весит больше 2 ГБ"
+msgstr "The file weighs more than 2 GB"
+
+#: bot/handlers/downloaders/youtube/errors.py:34
+msgid "Плейлисты не поддерживаются"
+msgstr "Playlists are not supported"
+
+#: bot/handlers/downloaders/youtube/errors.py:44
+#: bot/handlers/downloaders/youtube/errors.py:52
+msgid "Видео заблокировано в РФ"
+msgstr "The video is blocked in Russia. Thanks to Ukraine."
+
+#: bot/handlers/downloaders/youtube/errors.py:60
+msgid "Видео недоступно для скачивания"
+msgstr "The video is unavailable for downloading"
+
+#: bot/handlers/downloaders/youtube/errors.py:68
+msgid "Видео недоступно для скачивания. Ошибка 404"
+msgstr "The video is unavailable for downloading. Error 404"
+
+#: bot/handlers/downloaders/youtube/errors.py:75
+#: bot/handlers/downloaders/youtube/errors.py:113
+msgid "Некорректная ссылка"
+msgstr "Invalid link"
+
+#: bot/handlers/downloaders/youtube/errors.py:82
+msgid "Ошибка с форматом видео. Пожалуйста, сообщите админам об этой ошибке"
+msgstr ""
+"An error with the video format. Please inform the admins about this error"
+
+#: bot/handlers/downloaders/youtube/errors.py:90
+#: bot/handlers/downloaders/youtube/errors.py:123
+#: bot/handlers/downloaders/youtube/errors.py:132
+msgid ""
+"Ошибка из-за того, что это видео сейчас кто-то скачивал. Пожалуйста, "
+"повторите попытку через 5 минут."
+msgstr ""
+"The error is due to the fact that someone has downloaded this video now. "
+"Please try again in 5 minutes."
+
+#: bot/handlers/downloaders/youtube/errors.py:103
+msgid "Произошла какая-та ошибка при скачивании видео. Сообщите админам"
+msgstr ""
+"There was some kind of error when downloading the video. Inform the admins"
+
+#: bot/handlers/downloaders/youtube/errors.py:142
+msgid "Данный формат видео не поддерживается"
+msgstr "This video format is not supported"
+
+#: bot/handlers/downloaders/youtube/errors.py:152
+msgid ""
+"Произошла какая-то ошибка (никто не знает, из-за чего она произошла). "
+"Сообщите админам"
+msgstr ""
+"Some kind of mistake has occurred (no one knows what caused it). Inform the "
+"admins"
+
+#: bot/handlers/downloaders/youtube/resolution.py:22
+msgid "typing"
+msgstr "typing"
+
+#: bot/handlers/downloaders/youtube/resolution.py:28
+msgid "Выберите разрешение"
+msgstr "Choose a resolution"
+
+#: bot/handlers/downloaders/youtube/send_media.py:113
+msgid "Неверное расширение"
+msgstr "Invalid resolution"
+
+#: bot/handlers/downloaders/youtube/send_media.py:124
+msgid "Произошла ошибка с хранением данных, повторите запрос"
+msgstr "An error occurred with data storage, repeat the request"
