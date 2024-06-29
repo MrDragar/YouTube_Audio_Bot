@@ -2,13 +2,13 @@ from typing import Callable, Dict, Optional, AsyncGenerator
 import asyncio
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
-import logging
-import os
+import random
 
 from yt_dlp import YoutubeDL
 
 from bot.database.adapters import MediaAdapter
 from bot.database.models import Platform
+from bot.config import BROWSERS
 
 
 class TooBigVideo(Exception):
@@ -20,11 +20,16 @@ class PlaylistError(Exception):
 
 
 class Youtube(ABC):
-    ydl_opts: dict = {"quiet": True,
-                      "noplaylist": True,
-                      "no_warnings": True
-                      }
+    ydl_opts: dict = {
+        "quiet": True,
+        "noplaylist": True,
+        "no_warnings": True
+    }
     _callback: Optional[AsyncGenerator] = None
+
+    def __init__(self):
+        if BROWSERS:
+            self.ydl_opts["cookiesfrombrowser"] = (random.choice(BROWSERS))
 
     async def send_callback(self):
         if self._callback:
@@ -49,14 +54,15 @@ class YoutubeResolutionParser(Youtube):
     resolution_name = "format_note"
 
     def __init__(self, url: str):
+        super().__init__()
         self._url = url
 
     @staticmethod
     def check_format(format_: dict):
         return (
-            format_["video_ext"] == "mp4"
-            and "filesize" in format_ and "format_note" in format_
-            and format_["protocol"] == "https"
+                format_["video_ext"] == "mp4"
+                and "filesize" in format_ and "format_note" in format_
+                and format_["protocol"] == "https"
         )
 
     def get_resolutions(self) -> Dict[str, str]:
@@ -90,6 +96,7 @@ class YoutubeDownloader(Youtube):
 
     def __init__(self, url: str, resolution: Optional[str] = "",
                  callback: Optional[AsyncGenerator] = None):
+        super().__init__()
         self._url = url
         self._resolution = resolution
         self._callback = callback
@@ -97,7 +104,6 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
         # self.ydl_opts["proxy"] = self.proxy
-        self.ydl_opts["cookiesfrombrowser"] = ('firefox',)
 
     @staticmethod
     def check_size(size):
