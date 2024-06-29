@@ -13,7 +13,6 @@ DEBUG = (config["DEBUG"]).lower().strip() == "true"
 WEBHOOK_HOST = config["WEBHOOK_HOST"]
 WEBHOOK_PORT = int(config["WEBHOOK_PORT"])
 
-print(BROWSERS)
 if DEBUG:
     logging.basicConfig(level=logging.DEBUG)
 else:
