@@ -13,7 +13,7 @@ class VKResolutionParser(YoutubeResolutionParser):
 
     @staticmethod
     def check_format(format_: dict):
-        return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none"\
+        return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none" \
             and format_["protocol"] == "m3u8_native"
 
 
@@ -21,10 +21,12 @@ class VKDownloader(YoutubeDownloader):
     platform = Platform.VK
     proxy = ""
 
-    def __init__(self, url: str, resolution: str,
-                 callback: Optional[AsyncGenerator] = None):
+    def __init__(
+            self, url: str,
+            resolution: Optional[str] = "",
+            callback: Optional[AsyncGenerator] = None
+    ):
         super().__init__(url, resolution, callback)
-        self.ydl_opts["format"] = resolution
 
     def collect_information(self):
         with YoutubeDL(self.ydl_opts) as ydl:
@@ -40,4 +42,3 @@ class VKDownloader(YoutubeDownloader):
             self.media_adapter = MediaAdapter(info["id"],
                                               platform=self.platform,
                                               resolution=self._resolution)
-

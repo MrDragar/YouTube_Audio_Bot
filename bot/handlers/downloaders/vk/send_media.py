@@ -17,15 +17,6 @@ class SendAudioHandler(youtube.SendAudioHandler):
     Downloader = VKDownloader
     next_state = VKState.waiting.state
 
-    async def handle(self):
-        await self.bot(
-            SendMessage(
-                chat_id=self.chat.id,
-                text=_("Эта функция не работает и нужна только ради красоты")
-            )
-        )
-        await self.state.clear()
-
 
 @send_media_router.message(VKState.resolution)
 class SendVideoHandler(youtube.SendVideoHandler):
