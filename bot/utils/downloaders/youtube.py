@@ -132,11 +132,12 @@ class YoutubeDownloader(Youtube):
                             ydl: YoutubeDL) -> Optional[str]:
         thumbnails = info.get('thumbnails') or []
         for idx, t in list(enumerate(thumbnails))[::-1]:
-            url: str = t.get("url", None)
-            if url is None:
+            url: str = t.get("url", "")
+            if not ".jpg" in url:
                 continue
-            if not (t.get("height", 321) <= 320 and t.get("width") <= 321):
+            if t.get("height", 321) >= 320 and t.get("width", 321) >= 320:
                 continue
+
             filepath = os.path.splitext(video_path)[0] + ".jpg"
             try:
                 uf = ydl.urlopen(
