@@ -1,15 +1,18 @@
-from typing import Callable, Dict, Optional, AsyncGenerator
 import asyncio
+import os.path
+import random
+import shutil
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
-import random
+from typing import Callable, Dict, Optional, AsyncGenerator
 
 from yt_dlp import YoutubeDL
-from yt_dlp.utils import replace_extension
+from yt_dlp.networking import Request
+from yt_dlp.networking.exceptions import network_exceptions
 
+from bot.config import BROWSERS
 from bot.database.adapters import MediaAdapter
 from bot.database.models import Platform
-from bot.config import BROWSERS
 
 
 class TooBigVideo(Exception):
@@ -102,7 +105,7 @@ class YoutubeDownloader(Youtube):
         self._resolution = resolution
         self._callback = callback
         self.ydl_opts["merge_output_format"] = "mp4"
-        self.ydl_opts["writethumbnail"] = True
+        # self.ydl_opts["writethumbnail"] = True
         self.ydl_opts["format"] = f"{resolution + '+'}" if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
@@ -125,17 +128,32 @@ class YoutubeDownloader(Youtube):
                                               platform=self.platform,
                                               resolution=self._resolution)
 
-    def _get_thumbnail_path(self, info: dict) -> Optional[str]:
+    def _download_thumbnail(self, info: dict, video_path: str,
+                            ydl: YoutubeDL) -> Optional[str]:
         thumbnails = info.get('thumbnails') or []
         for idx, t in list(enumerate(thumbnails))[::-1]:
-            if "filepath" in t:
-                return t["filepath"]
+            url: str = t.get("url", None)
+            if url is None:
+                continue
+            if not (t.get("height", 321) <= 320 and t.get("width") <= 321):
+                continue
+            filepath = os.path.splitext(video_path)[0] + ".jpg"
+            try:
+                uf = ydl.urlopen(
+                    Request(t['url'], headers=t.get('http_headers', {})))
+                with open(filepath, 'wb') as thumbf:
+                    shutil.copyfileobj(uf, thumbf)
+            except network_exceptions as err:
+                continue
+            return filepath
 
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(self._url, download=True)
             file_path = ydl.prepare_filename(info)
-            self.media_adapter.set_thumbnail_path(self._get_thumbnail_path(info))
+            self.media_adapter.set_thumbnail_path(
+                self._download_thumbnail(info, file_path, ydl),
+            )
             self.media_adapter.set_file_path(file_path)
 
     async def get_media_adapter(self) -> MediaAdapter:
