@@ -135,7 +135,7 @@ class YoutubeDownloader(Youtube):
             url: str = t.get("url", "")
             if not ".jpg" in url:
                 continue
-            if t.get("height", 321) >= 320 and t.get("width", 321) >= 320:
+            if t.get("height", 321) >= 320 or t.get("width", 321) >= 320:
                 continue
 
             filepath = os.path.splitext(video_path)[0] + ".jpg"
