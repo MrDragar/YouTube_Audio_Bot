@@ -102,7 +102,7 @@ class YoutubeDownloader(Youtube):
         self._resolution = resolution
         self._callback = callback
         self.ydl_opts["merge_output_format"] = "mp4"
-        # self.ydl_opts["writethumbnail"] = True
+        self.ydl_opts["writethumbnail"] = True
         self.ydl_opts["format"] = f"{resolution + '+'}" if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
@@ -125,18 +125,17 @@ class YoutubeDownloader(Youtube):
                                               platform=self.platform,
                                               resolution=self._resolution)
 
-    def _get_thumbnail(self, info: dict) -> Optional[str]:
+    def _get_thumbnail_path(self, info: dict) -> Optional[str]:
         thumbnails = info.get('thumbnails') or []
-        print(thumbnails)
         for idx, t in list(enumerate(thumbnails))[::-1]:
-            if t.get("height", 321) <= 320 and t.get("width") <= 321:
-                return t.get("url", None)
+            if "filepath" in t:
+                return t["filepath"]
 
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(self._url, download=True)
             file_path = ydl.prepare_filename(info)
-            self.media_adapter.set_thumbnail(self._get_thumbnail(info))
+            self.media_adapter.set_thumbnail_path(self._get_thumbnail_path(info))
             self.media_adapter.set_file_path(file_path)
 
     async def get_media_adapter(self) -> MediaAdapter:
