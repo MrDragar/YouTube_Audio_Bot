@@ -15,6 +15,7 @@ from bot.states import YoutubeState, State
 from bot.utils.downloaders.youtube import YoutubeDownloader
 from bot.database.day_statistic import add_successful_request
 from bot.handlers.advert_mixins import AdvertMixin
+from bot.database.adapters import MediaAdapter
 
 send_media_router = Router()
 
@@ -62,20 +63,22 @@ class SendMediaHandler(
         downloader = self.Downloader(
             data["url"], resolution, callback=callback_generator
         )
-        media_adapter = await downloader.run()
+        media_adapter: MediaAdapter = await downloader.run()
         kwargs = {
             "chat_id": self.chat.id,
             media_adapter.get_media_type().value: media_adapter(),
+            "thumbnail": media_adapter.get_thumbnail(),
             "supports_streaming": True,
             "width": 256,
             "height": 144,
             "reply_markup": ReplyKeyboardRemove()
         }
-
         media_info = await self.bot(self.SendMediaMethod(**kwargs))
         await callback_generator.aclose()
         await media_adapter.set_file_id(self.get_file_id(media_info))
-        await media_adapter.set_file_unique_id(self.get_file_unique_id(media_info))
+        await media_adapter.set_file_unique_id(
+            self.get_file_unique_id(media_info)
+        )
         del media_adapter
         await add_successful_request()
         await self.state.clear()

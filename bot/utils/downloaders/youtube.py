@@ -5,6 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 import random
 
 from yt_dlp import YoutubeDL
+from yt_dlp.utils import replace_extension
 
 from bot.database.adapters import MediaAdapter
 from bot.database.models import Platform
@@ -100,7 +101,9 @@ class YoutubeDownloader(Youtube):
         self._url = url
         self._resolution = resolution
         self._callback = callback
-        self.ydl_opts["format"] = (resolution + "+") if resolution else ""
+        self.ydl_opts["merge_output_format"] = "mp4"
+        self.ydl_opts["writethumbnail"] = True
+        self.ydl_opts["format"] = f"{resolution + '+'}" if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
         # self.ydl_opts["proxy"] = self.proxy
@@ -122,10 +125,17 @@ class YoutubeDownloader(Youtube):
                                               platform=self.platform,
                                               resolution=self._resolution)
 
+    def _get_thumbnail_path(self, info: dict) -> Optional[str]:
+        thumbnails = info.get('thumbnails') or []
+        for idx, t in list(enumerate(thumbnails))[::-1]:
+            if "filepath" in t:
+                return t["filepath"]
+
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(self._url, download=True)
             file_path = ydl.prepare_filename(info)
+            self.media_adapter.set_thumbnail_path(self._get_thumbnail_path(info))
             self.media_adapter.set_file_path(file_path)
 
     async def get_media_adapter(self) -> MediaAdapter:
