@@ -47,10 +47,9 @@ class Downloader:
         await self.send_callback()
 
         if self._video.type == MediaType.VIDEO:
-            d = await mdown_async(self._url)
-            if not d:
-                d = await snaptik_async(self._url)
-                print(123)
+            # d = await mdown_async(self._url)
+            # if not d:
+            d = await snaptik_async(self._url)
             i = 0
         else:
             d = await tikwm_async(self._url)
