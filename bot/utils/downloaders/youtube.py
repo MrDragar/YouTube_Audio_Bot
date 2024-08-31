@@ -10,7 +10,7 @@ from yt_dlp import YoutubeDL
 from yt_dlp.networking import Request
 from yt_dlp.networking.exceptions import network_exceptions
 
-from bot.config import BROWSERS
+from bot.config import BROWSERS, PROXY
 from bot.database.adapters import MediaAdapter
 from bot.database.models import Platform
 
@@ -34,6 +34,7 @@ class Youtube(ABC):
     def __init__(self):
         if BROWSERS:
             self.ydl_opts["cookiesfrombrowser"] = (random.choice(BROWSERS))
+        self.ydl_opts["proxy"] = PROXY
 
     async def send_callback(self):
         if self._callback:
@@ -96,7 +97,6 @@ class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
     platform: Platform = Platform.YOUTUBE
 
-    # proxy: str = "socks://127.0.0.1:8888"
 
     def __init__(self, url: str, resolution: Optional[str] = "",
                  callback: Optional[AsyncGenerator] = None):
@@ -109,7 +109,6 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] = f"{resolution + '+'}" if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
-        # self.ydl_opts["proxy"] = self.proxy
 
     @staticmethod
     def check_size(size):

@@ -12,6 +12,7 @@ BROWSERS = json.loads(config["BROWSERS"])
 DEBUG = (config["DEBUG"]).lower().strip() == "true"
 WEBHOOK_HOST = config["WEBHOOK_HOST"]
 WEBHOOK_PORT = int(config["WEBHOOK_PORT"])
+PROXY = config["PROXY"]
 
 if DEBUG:
     logging.basicConfig(level=logging.DEBUG)
