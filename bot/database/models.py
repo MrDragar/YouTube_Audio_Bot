@@ -55,7 +55,7 @@ class Media(Model):
     type = fields.CharEnumField(MediaType)
     resolution = fields.CharField(max_length=20, default=None, null=True)
     file_id = fields.TextField(default=None, null=True)
-    file_unique_id = fields.TextField(default=None)
+    file_unique_id = fields.TextField(default=None, null=True)
 
 
 class DayStatistic(Model):
