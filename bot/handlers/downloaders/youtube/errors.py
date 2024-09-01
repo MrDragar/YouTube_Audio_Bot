@@ -18,6 +18,8 @@ error_router = Router()
 @error_router.errors()
 class YoutubeErrorHandler(StateErrorHandler):
     async def handle(self):
+        data = await self.state.get_data()
+        resolutions = data.get("resolution", {})
         await self.state.clear()
         if isinstance(self.event.exception, TooBigVideo) or \
                 isinstance(self.event.exception, TelegramEntityTooLarge):
@@ -76,11 +78,12 @@ class YoutubeErrorHandler(StateErrorHandler):
                     )
                 )
             if "Requested format is not available." in self.event.exception.msg:
+                logging.warning(f"{self.update.message.text.strip()}, {resolutions.get(self.update.message.text.strip())}")
                 return await self.bot(
                     SendMessage(
                         chat_id=self.event.update.message.chat.id,
                         text=_("Ошибка с форматом видео. Пожалуйста,"
-                               " сообщите админам об этой ошибке")
+                               "повторите попытку")
                     )
                 )
             if "ERROR: Unable to rename file" in self.event.exception.msg:
