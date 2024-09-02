@@ -159,8 +159,8 @@ class YoutubeDownloader(Youtube):
         return False
 
     def download(self):
-        with YoutubeDL(self.ydl_opts) as ydl:
-            for i in range(3):
+        for i in range(3):
+            with YoutubeDL(self.ydl_opts) as ydl:
                 sleep(1)
                 try:
                     info = ydl.extract_info(self._url, download=True)
