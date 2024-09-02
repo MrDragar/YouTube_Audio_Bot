@@ -2,10 +2,12 @@ import asyncio
 import os.path
 import random
 import shutil
+import logging
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, Dict, Optional, AsyncGenerator
 from time import sleep
+import random
 
 from yt_dlp import YoutubeDL, DownloadError
 from yt_dlp.networking import Request
@@ -177,6 +179,7 @@ class YoutubeDownloader(Youtube):
                     os.remove(file_path)
                 except FileNotFoundError:
                     ...
+            logging.warning(f"Format Error! Resolution: {self._resolution}. Data: {info["requested_downloads"][0]}")
             raise DownloadError("Requested format is not available.")
 
     async def get_media_adapter(self) -> MediaAdapter:

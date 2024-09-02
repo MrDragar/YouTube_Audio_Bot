@@ -79,7 +79,6 @@ class YoutubeErrorHandler(StateErrorHandler):
                 )
             if "Requested format is not available." in self.event.exception.msg:
                 await add_unsuccessful_request()
-                logging.exception(self.event.exception)
                 return await self.bot(
                     SendMessage(
                         chat_id=self.event.update.message.chat.id,
