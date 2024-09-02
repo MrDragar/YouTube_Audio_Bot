@@ -54,7 +54,7 @@ class YoutubeErrorHandler(StateErrorHandler):
                         text=_("Видео заблокировано в РФ")
                     )
                 )
-            if "Video unavailable" in self.event.exception.msg:
+            if "Video unavailable" in self.event.exception.msg or "video is not available" in self.event.exception.msg:
                 print(self.event.exception.msg)
                 return await self.bot(
                     SendMessage(
