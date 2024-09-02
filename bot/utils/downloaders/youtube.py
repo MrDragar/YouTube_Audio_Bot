@@ -109,7 +109,6 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] = f"{resolution + '+'}" if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
-        self.ydl_opts['ignore_no_formats_error'] = True
 
     @staticmethod
     def check_size(size):
@@ -159,6 +158,7 @@ class YoutubeDownloader(Youtube):
         return False
 
     def download(self):
+        self.ydl_opts['ignore_no_formats_error'] = True
         for i in range(3):
             with YoutubeDL(self.ydl_opts) as ydl:
                 sleep(1)
