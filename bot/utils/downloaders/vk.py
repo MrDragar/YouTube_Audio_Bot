@@ -42,3 +42,9 @@ class VKDownloader(YoutubeDownloader):
             self.media_adapter = MediaAdapter(info["id"],
                                               platform=self.platform,
                                               resolution=self._resolution)
+
+    def download(self):
+        with YoutubeDL(self.ydl_opts) as ydl:
+            info = ydl.extract_info(self._url, download=True)
+            file_path = ydl.prepare_filename(info)
+            self.media_adapter.set_file_path(file_path)

@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, Dict, Optional, AsyncGenerator
 
-from yt_dlp import YoutubeDL
+from yt_dlp import YoutubeDL, DownloadError
 from yt_dlp.networking import Request
 from yt_dlp.networking.exceptions import network_exceptions
 
@@ -97,7 +97,6 @@ class YoutubeDownloader(Youtube):
     media_adapter: MediaAdapter
     platform: Platform = Platform.YOUTUBE
 
-
     def __init__(self, url: str, resolution: Optional[str] = "",
                  callback: Optional[AsyncGenerator] = None):
         super().__init__()
@@ -109,6 +108,7 @@ class YoutubeDownloader(Youtube):
         self.ydl_opts["format"] = f"{resolution + '+'}" if resolution else ""
         self.ydl_opts["format"] += "bestaudio[ext=m4a]"
         self.ydl_opts['outtmpl'] = {'default': 'video/%(title).40s.%(ext)s'}
+        self.ydl_opts['ignore_no_formats_error'] = True
 
     @staticmethod
     def check_size(size):
@@ -147,14 +147,31 @@ class YoutubeDownloader(Youtube):
                 continue
             return filepath
 
+    def __check_is_video_downloaded(self, data: dict) -> bool:
+        if not self._resolution:
+            #  Если это аудио
+            return True
+        if "fps" in data["requested_downloads"][0] and "tbr" in data["requested_downloads"][0]:
+            return True
+        if len(data["requested_downloads"][0].get("requested_formats", [])) == 2:
+            return True
+        return False
+
+
+
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:
-            info = ydl.extract_info(self._url, download=True)
-            file_path = ydl.prepare_filename(info)
-            self.media_adapter.set_thumbnail_path(
-                self._download_thumbnail(info, file_path, ydl),
-            )
-            self.media_adapter.set_file_path(file_path)
+            for i in range(3):
+                info = ydl.extract_info(self._url, download=True)
+                file_path = ydl.prepare_filename(info)
+                if self.__check_is_video_downloaded(info):
+                    self.media_adapter.set_file_path(file_path)
+                    return
+                try:
+                    os.remove(file_path)
+                except FileNotFoundError:
+                    ...
+            raise DownloadError("Requested format is not available.")
 
     async def get_media_adapter(self) -> MediaAdapter:
         # Смотрим, есть ли запрашенное видео в базе данных
