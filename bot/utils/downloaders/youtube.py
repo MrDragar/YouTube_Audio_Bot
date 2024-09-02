@@ -162,7 +162,13 @@ class YoutubeDownloader(Youtube):
         with YoutubeDL(self.ydl_opts) as ydl:
             for i in range(3):
                 sleep(1)
-                info = ydl.extract_info(self._url, download=True)
+                try:
+                    info = ydl.extract_info(self._url, download=True)
+                except DownloadError as ex:
+                    if "No video formats found" in ex.msg:
+                        continue
+                    raise
+
                 file_path = ydl.prepare_filename(info)
                 if self.__check_is_video_downloaded(info):
                     self.media_adapter.set_file_path(file_path)
