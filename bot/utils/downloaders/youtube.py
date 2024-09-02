@@ -5,6 +5,7 @@ import shutil
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, Dict, Optional, AsyncGenerator
+from time import sleep
 
 from yt_dlp import YoutubeDL, DownloadError
 from yt_dlp.networking import Request
@@ -157,11 +158,10 @@ class YoutubeDownloader(Youtube):
             return True
         return False
 
-
-
     def download(self):
         with YoutubeDL(self.ydl_opts) as ydl:
             for i in range(3):
+                sleep(1)
                 info = ydl.extract_info(self._url, download=True)
                 file_path = ydl.prepare_filename(info)
                 if self.__check_is_video_downloaded(info):
