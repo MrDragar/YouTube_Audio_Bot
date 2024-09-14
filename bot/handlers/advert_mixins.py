@@ -4,7 +4,9 @@ from aiogram.handlers import MessageHandler
 from aiogram.methods import CopyMessage, SendMessage
 
 from bot.config import ADMINS_ID
-from bot.database.advert import get_random_advert, add_current_number_to_advert
+from bot.database.advert import get_random_advert, add_current_number_to_advert, \
+    get_keyboards_by_advert_id
+from bot.keyboards import get_advert_inline_keyboard
 
 
 class AdvertMixin(MessageHandler, ABC):
@@ -15,11 +17,14 @@ class AdvertMixin(MessageHandler, ABC):
         advert = await get_random_advert()
         if not advert:
             return
+        kb = get_advert_inline_keyboard(
+            await get_keyboards_by_advert_id(advert.id)
+        )
 
         await self.bot(
             CopyMessage(
                 chat_id=self.chat.id, from_chat_id=advert.chat_id,
-                message_id=advert.message_id
+                message_id=advert.message_id, reply_markup=kb
             )
         )
         full = await add_current_number_to_advert(advert.id)
@@ -34,9 +39,10 @@ class AdvertMixin(MessageHandler, ABC):
                     .format(advert.id, advert.total_number)
                 )
             )
+
             await self.bot(
                 CopyMessage(
                     chat_id=self.chat.id, from_chat_id=advert.chat_id,
-                    message_id=advert.message_id
+                    message_id=advert.message_id, reply_markup=kb
                 )
             )

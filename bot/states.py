@@ -55,5 +55,11 @@ class GetAdvertByIdState(StatesGroup):
     step1 = State()
 
 
+class AddAdvertInlineKeyboardState(StatesGroup):
+    getting_advert_id = State()
+    getting_text = State()
+    getting_url = State()
+
+
 class AnswerFeedbackState(StatesGroup):
     step1 = State()

@@ -44,6 +44,8 @@ admin_bot_commands = [
                description="Получить информацию о рекламе по id"),
     BotCommand(command="get_active_adverts",
                description="Получить список активных реклам"),
+    BotCommand(command="add_inline_keyboard_to_advert",
+               description="Добавить кнопку в рекламу"),
     BotCommand(command="edit_advert_total_number",
                description="Изменить максимальное количество просмотров у рекламы"),
     BotCommand(command="edit_advert_text", description="Изменить текст рекламы")

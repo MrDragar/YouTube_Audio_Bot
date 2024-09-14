@@ -4,7 +4,8 @@ from aiogram.methods import SendMessage, CopyMessage
 
 from bot.handlers.base_handlers import StateMassageHandler
 from bot.states import GetAdvertByIdState
-from bot.database.advert import get_advert_by_id, get_active_adverts
+from bot.keyboards import get_advert_inline_keyboard
+from bot.database.advert import get_advert_by_id, get_active_adverts, get_keyboards_by_advert_id
 
 get_router = Router()
 
@@ -47,10 +48,11 @@ class GetIdHandler(StateMassageHandler):
                 )
             )
         )
+        kb = get_advert_inline_keyboard(await get_keyboards_by_advert_id(advert.id))
         await self.bot(
             CopyMessage(
                 chat_id=self.chat.id, from_chat_id=advert.chat_id,
-                message_id=advert.message_id)
+                message_id=advert.message_id, reply_markup=kb)
         )
 
 

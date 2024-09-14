@@ -1,9 +1,11 @@
-from aiogram import types
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
-from aiogram.utils.i18n import gettext as _
+from typing import List, Optional
 
-from bot.database.models import Language
+from aiogram import types
+from aiogram.utils.i18n import gettext as _
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+
 from bot.callbacks import FeedbackCallback
+from bot.database.models import Language, AdvertInlineKeyboard
 
 
 def get_type_keyboard() -> types.ReplyKeyboardMarkup:
@@ -61,4 +63,13 @@ def get_feedback_keyboard(user_id: int) -> types.InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
     keyboard.button(text=_("Ответить пользователю"),
                     callback_data=FeedbackCallback(user_id=user_id).pack())
+    return keyboard.as_markup()
+
+
+def get_advert_inline_keyboard(buttons: List[AdvertInlineKeyboard]) -> Optional[types.InlineKeyboardMarkup]:
+    if not buttons:
+        return None
+    keyboard = InlineKeyboardBuilder()
+    for button in buttons:
+        keyboard.button(text=button.text, url=button.url)
     return keyboard.as_markup()
