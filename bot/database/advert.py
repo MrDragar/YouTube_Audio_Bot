@@ -1,7 +1,11 @@
-from typing import Optional, List
 from random import choice
+from typing import Optional, List
 
-from .models import Advert
+from .models import Advert, AdvertInlineKeyboard
+
+
+class NoAdvertException(Exception):
+    ...
 
 
 async def create_advert(chat_id: int, message_id: int, total_number: int) -> int:
@@ -71,3 +75,24 @@ async def add_current_number_to_advert(advert_id: int) -> int:
     advert.current_number = advert.current_number + 1
     await advert.save()
     return advert.total_number <= advert.current_number
+
+
+async def get_keyboards_by_advert_id(advert_id: int) -> List[AdvertInlineKeyboard]:
+    advert = await Advert.get(id=advert_id)
+    keyboards = await advert.inline_keyboards
+    return keyboards
+
+
+async def create_keyboard(advert_id: int, text: str, url: str) -> int:
+    advert = await Advert.get_or_none(id=advert_id)
+    if advert is None:
+        raise NoAdvertException()
+    keyboard = await AdvertInlineKeyboard.create(text=text, url=url, advert=advert)
+    return keyboard.id
+
+
+async def delete_keyboards_by_advert_id(advert_id: id) -> int:
+    keyboards = await get_keyboards_by_advert_id(advert_id)
+    for keyboard in keyboards:
+        await keyboard.delete()
+

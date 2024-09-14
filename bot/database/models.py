@@ -71,3 +71,11 @@ class Advert(Model):
     message_id = fields.IntField()
     current_number = fields.IntField(default=0)
     total_number = fields.IntField(default=10)
+    inline_keyboards: fields.ForeignKeyRelation["AdvertInlineKeyboard"]
+
+
+class AdvertInlineKeyboard(Model):
+    id = fields.IntField(pk=True)
+    advert = fields.ForeignKeyField("models.Advert", related_name="inline_keyboards")
+    text = fields.TextField()
+    url = fields.TextField(null=True)
