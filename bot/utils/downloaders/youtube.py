@@ -1,6 +1,5 @@
 import asyncio
 import os.path
-import random
 import shutil
 import logging
 from abc import ABC, abstractmethod
@@ -27,14 +26,15 @@ class PlaylistError(Exception):
 
 
 class Youtube(ABC):
-    ydl_opts: dict = {
-        "quiet": True,
-        "noplaylist": True,
-        "no_warnings": True
-    }
+    ydl_opts: dict
     _callback: Optional[AsyncGenerator] = None
 
     def __init__(self):
+        self.ydl_opts = {
+            "quiet": True,
+            "noplaylist": True,
+            "no_warnings": True
+        }
         if BROWSERS:
             self.ydl_opts["cookiesfrombrowser"] = (random.choice(BROWSERS))
         self.ydl_opts["proxy"] = PROXY
@@ -172,6 +172,8 @@ class YoutubeDownloader(Youtube):
                     raise
 
                 file_path = ydl.prepare_filename(info)
+                if not file_path:
+                    continue
                 if self.__check_is_video_downloaded(info):
                     self.media_adapter.set_file_path(file_path)
                     return
