@@ -15,6 +15,8 @@ class IsAdmin(Filter):
 
 class IsSubscriberFilter(Filter):
     async def __call__(self, message: Message) -> bool:
+        if CHANNEL_ID == 0:
+            return False
         member = await message.bot(
             GetChatMember(chat_id=CHANNEL_ID, user_id=message.from_user.id)
         )
@@ -31,6 +33,8 @@ class IsSubscriberFilter(Filter):
 
 class IsSubscriberCallbackFilter(Filter):
     async def __call__(self, callback: CallbackQuery) -> bool:
+        if CHANNEL_ID == 0:
+            return False
         member = await callback.bot(
             GetChatMember(chat_id=CHANNEL_ID, user_id=callback.from_user.id)
         )
