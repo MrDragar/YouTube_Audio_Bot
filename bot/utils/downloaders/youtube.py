@@ -34,12 +34,6 @@ class Youtube(ABC):
             "quiet": True,
             "noplaylist": True,
             "no_warnings": True,
-            "extractor_args": {
-                "youtube": {
-                    "player-client": "web,default",
-                    "po_token": random.choice(BROWSERS)
-                }
-            },
             "proxy": PROXY
         }
 

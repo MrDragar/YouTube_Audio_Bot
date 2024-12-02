@@ -7,3 +7,4 @@ Apscheduler==3.10.1
 FastAPI==0.103.2
 uvicorn==0.23.2
 git+https://github.com/MrDragar/tiktok-downloader
+bgutil-ytdlp-pot-provider
