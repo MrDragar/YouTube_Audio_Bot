@@ -36,6 +36,8 @@ class Youtube(ABC):
             "no_warnings": True,
             "proxy": PROXY
         }
+        if BROWSERS:
+            self.ydl_opts["cookiesfrombrowser"] = (random.choice(BROWSERS))
 
     async def send_callback(self):
         if self._callback:
