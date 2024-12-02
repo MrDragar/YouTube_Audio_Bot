@@ -33,11 +33,15 @@ class Youtube(ABC):
         self.ydl_opts = {
             "quiet": True,
             "noplaylist": True,
-            "no_warnings": True
+            "no_warnings": True,
+            "extractor_args": {
+                "youtube": {
+                    "player-client": "web,default",
+                    "po_token": random.choice(BROWSERS)
+                }
+            },
+            "proxy": PROXY
         }
-        if BROWSERS:
-            self.ydl_opts["cookiesfrombrowser"] = (random.choice(BROWSERS))
-        self.ydl_opts["proxy"] = PROXY
 
     async def send_callback(self):
         if self._callback:

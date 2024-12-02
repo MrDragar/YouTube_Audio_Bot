@@ -11,6 +11,10 @@ from ...database.models import Platform
 class VKResolutionParser(YoutubeResolutionParser):
     resolution_name = "resolution"
 
+    def __init__(self, url: str):
+        super().__init__(url)
+        del self.ydl_opts['proxy']
+
     @staticmethod
     def check_format(format_: dict):
         return format_["video_ext"] == "mp4" and format_["audio_ext"] == "none" \
@@ -27,6 +31,7 @@ class VKDownloader(YoutubeDownloader):
             callback: Optional[AsyncGenerator] = None
     ):
         super().__init__(url, resolution, callback)
+        del self.ydl_opts['proxy']
 
     def collect_information(self):
         with YoutubeDL(self.ydl_opts) as ydl:
