@@ -34,7 +34,12 @@ class Youtube(ABC):
             "quiet": True,
             "noplaylist": True,
             "no_warnings": True,
-            "proxy": PROXY
+            "proxy": PROXY,
+            "extractor_args": {
+                "youtube": {
+                    "getpot_bgutil_baseurl": "http://127.0.0.1:4416"
+                }
+            }
         }
         if BROWSERS:
             self.ydl_opts["cookiesfrombrowser"] = (random.choice(BROWSERS))
